@@ -2032,6 +2032,14 @@ document.addEventListener('keydown', function(e){
   if(e.key === 'Escape') closeBooking();
 });
 
+// ── Auto-open booking if coming from about page ──
+window.addEventListener('load', () => {
+  if(sessionStorage.getItem('openBooking') === '1') {
+    sessionStorage.removeItem('openBooking');
+    setTimeout(() => openBooking('Book a Service'), 400);
+  }
+});
+
 // ── Mobile menu ──
 function toggleMobileMenu() {
   const menu = document.getElementById('mobileMenu');
