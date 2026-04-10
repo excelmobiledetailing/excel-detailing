@@ -505,6 +505,9 @@
     .bk-slots-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: .65rem;
     }
+    .bk-slots-grid .bk-slot:last-child:nth-child(odd) {
+      grid-column: span 2;
+    }
     .bk-slot {
       background: var(--navy3); border: 1px solid rgba(184,194,204,0.1);
       padding: .9rem 1rem; cursor: pointer; text-align: center;
