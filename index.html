@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Excel Mobile Detailing</title>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -1798,15 +1801,39 @@ async function fetchWeather() {
   }
 }
 
-// ── Booking slots (localStorage) ──
+// ── Firebase setup ──
+const firebaseConfig = {
+  apiKey: "AIzaSyA7OxunNKNkIVKotpuI2YdRz_EAlNmB7mM",
+  authDomain: "detailing-f23f9.firebaseapp.com",
+  databaseURL: "https://detailing-f23f9-default-rtdb.firebaseio.com",
+  projectId: "detailing-f23f9",
+  storageBucket: "detailing-f23f9.firebasestorage.app",
+  messagingSenderId: "414116817946",
+  appId: "1:414116817946:web:d4c3eeb0da900df477f5a3"
+};
+firebase.initializeApp(firebaseConfig);
+const bkDb = firebase.database();
+
+// Live bookings cache — updated in real time from Firebase
+let bookedSlots = {};
+bkDb.ref('bookings').on('value', (snapshot) => {
+  bookedSlots = snapshot.val() || {};
+  // If booking modal is open, re-render so everyone sees latest availability
+  if(document.getElementById('bkOverlay').classList.contains('open')) {
+    renderCalendar();
+    if(bkSelectedDate) showTimeSlots(bkSelectedDate);
+  }
+});
+
+// ── Booking slots ──
 const SLOTS = [
   {key:'10', label:'10:00 AM'},
   {key:'14', label:'2:00 PM'},
   {key:'18', label:'6:00 PM'}
 ];
-function slotKey(dateStr, key) { return `excel_bk_${dateStr}_${key}`; }
-function isSlotTaken(dateStr, key) { return localStorage.getItem(slotKey(dateStr,key)) === '1'; }
-function bookSlot(dateStr, key)   { localStorage.setItem(slotKey(dateStr,key), '1'); }
+function slotKey(dateStr, key) { return `${dateStr}_${key}`; }
+function isSlotTaken(dateStr, key) { return !!bookedSlots[slotKey(dateStr, key)]; }
+function bookSlot(dateStr, key) { bkDb.ref(`bookings/${slotKey(dateStr, key)}`).set(true); }
 function slotsAvail(dateStr) { return SLOTS.filter(s => !isSlotTaken(dateStr, s.key)).length; }
 
 // ── Calendar state ──
