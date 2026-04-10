@@ -1022,8 +1022,21 @@
     .chat-send:hover { background: var(--red-light); }
 
     /* ══ ANIMATIONS ══ */
-    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-up { opacity: 0; transform: translateY(36px); transition: opacity .65s cubic-bezier(.22,.68,0,1.2), transform .65s cubic-bezier(.22,.68,0,1.2); }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Back to Top ── */
+    .back-top {
+      position: fixed; bottom: 2rem; left: 2rem; z-index: 400;
+      width: 44px; height: 44px; background: var(--red);
+      border: none; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; opacity: 0; pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity .3s, transform .3s, background .2s;
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+    .back-top.show { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .back-top:hover { background: var(--red-light); transform: translateY(-3px) !important; }
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
@@ -1562,6 +1575,9 @@
 
 <!-- CONTACT -->
 
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"></button>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-main">
@@ -1636,13 +1652,50 @@
 </div>
 
 <script>
-/* ── Scroll animations ── */
+/* ── Scroll animations with stagger ── */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
-    if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 70);
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
   });
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+/* ── Number counter ── */
+function animateCount(el) {
+  const text = el.textContent.trim();
+  const prefix = text.match(/^[^0-9]*/)[0];
+  const suffix = text.match(/[^0-9]*$/)[0];
+  const target = parseInt(text.replace(/[^0-9]/g, ''));
+  if (isNaN(target) || target === 0) return;
+  const duration = 1200;
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = prefix + Math.floor(eased * target) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = prefix + target + suffix;
+  }
+  requestAnimationFrame(step);
+}
+const countObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCount(entry.target);
+      countObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num').forEach(el => countObserver.observe(el));
+
+/* ── Back to top ── */
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('show', window.scrollY > 400);
+});
 
 /* ── Before/After Slider ── */
 const slider  = document.getElementById('baSlider');
