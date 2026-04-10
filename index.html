@@ -477,7 +477,7 @@
     }
     .bk-day.bk-past .bk-day-num  { color: var(--gray); }
     .bk-day.bk-sel  .bk-day-num  { color: #fff; }
-    .bk-day-wx   { font-size: .85rem; line-height: 1; }
+    .bk-day-wx   { font-size: .48rem; font-family: 'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:.06em; color: var(--silver); line-height: 1; background: rgba(255,255,255,0.07); padding: 1px 3px; border-radius: 2px; }
     .bk-day-temp {
       font-size: .58rem; color: var(--gray);
       font-family: 'Barlow Condensed', sans-serif; letter-spacing: .04em;
@@ -1062,7 +1062,7 @@
 
 <!-- PROMO BANNER -->
 <div class="promo-banner" id="promo">
-  <p>🎉 <strong>NEW CUSTOMER SPECIAL</strong> — Get <strong>$10 OFF</strong> your first detail &nbsp;·&nbsp; Mention code <span class="promo-code">EXCEL10</span> when booking</p>
+  <p><strong>NEW CUSTOMER SPECIAL</strong> — Get <strong>$10 OFF</strong> your first detail &nbsp;·&nbsp; Mention code <span class="promo-code">EXCEL10</span> when booking</p>
   <button class="promo-dismiss" onclick="document.getElementById('promo').style.display='none'" aria-label="Dismiss">✕</button>
 </div>
 
@@ -1081,7 +1081,7 @@
     <li><a href="#faq">FAQ</a></li>
   </ul>
   <div class="nav-right">
-    <a href="tel:+18476501734" class="nav-phone">📞 (847) 650-1734</a>
+    <a href="tel:+18476501734" class="nav-phone">(847) 650-1734</a>
     <a href="#" class="nav-cta" onclick="event.preventDefault(); openBooking('Book a Service')">Book Now</a>
     <button class="nav-burger" id="navBurger" aria-label="Menu" onclick="toggleMobileMenu()">
       <span></span><span></span><span></span>
@@ -1096,8 +1096,8 @@
   <a href="./results.html" onclick="closeMobileMenu()">Results</a>
   <a href="./about.html" onclick="closeMobileMenu()">About Us</a>
   <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
-  <a href="tel:+18476501734" onclick="closeMobileMenu()">📞 (847) 650-1734</a>
-  <button class="mob-book" onclick="closeMobileMenu(); openBooking('Book a Service')">📅 Book Now</button>
+  <a href="tel:+18476501734" onclick="closeMobileMenu()">(847) 650-1734</a>
+  <button class="mob-book" onclick="closeMobileMenu(); openBooking('Book a Service')">Book Now</button>
 </div>
 
 <!-- HERO -->
@@ -1115,7 +1115,7 @@
     <p class="hero-sub">Expert mobile detailing brought directly to you. No drop-offs, no waiting — just a spotless vehicle wherever you are.</p>
     <div class="hero-actions">
       <a href="#services" class="btn-primary">See Pricing</a>
-      <button class="btn-outline" onclick="openBooking('Book a Service')" style="cursor:pointer;">📅 Book a Detail</button>
+      <button class="btn-outline" onclick="openBooking('Book a Service')" style="cursor:pointer;">Book a Detail</button>
     </div>
   </div>
   <div class="hero-scroll">
@@ -1126,15 +1126,15 @@
 
 <!-- TRUST BAR -->
 <div class="trust-bar">
-  <div class="trust-item"><span class="ti">🛡️</span> Satisfaction Guaranteed</div>
+  <div class="trust-item">Satisfaction Guaranteed</div>
   <div class="trust-sep"></div>
-  <div class="trust-item"><span class="ti">🚗</span> We Come to You</div>
+  <div class="trust-item">We Come to You</div>
   <div class="trust-sep"></div>
-  <div class="trust-item"><span class="ti">💧</span> Eco-Friendly Products</div>
+  <div class="trust-item">Eco-Friendly Products</div>
   <div class="trust-sep"></div>
-  <div class="trust-item"><span class="ti">✅</span> No Surprise Fees</div>
+  <div class="trust-item">No Surprise Fees</div>
   <div class="trust-sep"></div>
-  <div class="trust-item"><span class="ti">⚡</span> Fast Turnaround</div>
+  <div class="trust-item">Fast Turnaround</div>
 </div>
 
 <!-- STATS -->
@@ -1156,7 +1156,7 @@
   <div class="steps-row">
     <div class="step fade-up">
       <div class="step-num">1</div>
-      <div class="step-icon">📱</div>
+      <div class="step-icon">01</div>
       <div class="step-title">Book in Minutes</div>
       <div class="step-desc">Fill out our quick form or shoot us an email. Tell us your vehicle and what service you need — we'll confirm fast.</div>
     </div>
@@ -1168,7 +1168,7 @@
     </div>
     <div class="step fade-up">
       <div class="step-num">3</div>
-      <div class="step-icon">✨</div>
+      <div class="step-icon">02</div>
       <div class="step-title">Enjoy the Results</div>
       <div class="step-desc">Walk out to a showroom-clean vehicle. No waiting rooms, no errands. Just a spotless car right where you left it.</div>
     </div>
@@ -1324,7 +1324,7 @@
 
   <!-- Gift a Detail -->
   <div class="gift-callout fade-up">
-    <div class="gift-icon">🎁</div>
+    
     <div>
       <div class="gift-title">Gift a Detail</div>
       <div class="gift-desc">Know someone whose car could use some love? A detail makes an incredible gift for birthdays, holidays, or just because. Contact us and we'll set it up for you.</div>
@@ -1370,7 +1370,7 @@
   </div>
   <div class="why-grid">
     <div class="why-card fade-up">
-      <div class="why-icon">🚗</div>
+      
       <div class="why-title">We Come to You</div>
       <div class="why-text">Skip the drive. We bring everything to your driveway, office, or apartment parking lot.</div>
     </div>
@@ -1380,7 +1380,7 @@
       <div class="why-text">We inspect first and quote upfront. Zero surprise charges — you approve everything before we start.</div>
     </div>
     <div class="why-card fade-up">
-      <div class="why-icon">🧴</div>
+      
       <div class="why-title">Pro-Grade Products</div>
       <div class="why-text">We use professional detailing products that protect your paint and upholstery long-term.</div>
     </div>
@@ -1390,12 +1390,12 @@
       <div class="why-text">You keep doing your day while your car gets transformed right outside.</div>
     </div>
     <div class="why-card fade-up">
-      <div class="why-icon">🛡️</div>
+      
       <div class="why-title">Satisfaction Guaranteed</div>
       <div class="why-text">Not happy with something? We'll make it right. Your satisfaction is the only result we accept.</div>
     </div>
     <div class="why-card fade-up">
-      <div class="why-icon">💧</div>
+      
       <div class="why-title">Eco-Friendly</div>
       <div class="why-text">Eco-conscious products and water-efficient methods — great results, less waste.</div>
     </div>
@@ -1512,9 +1512,9 @@
       <div class="footer-logo"><span>E</span>XCEL MOBILE DETAILING</div>
       <div class="footer-tagline">Professional mobile detailing brought directly to your door. Showroom results, your driveway.</div>
       <div class="footer-social-icons">
-        <a href="#" title="Instagram">📸</a>
+        <a href="#" title="Instagram">IG</a>
         <a href="#" title="Facebook">f</a>
-        <a href="#" title="TikTok">♪</a>
+        <a href="#" title="TikTok">TK</a>
       </div>
     </div>
     <div>
@@ -1552,7 +1552,7 @@
 <div class="chat-panel" id="chat-panel">
   <div class="chat-header">
     <div class="chat-header-info">
-      <div class="chat-avatar">🚗</div>
+      <div class="chat-avatar">EM</div>
       <div>
         <div class="chat-name">Excel Detailing</div>
         <div class="chat-status">Online now</div>
@@ -1562,7 +1562,7 @@
   </div>
   <div class="chat-messages" id="chat-messages">
     <div class="msg bot">
-      <div class="msg-bubble">👋 Hey! Welcome to Excel Mobile Detailing. How can we help you today?</div>
+      <div class="msg-bubble">Hey! Welcome to Excel Mobile Detailing. How can we help you today?</div>
       <div class="msg-time">Just now</div>
     </div>
   </div>
@@ -1746,7 +1746,7 @@ function addMessage(text, type) {
 
     <!-- Success -->
     <div class="bk-success" id="bkSuccess">
-      <div class="bk-check">✅</div>
+      <div class="bk-check">&#10003;</div>
       <h4>You're Booked!</h4>
       <p>We've received your request and will confirm within a few hours.</p>
       <p class="bk-conf" id="bkConfText"></p>
@@ -1759,19 +1759,19 @@ function addMessage(text, type) {
 // Northbrook, IL
 const BK_LAT = 42.1303, BK_LON = -87.8265;
 const WMO = {
-  0:{i:'☀️',d:'Clear Sky'}, 1:{i:'🌤️',d:'Mainly Clear'},
-  2:{i:'⛅',d:'Partly Cloudy'}, 3:{i:'☁️',d:'Overcast'},
-  45:{i:'🌫️',d:'Foggy'}, 48:{i:'🌫️',d:'Freezing Fog'},
-  51:{i:'🌦️',d:'Light Drizzle'}, 53:{i:'🌦️',d:'Drizzle'}, 55:{i:'🌧️',d:'Heavy Drizzle'},
-  61:{i:'🌧️',d:'Light Rain'}, 63:{i:'🌧️',d:'Rain'}, 65:{i:'🌧️',d:'Heavy Rain'},
-  71:{i:'❄️',d:'Light Snow'}, 73:{i:'❄️',d:'Snow'}, 75:{i:'❄️',d:'Heavy Snow'},
-  77:{i:'🌨️',d:'Snow Grains'},
-  80:{i:'🌦️',d:'Light Showers'}, 81:{i:'🌦️',d:'Showers'}, 82:{i:'⛈️',d:'Heavy Showers'},
-  85:{i:'🌨️',d:'Snow Showers'}, 86:{i:'🌨️',d:'Heavy Snow Showers'},
-  95:{i:'⛈️',d:'Thunderstorm'}, 96:{i:'⛈️',d:'Thunderstorm+Hail'}, 99:{i:'⛈️',d:'Severe Storm'}
+  0:{i:'CLEAR',d:'Clear Sky'}, 1:{i:'CLEAR',d:'Mainly Clear'},
+  2:{i:'PTCLD',d:'Partly Cloudy'}, 3:{i:'CLDDY',d:'Overcast'},
+  45:{i:'FOG',d:'Foggy'}, 48:{i:'FOG',d:'Freezing Fog'},
+  51:{i:'DRZL',d:'Light Drizzle'}, 53:{i:'DRZL',d:'Drizzle'}, 55:{i:'RAIN',d:'Heavy Drizzle'},
+  61:{i:'RAIN',d:'Light Rain'}, 63:{i:'RAIN',d:'Rain'}, 65:{i:'RAIN',d:'Heavy Rain'},
+  71:{i:'SNOW',d:'Light Snow'}, 73:{i:'SNOW',d:'Snow'}, 75:{i:'SNOW',d:'Heavy Snow'},
+  77:{i:'SNOW',d:'Snow Grains'},
+  80:{i:'SHWR',d:'Light Showers'}, 81:{i:'SHWR',d:'Showers'}, 82:{i:'SHWR',d:'Heavy Showers'},
+  85:{i:'SNOW',d:'Snow Showers'}, 86:{i:'SNOW',d:'Heavy Snow Showers'},
+  95:{i:'STRM',d:'Thunderstorm'}, 96:{i:'STRM',d:'Thunderstorm+Hail'}, 99:{i:'STRM',d:'Severe Storm'}
 };
 function getWx(code) {
-  return WMO[code] || WMO[Math.floor(code/10)*10] || {i:'🌡️',d:'Weather Data'};
+  return WMO[code] || WMO[Math.floor(code/10)*10] || {i:'--',d:'Weather Data'};
 }
 let bkWeather = {}; // keyed by "YYYY-MM-DD"
 
@@ -1926,7 +1926,7 @@ function bkGoStep(n) {
     const dt = new Date(bkSelectedDate + 'T12:00:00');
     const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
     document.getElementById('bkApptSummary').textContent =
-      `📅 ${dateLabel}  ·  🕐 ${bkSelectedSlot.label}  ·  ${document.getElementById('bkServiceTag').textContent}`;
+      `${dateLabel}  ·  ${bkSelectedSlot.label}  ·  ${document.getElementById('bkServiceTag').textContent}`;
   }
 }
 
