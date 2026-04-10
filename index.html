@@ -1974,23 +1974,61 @@ document.getElementById('bkNextMo').addEventListener('click', () => {
 });
 
 // ── Submit ──
-function submitBooking() {
-  const first = document.getElementById('bkFirst').value.trim();
-  const phone = document.getElementById('bkPhone').value.trim();
-  const make  = document.getElementById('bkMake').value.trim();
-  const model = document.getElementById('bkModel').value.trim();
+// 👇 PASTE YOUR FORMSPREE FORM ID HERE (e.g. "xyzabcde")
+const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
+
+async function submitBooking() {
+  const first    = document.getElementById('bkFirst').value.trim();
+  const last     = document.getElementById('bkLast') ? document.getElementById('bkLast').value.trim() : '';
+  const phone    = document.getElementById('bkPhone').value.trim();
+  const email    = document.getElementById('bkEmail').value.trim();
+  const make     = document.getElementById('bkMake').value.trim();
+  const model    = document.getElementById('bkModel').value.trim();
+  const vtype    = document.getElementById('bkVehicleType').value;
+  const notes    = document.getElementById('bkNotes').value.trim();
+  const service  = document.getElementById('bkService') ? document.getElementById('bkService').value : '';
+
   if(!first || !phone || !make || !model) {
     alert('Please fill in your name, phone number, car make, and model.');
     return;
   }
+
+  const dt = new Date(bkSelectedDate + 'T12:00:00');
+  const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const timeLabel = bkSelectedSlot ? bkSelectedSlot.label : '';
+
+  // Send email via Formspree
+  if(FORMSPREE_ID !== 'YOUR_FORMSPREE_ID') {
+    try {
+      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject:       `New Booking Request — ${first} ${last}`.trim(),
+          Name:           `${first} ${last}`.trim(),
+          Phone:          phone,
+          Email:          email || 'Not provided',
+          Service:        service || 'Not specified',
+          'Car Make':     make,
+          'Car Model':    model,
+          'Vehicle Type': vtype || 'Not specified',
+          Date:           dateLabel,
+          Time:           timeLabel,
+          Notes:          notes || 'None'
+        })
+      });
+    } catch(err) {
+      console.warn('Formspree error:', err);
+    }
+  }
+
   // Lock the slot in localStorage
   if(bkSelectedDate && bkSelectedSlot) {
     bookSlot(bkSelectedDate, bkSelectedSlot.key);
   }
-  const dt = new Date(bkSelectedDate + 'T12:00:00');
-  const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
   document.getElementById('bkConfText').textContent =
-    `${dateLabel} · ${bkSelectedSlot ? bkSelectedSlot.label : ''} · ${make} ${model}`;
+    `${dateLabel} · ${timeLabel} · ${make} ${model}`;
   document.querySelectorAll('.bk-step').forEach(s => s.classList.remove('active'));
   document.getElementById('bkSuccess').style.display = 'block';
   setTimeout(closeBooking, 4500);
