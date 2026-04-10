@@ -1076,7 +1076,6 @@
     <li><a href="./results.html">Results</a></li>
     <li><a href="./about.html">About Us</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-right">
     <a href="tel:+18476501734" class="nav-phone">📞 (847) 650-1734</a>
@@ -1094,7 +1093,6 @@
   <a href="./results.html" onclick="closeMobileMenu()">Results</a>
   <a href="./about.html" onclick="closeMobileMenu()">About Us</a>
   <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
-  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
   <a href="tel:+18476501734" onclick="closeMobileMenu()">📞 (847) 650-1734</a>
   <button class="mob-book" onclick="closeMobileMenu(); openBooking('Book a Service')">📅 Book Now</button>
 </div>
@@ -1411,7 +1409,7 @@
   <div class="referral-right">
     <div class="referral-amount"><span>$</span>10</div>
     <div class="referral-amount-label">OFF for you &amp; your friend</div>
-    <a href="#contact" class="btn-primary" style="margin-top:1rem;">Refer a Friend</a>
+    <a href="mailto:excelmobiledetailing11@gmail.com" class="btn-primary" style="margin-top:1rem;">Refer a Friend</a>
   </div>
 </div>
 
@@ -1497,91 +1495,12 @@
         <span class="faq-question-text">How do I book or get a quote?</span>
         <span class="faq-icon">+</span>
       </button>
-      <div class="faq-answer">Fill out the contact form below, email us at excelmobiledetailing11@gmail.com, or hit the chat button in the corner. Give us your vehicle type, service interest, and location and we'll get back to you fast!</div>
+      <div class="faq-answer">Use the Book Now button on any pricing card, email us at excelmobiledetailing11@gmail.com, or hit the chat button in the corner. Give us your vehicle type, service interest, and location and we'll get back to you fast!</div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact">
-  <div class="contact-inner">
-    <div class="fade-up">
-      <div class="section-eyebrow">Get in Touch</div>
-      <h2 class="section-title">Book Your Detail</h2>
-      <div class="section-divider"></div>
-      <p class="section-desc">Ready for a spotless vehicle? Reach out and we'll get you on the schedule fast.</p>
-      <div class="contact-email-block">
-        <div class="email-icon">✉</div>
-        <div>
-          <a href="mailto:excelmobiledetailing11@gmail.com" class="email-link">excelmobiledetailing11@gmail.com</a>
-          <div class="email-caption">Typically responds within a few hours</div>
-        </div>
-      </div>
-      <div class="contact-phone-block">
-        <div class="email-icon">📞</div>
-        <div>
-          <a href="tel:+18476501734" class="email-link">(847) 650-1734</a>
-          <div class="email-caption">Call or text — we're mobile friendly</div>
-        </div>
-      </div>
-      <div class="service-area">📍 <span><strong>Mobile Service:</strong> We travel to you — message us to confirm your area</span></div>
-    </div>
-
-    <form class="contact-form fade-up" onsubmit="handleSubmit(event)">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">First Name</label>
-          <input type="text" class="form-input" placeholder="John" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Last Name</label>
-          <input type="text" class="form-input" placeholder="Doe" required />
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" placeholder="john@email.com" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Phone</label>
-          <input type="tel" class="form-input" placeholder="(555) 000-0000" />
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Vehicle Type</label>
-          <select class="form-select form-input">
-            <option value="">Select type</option>
-            <option>Coupe</option><option>Sedan</option>
-            <option>SUV</option><option>Truck</option><option>Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Service</label>
-          <select class="form-select form-input">
-            <option value="">Select service</option>
-            <option>Exterior Detail</option>
-            <option>Interior Detail</option>
-            <option>Full Detail</option>
-            <option>Add-On: Headlight Restoration</option>
-            <option>Not sure — need a quote</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Promo Code (optional)</label>
-        <input type="text" class="form-input" placeholder="e.g. EXCEL10" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Additional Notes</label>
-        <textarea class="form-textarea form-input" placeholder="Your address, vehicle condition, or anything else we should know..."></textarea>
-      </div>
-      <button type="submit" class="btn-submit">Send Message →</button>
-      <div id="form-success">✓ Message sent! We'll be in touch shortly.</div>
-    </form>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer>
@@ -1611,7 +1530,7 @@
         <li><a href="#how">How It Works</a></li>
         <li><a href="#testimonials">Reviews</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact">Book Now</a></li>
+        <li><a href="#" onclick="event.preventDefault(); openBooking('Book a Service')">Book Now</a></li>
         <li><a href="mailto:excelmobiledetailing11@gmail.com">Email Us</a></li>
       </ul>
     </div>
@@ -1709,7 +1628,7 @@ function toggleChat() {
 
 const botReplies = {
   'what services do you offer?': 'We offer 3 packages: <strong>Exterior</strong> (from $60), <strong>Interior</strong> (from $100), and <strong>Full Detail</strong> (from $140). We also do headlight restoration as an add-on. Check the pricing section for full details!',
-  'how do i book an appointment?': 'Easy! Fill out the contact form on this page, email us at <strong>excelmobiledetailing11@gmail.com</strong>, or give us a call. Let us know your vehicle type and service — we\'ll confirm quickly!',
+  'how do i book an appointment?': 'Easy! Click "Book This Service" on any pricing card, email us at <strong>excelmobiledetailing11@gmail.com</strong>, or give us a call. Let us know your vehicle type and service — we\'ll confirm quickly!',
   'do you come to my area?': 'We\'re fully mobile and come directly to you! Drop us a message with your location and we\'ll confirm availability.',
   'how long does it take?': 'Exterior: ~1–2 hrs. Interior: ~2–3 hrs. Full Detail: ~3–5 hrs. We\'ll give you an accurate estimate before we start!',
 };
