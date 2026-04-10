@@ -1148,6 +1148,63 @@
   <div class="stat-item fade-up"><div class="stat-num">5★</div><div class="stat-label">Customer Rated</div></div>
 </div>
 
+<!-- FOUNDERS / TEAM PHOTO -->
+<section id="team" style="background:var(--navy2); padding:5rem 5vw 4rem;">
+  <div style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;">
+    <div class="fade-up" style="position:relative;">
+      <div style="border-radius:4px; overflow:hidden; box-shadow:0 12px 60px rgba(0,0,0,0.6); border:1px solid rgba(184,194,204,0.1);">
+        <img src="./unnamed.jpg" alt="Josh and Aren — Excel Mobile Detailing"
+             style="width:100%; display:block; object-fit:cover; object-position:center 20%;">
+      </div>
+      <div style="position:absolute; bottom:-1px; left:0; right:0; height:80px;
+                  background:linear-gradient(transparent, var(--navy2));"></div>
+    </div>
+    <div class="fade-up">
+      <div style="font-family:'Barlow Condensed',sans-serif; font-size:.78rem; font-weight:700;
+                  letter-spacing:.22em; text-transform:uppercase; color:var(--red); margin-bottom:1rem;">
+        Who We Are
+      </div>
+      <h2 style="font-family:'Bebas Neue',sans-serif; font-size:clamp(2.2rem,4vw,3.2rem);
+                 letter-spacing:.06em; color:var(--white); line-height:1.05; margin-bottom:1.2rem;">
+        Real People.<br><span style="color:var(--red);">Real Results.</span>
+      </h2>
+      <p style="font-family:'Barlow',sans-serif; color:var(--silver); font-size:1.05rem;
+                line-height:1.75; margin-bottom:1rem;">
+        We're <strong style="color:var(--white);">Josh Ruderman & Aren Stolyarov</strong> — two students at Glenbrook North High School who built this business from the ground up because we genuinely love cars.
+      </p>
+      <p style="font-family:'Barlow',sans-serif; color:var(--silver); font-size:1.05rem; line-height:1.75; margin-bottom:1.8rem;">
+        Every car we touch gets treated like it's our own. No shortcuts, no half-measures — just real work and real results.
+      </p>
+      <div style="display:flex; gap:2rem; flex-wrap:wrap; margin-bottom:1.8rem;">
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:.08em; color:var(--white);">Josh Ruderman</div>
+          <div style="font-family:'Barlow Condensed',sans-serif; font-size:.7rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--gray);">Co-Founder</div>
+        </div>
+        <div style="width:1px; background:rgba(184,194,204,0.15);"></div>
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:.08em; color:var(--white);">Aren Stolyarov</div>
+          <div style="font-family:'Barlow Condensed',sans-serif; font-size:.7rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--gray);">Co-Founder</div>
+        </div>
+      </div>
+      <a href="./about.html" style="font-family:'Barlow Condensed',sans-serif; font-size:.85rem;
+         font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--silver-lt);
+         text-decoration:none; border-bottom:1px solid rgba(184,194,204,0.3); padding-bottom:2px;
+         transition:color .2s, border-color .2s;"
+         onmouseover="this.style.color='#fff';this.style.borderColor='var(--red)'"
+         onmouseout="this.style.color='var(--silver-lt)';this.style.borderColor='rgba(184,194,204,0.3)'">
+        Our full story →
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    #team > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+    #team > div > div:first-child { order: -1; }
+  }
+</style>
+
 <!-- HOW IT WORKS -->
 <section id="how">
   <div class="fade-up">
@@ -1629,17 +1686,77 @@ function toggleChat() {
   document.getElementById('chat-badge').style.display = chatOpen ? 'none' : 'flex';
 }
 
-const botReplies = {
-  'what services do you offer?': 'We offer 3 packages: <strong>Exterior</strong> (from $60), <strong>Interior</strong> (from $100), and <strong>Full Detail</strong> (from $140). We also do headlight restoration as an add-on. Check the pricing section for full details!',
-  'how do i book an appointment?': 'Easy! Click "Book This Service" on any pricing card, email us at <strong>excelmobiledetailing11@gmail.com</strong>, or give us a call. Let us know your vehicle type and service — we\'ll confirm quickly!',
-  'do you come to my area?': 'We\'re fully mobile and come directly to you! Drop us a message with your location and we\'ll confirm availability.',
-  'how long does it take?': 'Exterior: ~1–2 hrs. Interior: ~2–3 hrs. Full Detail: ~3–5 hrs. We\'ll give you an accurate estimate before we start!',
-};
+// ── Smart chat bot ──
+const botRules = [
+  // Greetings
+  { keys: ['hi','hello','hey','what\'s up','sup','yo','howdy','hiya'],
+    reply: 'Hey! Welcome to Excel Mobile Detailing. What can I help you with today? You can ask about pricing, booking, how long it takes, or our service area!' },
+
+  // Pricing / cost
+  { keys: ['price','pricing','cost','how much','rates','charge','fee','expensive','cheap','affordable','quote'],
+    reply: 'Here\'s a quick breakdown:<br><br><strong>Exterior Detail</strong> — from $60 (sedans) / $75 (SUVs & trucks)<br><strong>Interior Detail</strong> — from $100 (sedans) / $120 (SUVs & trucks)<br><strong>Full Detail</strong> — from $140 (sedans) / $160 (SUVs & trucks)<br><br>We also offer headlight restoration as an add-on. Text us for an exact quote!' },
+
+  // Services
+  { keys: ['service','offer','package','exterior','interior','full detail','what do you do','what can you'],
+    reply: 'We offer 3 packages:<br><br><strong>Exterior Detail</strong> — full hand wash, clay bar, tire shine, windows & more<br><strong>Interior Detail</strong> — vacuum, steam clean, leather condition, odor removal & more<br><strong>Full Detail</strong> — everything inside and out for a showroom finish<br><br>Plus headlight restoration as an add-on!' },
+
+  // Booking
+  { keys: ['book','schedule','appointment','reserve','slot','available','availability','when can'],
+    reply: 'Booking is easy! Just hit the <strong>Book Now</strong> button on any pricing card and pick a date and time right on our calendar. You\'ll get a confirmation and we\'ll reach out to confirm. You can also text us at (847) 650-1734!' },
+
+  // Location / area
+  { keys: ['area','location','where','travel','come to','northbrook','glenview','wilmette','chicago','suburb','near','drive to','far'],
+    reply: 'We\'re based in Northbrook, IL and travel to you — no drop-offs needed! We serve most of the North Shore suburbs. Text us your address at <strong>(847) 650-1734</strong> and we\'ll confirm if you\'re in range. Travel is always free!' },
+
+  // Time / duration
+  { keys: ['how long','time','duration','hours','quick','takes'],
+    reply: 'Here\'s a rough estimate:<br><br><strong>Exterior</strong> — about 1–2 hours<br><strong>Interior</strong> — about 2–3 hours<br><strong>Full Detail</strong> — about 3–5 hours<br><br>We\'ll give you an accurate time estimate before we start based on your vehicle\'s condition!' },
+
+  // Payment
+  { keys: ['pay','payment','cash','venmo','zelle','credit','card','apple pay','invoice'],
+    reply: 'We accept <strong>cash, Venmo, and Zelle</strong> — whatever is easiest for you! Payment is due after the job is done and you\'re happy with the results.' },
+
+  // Products / what do you use
+  { keys: ['product','use','soap','chemical','brand','safe','paint','scratch','damage'],
+    reply: 'We use <strong>professional-grade products only</strong> — the same brands used by high-end detail shops. Everything we use is safe for your paint, interior surfaces, and leather. We never cut corners on products!' },
+
+  // Weather / rain / cancel
+  { keys: ['rain','weather','cancel','reschedule','storm','snow','cold','wind'],
+    reply: 'We check the forecast before every appointment! If the weather looks bad, we\'ll reach out to reschedule at no charge. Our booking calendar even shows the weather forecast for each day so you can plan ahead.' },
+
+  // Promo / discount / new customer
+  { keys: ['promo','discount','coupon','deal','code','first time','new customer','excel10','off'],
+    reply: 'New customers get <strong>$10 off</strong> their first detail! Just mention code <strong>EXCEL10</strong> when booking. We also do referral discounts — if a friend books using your name, you both save!' },
+
+  // Headlights
+  { keys: ['headlight','light','foggy','yellow','restoration','oxidized'],
+    reply: 'Yes, we do headlight restoration! Over time headlights get foggy and yellowed — we can restore them to clear. It\'s available as an add-on to any service. Ask us when booking!' },
+
+  // Contact
+  { keys: ['contact','email','phone','text','call','reach','number','get in touch'],
+    reply: 'You can reach us anytime:<br><br>📞 <strong>(847) 650-1734</strong> — call or text<br>✉ <strong>excelmobiledetailing11@gmail.com</strong><br><br>We usually respond within a few hours!' },
+
+  // Who are you / about
+  { keys: ['who are you','about you','students','high school','glenbrook','young','teenager','how old'],
+    reply: 'We\'re <strong>Josh & Aren</strong>, two students at Glenbrook North High School in Northbrook, IL. We started Excel Mobile Detailing because we love cars and wanted to build something real. We treat every car like it\'s our own!' },
+
+  // Thank you
+  { keys: ['thank','thanks','appreciate','helpful','great','awesome','perfect','nice'],
+    reply: 'Thank you so much! We appreciate the kind words. Don\'t hesitate to reach out if you have any other questions — we\'re always happy to help!' },
+];
+
+function getBotReply(text) {
+  const lower = text.toLowerCase();
+  for (const rule of botRules) {
+    if (rule.keys.some(k => lower.includes(k))) return rule.reply;
+  }
+  return 'Great question! For the fastest answer, text us at <strong>(847) 650-1734</strong> or email <strong>excelmobiledetailing11@gmail.com</strong> — we respond quickly!';
+}
 
 function quickMsg(text) {
   addMessage(text, 'user');
   document.getElementById('chat-quick').style.display = 'none';
-  setTimeout(() => addMessage(botReplies[text.toLowerCase()] || 'Great question! Email us at <strong>excelmobiledetailing11@gmail.com</strong> or fill out the contact form — we respond fast!', 'bot'), 700);
+  setTimeout(() => addMessage(getBotReply(text), 'bot'), 700);
 }
 
 function sendChat() {
@@ -1649,7 +1766,7 @@ function sendChat() {
   addMessage(text, 'user');
   input.value = '';
   document.getElementById('chat-quick').style.display = 'none';
-  setTimeout(() => addMessage('Thanks for reaching out! For the fastest response, email us at <strong>excelmobiledetailing11@gmail.com</strong> or use the booking form. We\'ll get back to you ASAP!', 'bot'), 800);
+  setTimeout(() => addMessage(getBotReply(text), 'bot'), 800);
 }
 
 function addMessage(text, type) {
