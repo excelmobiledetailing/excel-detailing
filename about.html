@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — Excel Mobile Detailing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0b1e3d;
+      --navy2:      #0f2549;
+      --navy3:      #172f5c;
+      --red:        #c8202a;
+      --red-light:  #e03040;
+      --silver:     #b8c2cc;
+      --silver-lt:  #dde4ec;
+      --white:      #f0f3f7;
+      --gray:       #7a8a9a;
+      --dark:       #080f1c;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ══ NAV ══ */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 4vw; height: 70px;
+      background: rgba(8,15,28,0.97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(184,194,204,0.12);
+    }
+    .nav-logo img {
+      height: 56px; width: auto; object-fit: contain; display: block;
+      filter: drop-shadow(0 0 8px rgba(30,64,128,0.5)); transition: filter .2s;
+    }
+    .nav-logo:hover img { filter: drop-shadow(0 0 14px rgba(200,32,42,0.5)); }
+    .nav-logo-text {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem;
+      letter-spacing: .12em; color: var(--silver-lt);
+      text-decoration: none; display: flex; align-items: center; gap: .5rem;
+    }
+    .nav-logo-text span { color: var(--red); }
+    .nav-center { display: flex; gap: 2rem; list-style: none; }
+    .nav-center a {
+      font-size: .78rem; font-weight: 600; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--silver); text-decoration: none;
+      opacity: .75; transition: opacity .2s, color .2s;
+    }
+    .nav-center a:hover { opacity: 1; color: var(--silver-lt); }
+    .nav-center a.active { opacity: 1; color: var(--red); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-phone {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .9rem; font-weight: 700; letter-spacing: .08em;
+      color: var(--silver-lt); text-decoration: none; transition: color .2s;
+    }
+    .nav-phone:hover { color: var(--red); }
+    .nav-cta {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: #fff; text-decoration: none;
+      background: var(--red); padding: .55rem 1.2rem; transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--red-light); }
+
+    /* ══ PAGE HERO ══ */
+    .page-hero {
+      position: relative;
+      background: linear-gradient(160deg, var(--navy3) 0%, var(--dark) 65%);
+      padding: 5.5rem 5vw 4.5rem;
+      text-align: center; overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(184,194,204,0.03) 60px, rgba(184,194,204,0.03) 61px),
+        repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(184,194,204,0.03) 60px, rgba(184,194,204,0.03) 61px);
+    }
+    .eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .75rem; font-weight: 700; letter-spacing: .3em;
+      text-transform: uppercase; color: var(--red); margin-bottom: 1rem;
+      position: relative;
+    }
+    .page-hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      letter-spacing: .06em; line-height: 1; color: var(--white);
+      position: relative;
+    }
+    .page-hero h1 span { color: var(--red); }
+    .page-hero .sub {
+      max-width: 600px; margin: 1.2rem auto 0;
+      color: var(--silver); font-size: 1.05rem; line-height: 1.65;
+      position: relative;
+    }
+    .hero-line { display: block; width: 60px; height: 3px; background: var(--red); margin: 1.5rem auto 0; }
+
+    /* ══ STATS BAR ══ */
+    .stats-bar {
+      display: flex; align-items: stretch; justify-content: center;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(184,194,204,0.08);
+      border-bottom: 1px solid rgba(184,194,204,0.08);
+      background: var(--navy2);
+    }
+    .stat-item {
+      flex: 1; min-width: 150px;
+      padding: 2.2rem 1.5rem;
+      text-align: center;
+      border-right: 1px solid rgba(184,194,204,0.08);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem; letter-spacing: .04em;
+      color: var(--white); line-height: 1;
+    }
+    .stat-num span { color: var(--red); }
+    .stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .72rem; font-weight: 700; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--gray); margin-top: .4rem;
+    }
+
+    /* ══ SECTIONS ══ */
+    section { padding: 5rem 5vw; }
+    .inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .72rem; font-weight: 700; letter-spacing: .3em;
+      text-transform: uppercase; color: var(--red); margin-bottom: .8rem;
+    }
+    h2.section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: .05em; line-height: 1.05;
+      color: var(--white); margin-bottom: 1.4rem;
+    }
+    h2.section-title span { color: var(--red); }
+    p.body-text {
+      color: var(--silver); font-size: 1.05rem; line-height: 1.75;
+      margin-bottom: 1.2rem; max-width: 680px;
+    }
+
+    /* ══ OUR STORY ══ */
+    #story { background: var(--dark); }
+    .story-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .story-visual {
+      position: relative;
+    }
+    .story-img-wrap {
+      position: relative;
+      background: var(--navy2);
+      border: 1px solid rgba(184,194,204,0.1);
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+    .story-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      display: block;
+    }
+    .story-badge {
+      position: absolute; bottom: -1.2rem; right: -1.2rem;
+      background: var(--red); padding: 1.2rem 1.5rem;
+      text-align: center;
+    }
+    .story-badge strong {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem; letter-spacing: .04em;
+      color: #fff; display: block; line-height: 1;
+    }
+    .story-badge span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .65rem; font-weight: 700; letter-spacing: .2em;
+      text-transform: uppercase; color: rgba(255,255,255,0.8);
+    }
+
+    /* ══ HOW WE LEARNED ══ */
+    #learned { background: var(--navy2); }
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 2.8rem;
+    }
+    .step-card {
+      background: var(--navy3);
+      border: 1px solid rgba(184,194,204,0.08);
+      padding: 2rem 1.8rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .step-card:hover { border-color: rgba(200,32,42,0.35); transform: translateY(-3px); }
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem; letter-spacing: .04em;
+      color: rgba(200,32,42,0.25); line-height: 1;
+      margin-bottom: .6rem;
+    }
+    .step-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--silver-lt);
+      margin-bottom: .6rem;
+    }
+    .step-desc {
+      font-size: .92rem; color: var(--silver); line-height: 1.65;
+    }
+
+    /* ══ WHY US ══ */
+    #why { background: var(--dark); }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem; margin-top: 2.8rem;
+    }
+    .why-card {
+      background: var(--navy2);
+      border: 1px solid rgba(184,194,204,0.08);
+      border-left: 3px solid var(--red);
+      padding: 1.8rem 2rem;
+      display: flex; gap: 1.2rem; align-items: flex-start;
+    }
+    .why-icon {
+      font-size: 1.6rem; flex-shrink: 0; margin-top: .1rem;
+    }
+    .why-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--silver-lt); margin-bottom: .4rem;
+    }
+    .why-card p { font-size: .9rem; color: var(--silver); line-height: 1.6; }
+
+    /* ══ SCHOOL PRIDE ══ */
+    #school {
+      background: linear-gradient(135deg, var(--navy3) 0%, var(--navy) 100%);
+      border-top: 1px solid rgba(184,194,204,0.08);
+      border-bottom: 1px solid rgba(184,194,204,0.08);
+    }
+    .school-inner {
+      max-width: 900px; margin: 0 auto; text-align: center;
+    }
+    .gbn-badge {
+      display: inline-flex; align-items: center; gap: .8rem;
+      background: rgba(8,15,28,0.5);
+      border: 1px solid rgba(184,194,204,0.15);
+      padding: .6rem 1.4rem; margin-bottom: 2rem;
+    }
+    .gbn-badge span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .75rem; font-weight: 700; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--silver);
+    }
+    .gbn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+    .school-quote {
+      font-size: 1.25rem; font-style: italic; font-weight: 300;
+      color: var(--silver-lt); line-height: 1.7; max-width: 700px; margin: 0 auto 2rem;
+    }
+    .school-quote strong { color: var(--white); font-style: normal; font-weight: 600; }
+
+    /* ══ CTA ══ */
+    #cta-bottom {
+      background: var(--red);
+      padding: 4rem 5vw; text-align: center;
+    }
+    #cta-bottom h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: .06em; color: #fff; margin-bottom: .8rem;
+    }
+    #cta-bottom p {
+      color: rgba(255,255,255,0.85); font-size: 1rem; margin-bottom: 2rem;
+    }
+    .cta-btn-white {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700; letter-spacing: .15em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--red); background: #fff;
+      padding: .9rem 2.5rem;
+      transition: background .2s, color .2s;
+    }
+    .cta-btn-white:hover { background: var(--silver-lt); }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(184,194,204,0.08);
+      padding: 2.5rem 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: .1em; color: var(--silver); }
+    .footer-brand span { color: var(--red); }
+    footer p { font-size: .78rem; color: var(--gray); letter-spacing: .06em; }
+    .footer-back { font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--silver); text-decoration: none; transition: color .2s; }
+    .footer-back:hover { color: var(--red); }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 860px) {
+      .story-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .story-badge { right: 0; bottom: -.8rem; }
+      .steps { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav-center { display: none; }
+      .stats-bar { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid rgba(184,194,204,0.08); }
+      .stat-item:last-child { border-bottom: none; }
+    }
+
+    /* ── fade-up animations ── */
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-up.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="nav-logo">
+    <img src="./logo.png" alt="Excel Mobile Detailing"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <span class="nav-logo-text" style="display:none;"><span>E</span>XCEL DETAILING</span>
+  </a>
+  <ul class="nav-center">
+    <li><a href="./index.html#how">How It Works</a></li>
+    <li><a href="./index.html#services">Pricing</a></li>
+    <li><a href="./results.html">Results</a></li>
+    <li><a href="./about.html" class="active">About Us</a></li>
+    <li><a href="./index.html#faq">FAQ</a></li>
+    <li><a href="./index.html#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="tel:+18476501734" class="nav-phone">📞 (847) 650-1734</a>
+    <a href="./index.html#contact" class="nav-cta">Book Now</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <p class="eyebrow">Excel Mobile Detailing</p>
+  <h1>About <span>Us</span></h1>
+  <p class="sub">Two high school students with a passion for cars, a relentless work ethic, and a mission to bring professional-grade detailing straight to your driveway.</p>
+  <span class="hero-line"></span>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item fade-up">
+    <div class="stat-num">100<span>%</span></div>
+    <div class="stat-label">Mobile Service</div>
+  </div>
+  <div class="stat-item fade-up">
+    <div class="stat-num">5<span>★</span></div>
+    <div class="stat-label">Customer Satisfaction</div>
+  </div>
+  <div class="stat-item fade-up">
+    <div class="stat-num">0<span>$</span></div>
+    <div class="stat-label">Travel Fee — Ever</div>
+  </div>
+</div>
+
+<!-- OUR STORY -->
+<section id="story">
+  <div class="inner">
+    <div class="story-grid">
+      <div class="story-text fade-up">
+        <p class="section-label">Our Story</p>
+        <h2 class="section-title">Started From a <span>Driveway.</span></h2>
+        <p class="body-text">
+          Excel Mobile Detailing started the way most great things do — with a car that needed cleaning and a couple of guys who refused to do a half-hearted job. What began as detailing cars for family and friends quickly turned into something bigger when word spread about the quality of our work.
+        </p>
+        <p class="body-text">
+          We're students at Glenbrook North High School, and while other people our age are watching TV, we're out in driveways learning our craft, one car at a time. We take pride in treating every vehicle like it's our own — whether it's a daily driver or a Porsche Turbo S.
+        </p>
+        <p class="body-text">
+          We started this business because we love cars. Simple as that. And when you love what you do, it shows in the results.
+        </p>
+      </div>
+      <div class="story-visual fade-up">
+        <div class="story-img-wrap">
+          <img src="./IMG_1953.jpeg" alt="Porsche Cayenne after detailing"
+               onerror="this.style.display='none'; this.parentElement.style.background='var(--navy3)';">
+        </div>
+        <div class="story-badge">
+          <strong>GBN</strong>
+          <span>Glenbrook North</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE LEARNED -->
+<section id="learned">
+  <div class="inner">
+    <p class="section-label fade-up">The Process</p>
+    <h2 class="section-title fade-up">How We <span>Learned</span> Our Craft</h2>
+    <p class="body-text fade-up">We didn't just pick up a sponge and call it detailing. We studied the techniques, invested in the right products, and put in real hours to get it right.</p>
+    <div class="steps">
+      <div class="step-card fade-up">
+        <div class="step-num">01</div>
+        <div class="step-title">Countless Hours of Research</div>
+        <p class="step-desc">We spent months watching professional detailers, studying paint correction techniques, safe wash methods, and interior restoration — learning what actually works versus what just looks good on the surface.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">02</div>
+        <div class="step-title">Hands-On Practice</div>
+        <p class="step-desc">Theory only gets you so far. We detailed car after car — starting with our own vehicles and family members' cars — refining our technique with every job until the results spoke for themselves.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">03</div>
+        <div class="step-title">Professional Products Only</div>
+        <p class="step-desc">We use the same professional-grade soaps, microfiber towels, interior cleaners, and protectants used by high-end detail shops — because the products you use matter just as much as the technique.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SCHOOL PRIDE -->
+<section id="school">
+  <div class="school-inner">
+    <div class="gbn-badge fade-up">
+      <div class="gbn-dot"></div>
+      <span>Glenbrook North High School · Northbrook, IL</span>
+      <div class="gbn-dot"></div>
+    </div>
+    <h2 class="section-title fade-up" style="text-align:center; margin-bottom:1.5rem;">Proud <span>Spartans.</span><br>Even Prouder Entrepreneurs.</h2>
+    <p class="school-quote fade-up">
+      "We're not waiting until we graduate to start building something. <strong>We're doing it now</strong> — in between classes, on weekends, before school, after school. That drive is what you get when you book with us."
+    </p>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:.78rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--gray);" class="fade-up">— The Excel Mobile Detailing Team</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta-bottom">
+  <h2>Ready to See the Difference?</h2>
+  <p>Book your detail today — we'll come to you, we'll do it right, and you'll want to tell your neighbors.</p>
+  <a href="./index.html#contact" class="cta-btn-white">Book Your Detail</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand"><span>E</span>XCEL MOBILE DETAILING</div>
+  <p>© 2025 Excel Mobile Detailing. All rights reserved.</p>
+  <a href="./index.html" class="footer-back">← Back to Home</a>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

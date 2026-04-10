@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Excel Mobile Detailing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0b1e3d;
+      --navy2:      #0f2549;
+      --navy3:      #172f5c;
+      --blue:       #1e4080;
+      --blue-light: #2557a7;
+      --red:        #c8202a;
+      --red-light:  #e03040;
+      --silver:     #b8c2cc;
+      --silver-lt:  #dde4ec;
+      --white:      #f0f3f7;
+      --gray:       #7a8a9a;
+      --dark:       #080f1c;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ══ PROMO BANNER ══ */
+    .promo-banner {
+      background: var(--red);
+      padding: .65rem 4vw;
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem; flex-wrap: wrap;
+      position: relative; z-index: 201;
+    }
+    .promo-banner p {
+      font-size: .82rem; font-weight: 600; letter-spacing: .1em;
+      text-align: center; color: #fff;
+    }
+    .promo-banner strong { font-weight: 800; }
+    .promo-code {
+      background: rgba(255,255,255,0.2);
+      border: 1px dashed rgba(255,255,255,0.6);
+      padding: .15rem .6rem;
+      font-family: 'Barlow Condensed', monospace;
+      font-size: .9rem; letter-spacing: .12em; font-weight: 700;
+    }
+    .promo-dismiss {
+      position: absolute; right: 1.2rem;
+      background: none; border: none; color: rgba(255,255,255,0.7);
+      font-size: 1.1rem; cursor: pointer; padding: .2rem .4rem;
+      transition: color .2s;
+    }
+    .promo-dismiss:hover { color: #fff; }
+
+    /* ══ NAV ══ */
+    nav {
+      position: sticky; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 4vw; height: 70px;
+      background: rgba(8,15,28,0.97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(184,194,204,0.12);
+    }
+    .nav-logo img {
+      height: 56px; width: auto; object-fit: contain; display: block;
+      filter: drop-shadow(0 0 8px rgba(30,64,128,0.5));
+      transition: filter .2s;
+    }
+    .nav-logo:hover img { filter: drop-shadow(0 0 14px rgba(200,32,42,0.5)); }
+    .nav-logo-text {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem;
+      letter-spacing: .12em; color: var(--silver-lt);
+      text-decoration: none; display: flex; align-items: center; gap: .5rem;
+    }
+    .nav-logo-text span { color: var(--red); }
+    .nav-center { display: flex; gap: 2rem; list-style: none; }
+    .nav-center a {
+      font-size: .78rem; font-weight: 600; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--silver); text-decoration: none;
+      opacity: .75; transition: opacity .2s, color .2s;
+    }
+    .nav-center a:hover { opacity: 1; color: var(--silver-lt); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-phone {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .9rem; font-weight: 700; letter-spacing: .08em;
+      color: var(--silver-lt); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-phone:hover { color: var(--red); }
+    .nav-cta {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; padding: .55rem 1.5rem;
+      background: var(--red); color: #fff; border: none;
+      cursor: pointer; text-decoration: none; transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--red-light); }
+
+    /* ══ HERO ══ */
+    .hero {
+      min-height: 100vh; display: grid; place-items: center;
+      text-align: center; padding: 0 5vw; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 85%, rgba(30,64,128,0.25) 0%, transparent 70%),
+                  linear-gradient(180deg, var(--dark) 0%, var(--navy) 50%, var(--dark) 100%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(184,194,204,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,194,204,0.04) 1px, transparent 1px);
+      background-size: 55px 55px;
+      mask-image: radial-gradient(ellipse 100% 80% at 50% 60%, black 20%, transparent 75%);
+    }
+    .hero-stripe {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, transparent, var(--red) 30%, var(--blue-light) 70%, transparent);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 960px; }
+    .hero-logo {
+      width: min(420px, 78vw); margin: 0 auto 2rem;
+      filter: drop-shadow(0 0 40px rgba(30,64,128,0.5));
+    }
+    .hero-logo img { width: 100%; height: auto; display: block; }
+    .hero-logo-fallback {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      letter-spacing: .06em; line-height: 1; color: var(--silver-lt);
+    }
+    .hero-logo-fallback .ex { color: var(--red); }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-size: .7rem; font-weight: 700; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--silver);
+      border: 1px solid rgba(184,194,204,0.25);
+      padding: .4rem 1.2rem; margin-bottom: 1.6rem;
+    }
+    .hero-badge::before, .hero-badge::after {
+      content: ''; display: block; width: 18px; height: 1px; background: var(--red);
+    }
+    .hero-tagline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: .1em; color: var(--silver-lt); margin-bottom: 1rem;
+    }
+    .hero-sub {
+      font-size: clamp(.9rem, 1.8vw, 1.1rem); font-weight: 300;
+      color: rgba(240,243,247,0.5); max-width: 500px;
+      margin: 0 auto 2.5rem; line-height: 1.65;
+    }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1rem;
+      font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      padding: .9rem 2.2rem; background: var(--red); color: #fff;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .btn-primary:hover { background: var(--red-light); transform: translateY(-1px); }
+    .btn-outline {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1rem;
+      font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      padding: .9rem 2.2rem; background: transparent; color: var(--silver-lt);
+      border: 1px solid rgba(184,194,204,0.3); cursor: pointer;
+      text-decoration: none; transition: border-color .2s, color .2s, transform .15s;
+    }
+    .btn-outline:hover { border-color: var(--silver-lt); transform: translateY(-1px); }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .4rem; opacity: .35;
+    }
+    .hero-scroll span { font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; }
+    .scroll-line {
+      width: 1px; height: 38px;
+      background: linear-gradient(to bottom, var(--blue-light), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+    /* ══ TRUST BAR ══ */
+    .trust-bar {
+      background: var(--navy2);
+      border-top: 1px solid rgba(200,32,42,0.3);
+      border-bottom: 1px solid rgba(184,194,204,0.1);
+      padding: 1.4rem 5vw;
+      display: flex; align-items: center; justify-content: center;
+      gap: 2.5rem; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: .55rem;
+      font-size: .75rem; font-weight: 600; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--silver);
+    }
+    .trust-item .ti { font-size: 1.1rem; }
+    .trust-sep { width: 1px; height: 20px; background: rgba(184,194,204,0.15); }
+
+    /* ══ STATS ══ */
+    .stats-bar {
+      background: var(--navy); padding: 3rem 5vw;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem; text-align: center;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
+      letter-spacing: .06em; color: var(--red); line-height: 1;
+    }
+    .stat-label {
+      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gray); margin-top: .3rem;
+    }
+
+    /* ══ SECTION SHARED ══ */
+    section { padding: 7rem 5vw; }
+    .section-eyebrow {
+      font-size: .7rem; font-weight: 700; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--red); margin-bottom: .8rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      letter-spacing: .06em; line-height: 1; color: var(--silver-lt); margin-bottom: 1rem;
+    }
+    .section-divider {
+      width: 50px; height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--blue-light));
+      margin-bottom: 1.4rem;
+    }
+    .section-desc {
+      font-size: .95rem; font-weight: 300;
+      color: rgba(240,243,247,0.48); max-width: 500px; line-height: 1.7;
+    }
+
+    /* ══ HOW IT WORKS ══ */
+    #how { background: var(--navy); }
+    .steps-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0; max-width: 1000px; margin-top: 4rem;
+      position: relative;
+    }
+    .steps-row::before {
+      content: '';
+      position: absolute; top: 2.6rem; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200,32,42,0.4) 20%, rgba(37,87,167,0.4) 80%, transparent);
+    }
+    .step {
+      text-align: center; padding: 0 1.5rem 2rem;
+      position: relative;
+    }
+    .step-num {
+      width: 52px; height: 52px; margin: 0 auto 1.4rem;
+      background: var(--navy2);
+      border: 2px solid var(--red);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem;
+      color: var(--red); letter-spacing: .06em;
+      position: relative; z-index: 1;
+    }
+    .step-icon { font-size: 1.5rem; margin-bottom: .8rem; }
+    .step-title {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem;
+      font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--silver-lt); margin-bottom: .5rem;
+    }
+    .step-desc { font-size: .83rem; color: var(--gray); line-height: 1.6; }
+
+    /* ══ SERVICES ══ */
+    #services { background: var(--navy2); }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.5px; max-width: 1150px; margin: 4rem auto 0;
+      background: rgba(184,194,204,0.08);
+      border: 1px solid rgba(184,194,204,0.08);
+    }
+    .pricing-card {
+      background: var(--navy2); padding: 2.4rem;
+      position: relative; overflow: hidden; transition: background .2s;
+    }
+    .pricing-card:hover { background: var(--navy3); }
+    .pricing-card.featured {
+      background: var(--navy3);
+      border: 1px solid rgba(200,32,42,0.4); margin: -1px;
+    }
+    .pricing-card.featured::before {
+      content: 'BEST VALUE';
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: .58rem; font-weight: 700; letter-spacing: .2em;
+      color: #fff; background: var(--red); padding: .25rem .6rem;
+    }
+    .card-icon { font-size: 1.6rem; margin-bottom: 1rem; }
+    .card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.35rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: .4rem; color: var(--silver-lt);
+    }
+    .card-desc { font-size: .83rem; color: var(--gray); margin-bottom: 1.6rem; line-height: 1.5; }
+    .price-row { display: flex; gap: 1.5rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
+    .price-item { display: flex; flex-direction: column; }
+    .price-vehicle {
+      font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gray); margin-bottom: .15rem;
+    }
+    .price-amount {
+      font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem;
+      letter-spacing: .04em; color: var(--silver-lt); line-height: 1;
+    }
+    .price-amount sup { font-size: 1rem; vertical-align: top; margin-top: .3rem; color: var(--red); }
+    .features-list { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+    .features-list li {
+      font-size: .83rem; color: rgba(240,243,247,0.6);
+      display: flex; align-items: flex-start; gap: .6rem; line-height: 1.4;
+    }
+    .features-list li::before {
+      content: ''; width: 6px; height: 6px; min-width: 6px;
+      background: var(--red); border-radius: 50%; margin-top: .4rem;
+    }
+
+    /* ══ CARD BOOK BUTTON ══ */
+    .card-book-btn {
+      display: block; width: 100%; margin-top: 1.4rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .9rem; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: #fff;
+      background: var(--red); border: none; cursor: pointer;
+      padding: .75rem 1rem; transition: background .2s;
+    }
+    .card-book-btn:hover { background: var(--red-light); }
+
+    /* ══ BOOKING MODAL ══ */
+    .bk-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(4,8,16,0.92); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .bk-overlay.open { opacity: 1; pointer-events: all; }
+    .bk-modal {
+      background: var(--navy2);
+      border: 1px solid rgba(184,194,204,0.12);
+      width: 100%; max-width: 640px;
+      max-height: 92vh; overflow-y: auto;
+      padding: 2rem 1.8rem;
+      position: relative;
+      transform: translateY(20px); transition: transform .3s;
+    }
+    .bk-overlay.open .bk-modal { transform: translateY(0); }
+    .bk-modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: none; color: var(--silver);
+      font-size: 1.3rem; cursor: pointer; line-height: 1;
+      transition: color .2s; z-index: 2;
+    }
+    .bk-modal-close:hover { color: var(--red); }
+    .bk-modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem; letter-spacing: .06em; color: var(--white);
+      margin-bottom: .3rem;
+    }
+    .bk-service-tag {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--red);
+      background: rgba(200,32,42,0.12);
+      border: 1px solid rgba(200,32,42,0.3);
+      padding: .2rem .7rem; margin-bottom: 1.4rem;
+    }
+
+    /* ── Steps ── */
+    .bk-step { display: none; }
+    .bk-step.active { display: block; }
+
+    /* ── Back button ── */
+    .bk-back {
+      background: none; border: 1px solid rgba(184,194,204,0.18);
+      color: var(--silver); font-family: 'Barlow Condensed', sans-serif;
+      font-size: .75rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; cursor: pointer; padding: .4rem .9rem;
+      margin-bottom: 1.2rem; transition: all .2s; display: inline-flex;
+      align-items: center; gap: .35rem;
+    }
+    .bk-back:hover { border-color: var(--silver-lt); color: var(--silver-lt); }
+
+    /* ── Calendar ── */
+    .bk-cal-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .bk-cal-arrow {
+      background: none; border: 1px solid rgba(184,194,204,0.15);
+      color: var(--silver); width: 32px; height: 32px; font-size: 1rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .bk-cal-arrow:hover { background: var(--navy3); color: var(--white); }
+    .bk-cal-month-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; letter-spacing: .08em; color: var(--white);
+    }
+    .bk-cal-dow {
+      display: grid; grid-template-columns: repeat(7,1fr);
+      gap: 2px; margin-bottom: 2px;
+    }
+    .bk-cal-dow span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .62rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--gray);
+      text-align: center; padding: .3rem 0;
+    }
+    .bk-cal-grid {
+      display: grid; grid-template-columns: repeat(7,1fr); gap: 2px;
+    }
+    .bk-day {
+      min-height: 64px; background: var(--navy3);
+      border: 1px solid rgba(184,194,204,0.05);
+      cursor: pointer; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1px;
+      transition: background .15s, border-color .15s; padding: 4px 2px;
+    }
+    .bk-day:hover:not(.bk-past):not(.bk-full) {
+      background: rgba(200,32,42,0.15); border-color: rgba(200,32,42,0.4);
+    }
+    .bk-day.bk-empty { background: transparent; border-color: transparent; cursor: default; }
+    .bk-day.bk-past  { opacity: .28; cursor: not-allowed; }
+    .bk-day.bk-full  { opacity: .42; cursor: not-allowed; }
+    .bk-day.bk-today { border-color: rgba(200,32,42,0.45); }
+    .bk-day.bk-sel   { background: var(--red) !important; border-color: var(--red) !important; }
+    .bk-day-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .82rem; font-weight: 700; color: var(--silver-lt); line-height: 1;
+    }
+    .bk-day.bk-past .bk-day-num  { color: var(--gray); }
+    .bk-day.bk-sel  .bk-day-num  { color: #fff; }
+    .bk-day-wx   { font-size: .85rem; line-height: 1; }
+    .bk-day-temp {
+      font-size: .58rem; color: var(--gray);
+      font-family: 'Barlow Condensed', sans-serif; letter-spacing: .04em;
+    }
+    .bk-day.bk-sel .bk-day-temp { color: rgba(255,255,255,.7); }
+    .bk-wx-loading {
+      text-align: center; padding: .5rem;
+      font-size: .75rem; color: var(--gray); letter-spacing: .1em;
+    }
+
+    /* ── Time slots ── */
+    .bk-wx-banner {
+      background: var(--navy3); border: 1px solid rgba(184,194,204,0.08);
+      padding: .75rem 1rem; display: flex; align-items: center;
+      gap: .9rem; margin-bottom: 1.2rem;
+    }
+    .bk-wx-icon { font-size: 1.7rem; }
+    .bk-wx-info {}
+    .bk-wx-desc {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .88rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--silver-lt);
+    }
+    .bk-wx-detail { font-size: .72rem; color: var(--gray); margin-top: .1rem; }
+    .bk-slots-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .65rem;
+    }
+    .bk-slot {
+      background: var(--navy3); border: 1px solid rgba(184,194,204,0.1);
+      padding: .9rem 1rem; cursor: pointer; text-align: center;
+      transition: all .15s;
+    }
+    .bk-slot:hover:not(.bk-taken) {
+      border-color: rgba(200,32,42,0.5); background: rgba(200,32,42,0.08);
+    }
+    .bk-slot.bk-sel-slot { background: var(--red); border-color: var(--red); }
+    .bk-slot.bk-taken { opacity: .42; cursor: not-allowed; }
+    .bk-slot-time {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; letter-spacing: .06em; color: var(--white);
+    }
+    .bk-slot-avail {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .65rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; margin-top: .2rem;
+    }
+    .bk-slot:not(.bk-taken) .bk-slot-avail        { color: #5ec47a; }
+    .bk-slot.bk-taken .bk-slot-avail              { color: var(--red); }
+    .bk-slot.bk-sel-slot .bk-slot-avail           { color: rgba(255,255,255,.8); }
+    .bk-slot.bk-sel-slot .bk-slot-time            { color: #fff; }
+    .bk-sel-time-btn {
+      width: 100%; margin-top: 1rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .95rem; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: #fff;
+      background: var(--red); border: none; cursor: pointer;
+      padding: .85rem; transition: background .2s; opacity: .4;
+      pointer-events: none;
+    }
+    .bk-sel-time-btn.ready { opacity: 1; pointer-events: all; }
+    .bk-sel-time-btn.ready:hover { background: var(--red-light); }
+
+    /* ── Form (step 3) ── */
+    .bk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .bk-field { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
+    .bk-field label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--silver);
+    }
+    .bk-field input, .bk-field select, .bk-field textarea {
+      background: var(--navy3); border: 1px solid rgba(184,194,204,0.12);
+      color: var(--white); font-family: 'Barlow', sans-serif;
+      font-size: .9rem; padding: .65rem .9rem;
+      outline: none; transition: border-color .2s; width: 100%;
+    }
+    .bk-field input:focus, .bk-field select:focus, .bk-field textarea:focus {
+      border-color: rgba(200,32,42,0.5);
+    }
+    .bk-field select option { background: var(--navy); }
+    .bk-field textarea { resize: vertical; min-height: 70px; }
+    .bk-appt-summary {
+      background: var(--navy3); border-left: 3px solid var(--red);
+      padding: .75rem 1rem; margin-bottom: 1.2rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem; letter-spacing: .06em;
+      color: var(--silver-lt);
+    }
+    .bk-submit {
+      width: 100%; margin-top: .5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: #fff;
+      background: var(--red); border: none; cursor: pointer;
+      padding: .9rem; transition: background .2s;
+    }
+    .bk-submit:hover { background: var(--red-light); }
+
+    /* ── Success ── */
+    .bk-success {
+      text-align: center; padding: 2.5rem 1rem; display: none;
+    }
+    .bk-success .bk-check { font-size: 2.8rem; margin-bottom: 1rem; }
+    .bk-success h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem; letter-spacing: .06em; color: var(--white);
+      margin-bottom: .6rem;
+    }
+    .bk-success p { color: var(--silver); font-size: .95rem; line-height: 1.65; }
+    .bk-success .bk-conf {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .8rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--red); margin-top: 1rem;
+    }
+
+    /* ══ COMPARE TABLE ══ */
+    .compare-wrap { max-width: 1150px; margin: 3rem auto 0; overflow-x: auto; }
+    .compare-table { width: 100%; border-collapse: collapse; }
+    .compare-table th {
+      font-family: 'Barlow Condensed', sans-serif; font-size: .85rem;
+      font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      padding: .9rem 1.2rem; text-align: center; color: var(--silver-lt);
+      background: var(--navy3); border: 1px solid rgba(184,194,204,0.08);
+    }
+    .compare-table th:first-child { text-align: left; }
+    .compare-table td {
+      font-size: .83rem; color: rgba(240,243,247,0.6);
+      padding: .8rem 1.2rem; border: 1px solid rgba(184,194,204,0.07);
+      text-align: center; background: var(--navy2);
+    }
+    .compare-table td:first-child { text-align: left; color: var(--silver); }
+    .compare-table tr:hover td { background: var(--navy3); }
+    .check { color: #5ec47a; font-size: 1rem; }
+    .cross { color: rgba(184,194,204,0.2); font-size: 1rem; }
+    .compare-table .col-full td { background: var(--navy3); }
+    .compare-price {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem;
+      letter-spacing: .06em; color: var(--silver-lt);
+    }
+
+    /* ══ BEFORE / AFTER ══ */
+    #before-after { background: var(--dark); }
+    .ba-container {
+      max-width: 900px; margin: 4rem auto 0;
+      position: relative; overflow: hidden;
+      cursor: col-resize; user-select: none;
+      border: 1px solid rgba(184,194,204,0.1);
+      aspect-ratio: 4/3;
+      background: #000;
+    }
+    .ba-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block; pointer-events: none;
+    }
+    .ba-after-clip {
+      position: absolute; inset: 0;
+      clip-path: inset(0 50% 0 0);
+    }
+    .ba-after-clip img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+    }
+    .ba-label {
+      position: absolute; bottom: 1.4rem;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem;
+      letter-spacing: .2em; padding: .35rem 1rem;
+      backdrop-filter: blur(6px);
+    }
+    .ba-label-before {
+      left: 1.4rem;
+      background: rgba(0,0,0,0.55); color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .ba-label-after {
+      right: 1.4rem;
+      background: rgba(200,32,42,0.75); color: #fff;
+      border: 1px solid rgba(200,32,42,0.5);
+    }
+    .ba-divider {
+      position: absolute; top: 0; bottom: 0; left: 50%;
+      width: 3px; background: #fff;
+      transform: translateX(-50%);
+      pointer-events: none;
+      box-shadow: 0 0 12px rgba(255,255,255,0.4);
+    }
+    .ba-handle {
+      position: absolute; top: 50%; left: 50%;
+      width: 44px; height: 44px;
+      background: #fff; border-radius: 50%;
+      transform: translate(-50%, -50%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+      font-size: 1rem; color: var(--navy);
+      pointer-events: none;
+    }
+    .ba-input {
+      position: absolute; inset: 0; width: 100%; opacity: 0; cursor: col-resize;
+      z-index: 10; margin: 0;
+      -webkit-appearance: none; appearance: none;
+    }
+    .ba-photo-note {
+      text-align: center; margin-top: 1.2rem;
+      font-size: .75rem; color: var(--gray);
+      border: 1px dashed rgba(184,194,204,0.15);
+      padding: .6rem 1rem; max-width: 500px; margin-left: auto; margin-right: auto;
+    }
+    .ba-photo-note strong { color: var(--silver); }
+
+    /* ══ ADD-ONS ══ */
+    #addons { background: var(--navy2); }
+    .addons-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5px; max-width: 680px; margin-top: 3rem;
+      background: rgba(184,194,204,0.08);
+      border: 1px solid rgba(184,194,204,0.08);
+    }
+    .addon-card { background: var(--navy); padding: 2rem 2.2rem; transition: background .2s; }
+    .addon-card:hover { background: var(--navy2); }
+    .addon-label { font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--red); margin-bottom: .35rem; }
+    .addon-name {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem;
+      font-weight: 700; letter-spacing: .06em; color: var(--silver-lt); margin-bottom: 1rem;
+    }
+    .addon-price-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .85rem; padding: .3rem 0;
+      border-bottom: 1px solid rgba(184,194,204,0.07);
+    }
+    .addon-price-row:last-child { border-bottom: none; }
+    .addon-price-row span { color: var(--gray); }
+    .addon-price-row strong {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem;
+      font-weight: 700; color: var(--silver-lt); letter-spacing: .04em;
+    }
+    .notice-bar {
+      background: var(--navy); border-left: 3px solid var(--red);
+      padding: 1.2rem 1.8rem; margin-top: 3.5rem; max-width: 680px;
+    }
+    .notice-bar p { font-size: .83rem; color: rgba(240,243,247,0.5); line-height: 1.65; }
+    .notice-bar strong { color: var(--silver-lt); font-weight: 600; }
+
+    /* ══ TESTIMONIALS ══ */
+    #testimonials { background: var(--dark); }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5px; max-width: 1100px; margin-top: 4rem;
+      background: rgba(184,194,204,0.07);
+      border: 1px solid rgba(184,194,204,0.07);
+    }
+    .review-card { background: var(--navy2); padding: 2.2rem; transition: background .2s; }
+    .review-card:hover { background: var(--navy3); }
+    .stars { color: #f5b800; font-size: 1rem; letter-spacing: .1em; margin-bottom: 1rem; }
+    .review-text {
+      font-size: .9rem; color: rgba(240,243,247,0.65);
+      line-height: 1.7; font-style: italic; margin-bottom: 1.2rem;
+    }
+    .review-author {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+      font-size: .9rem; letter-spacing: .1em; text-transform: uppercase; color: var(--silver);
+    }
+    .review-vehicle { font-size: .75rem; color: var(--gray); margin-top: .15rem; }
+
+    /* ══ WHY US ══ */
+    #why { background: var(--navy); }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 2rem; margin-top: 4rem; max-width: 1100px;
+    }
+    .why-card { padding: 1.8rem 0; border-top: 2px solid rgba(184,194,204,0.15); transition: border-color .2s; }
+    .why-card:hover { border-top-color: var(--red); }
+    .why-icon { font-size: 1.8rem; margin-bottom: .9rem; }
+    .why-title {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem;
+      font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: .5rem; color: var(--silver-lt);
+    }
+    .why-text { font-size: .83rem; color: var(--gray); line-height: 1.65; }
+
+    /* ══ REFERRAL BANNER ══ */
+    .referral-banner {
+      background: linear-gradient(135deg, var(--navy3) 0%, var(--navy) 100%);
+      border-top: 2px solid var(--red); border-bottom: 2px solid rgba(184,194,204,0.1);
+      padding: 4rem 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 2rem;
+    }
+    .referral-left {}
+    .referral-eyebrow {
+      font-size: .7rem; font-weight: 700; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--red); margin-bottom: .6rem;
+    }
+    .referral-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      letter-spacing: .06em; color: var(--silver-lt); line-height: 1.1;
+    }
+    .referral-title span { color: var(--red); }
+    .referral-desc {
+      font-size: .88rem; color: var(--gray); margin-top: .7rem; max-width: 420px; line-height: 1.6;
+    }
+    .referral-right { display: flex; flex-direction: column; align-items: center; gap: .6rem; text-align: center; }
+    .referral-amount {
+      font-family: 'Bebas Neue', sans-serif; font-size: 5rem;
+      letter-spacing: .04em; color: var(--red); line-height: 1;
+    }
+    .referral-amount span { font-size: 2rem; vertical-align: top; margin-top: .6rem; display: inline-block; }
+    .referral-amount-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gray); }
+
+    /* ══ GIFT CALLOUT ══ */
+    .gift-callout {
+      background: var(--navy2);
+      border: 1px solid rgba(184,194,204,0.1);
+      padding: 2.5rem 2.5rem;
+      max-width: 700px; margin: 4rem auto 0;
+      display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
+    }
+    .gift-icon { font-size: 3rem; flex-shrink: 0; }
+    .gift-title {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem;
+      font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--silver-lt); margin-bottom: .4rem;
+    }
+    .gift-desc { font-size: .85rem; color: var(--gray); line-height: 1.6; }
+
+    /* ══ SOCIAL ══ */
+    .social-strip {
+      background: var(--navy);
+      border-top: 1px solid rgba(184,194,204,0.08);
+      padding: 3rem 5vw;
+      text-align: center;
+    }
+    .social-strip p {
+      font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 1.2rem;
+    }
+    .social-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .social-link {
+      display: flex; align-items: center; gap: .6rem;
+      font-family: 'Barlow Condensed', sans-serif; font-size: .9rem;
+      font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: .65rem 1.4rem;
+      border: 1px solid rgba(184,194,204,0.15);
+      color: var(--silver); text-decoration: none;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .social-link:hover { border-color: var(--red); color: var(--silver-lt); background: rgba(200,32,42,0.08); }
+    .social-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* ══ FAQ ══ */
+    #faq { background: var(--dark); }
+    .faq-list { max-width: 780px; margin-top: 4rem; }
+    .faq-item { border-bottom: 1px solid rgba(184,194,204,0.1); overflow: hidden; }
+    .faq-question {
+      width: 100%; background: none; border: none; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 0; gap: 1rem; text-align: left;
+    }
+    .faq-question-text {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem;
+      font-weight: 700; letter-spacing: .06em; color: var(--silver-lt);
+      text-transform: uppercase;
+    }
+    .faq-icon { font-size: 1.2rem; color: var(--red); flex-shrink: 0; transition: transform .3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s ease, padding .35s ease;
+      font-size: .88rem; color: rgba(240,243,247,0.55); line-height: 1.75;
+    }
+    .faq-item.open .faq-answer { max-height: 400px; padding-bottom: 1.4rem; }
+
+    /* ══ CONTACT ══ */
+    #contact { background: var(--navy2); }
+    .contact-inner {
+      max-width: 1100px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem; align-items: start;
+    }
+    .contact-email-block {
+      margin-top: 2rem; padding: 1.4rem 1.8rem;
+      background: var(--navy3); border: 1px solid rgba(200,32,42,0.25);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .contact-phone-block {
+      margin-top: 1rem; padding: 1.4rem 1.8rem;
+      background: var(--navy3); border: 1px solid rgba(184,194,204,0.15);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .email-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .email-link {
+      font-family: 'Barlow Condensed', sans-serif; font-size: .95rem;
+      font-weight: 600; letter-spacing: .06em; color: var(--silver-lt);
+      text-decoration: none; word-break: break-all;
+    }
+    .email-link:hover { color: #fff; text-decoration: underline; }
+    .email-caption { font-size: .72rem; color: var(--gray); margin-top: .2rem; }
+    .service-area { display: flex; align-items: center; gap: .6rem; margin-top: 1.4rem; font-size: .83rem; color: var(--gray); }
+    .service-area strong { color: var(--silver); }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: .35rem; }
+    .form-label { font-size: .67rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gray); }
+    .form-input, .form-select, .form-textarea {
+      background: var(--navy3); border: 1px solid rgba(184,194,204,0.12);
+      color: var(--white); font-family: 'Barlow', sans-serif; font-size: .88rem;
+      padding: .75rem 1rem; outline: none; transition: border-color .2s; width: 100%;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--red); }
+    .form-select option { background: var(--navy); }
+    .form-textarea { resize: vertical; min-height: 95px; }
+    .btn-submit {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1rem;
+      font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      padding: .9rem 2.4rem; background: var(--red); color: #fff;
+      border: none; cursor: pointer; align-self: flex-start; transition: background .2s;
+    }
+    .btn-submit:hover { background: var(--red-light); }
+    #form-success { display:none; color: #5ec47a; font-size: .83rem; letter-spacing: .06em; }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: var(--navy3);
+      border-top: 1px solid rgba(184,194,204,0.1);
+    }
+    .footer-main {
+      padding: 3rem 5vw;
+      display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem; max-width: 1200px; margin: 0 auto;
+    }
+    .footer-brand {}
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem;
+      letter-spacing: .12em; color: var(--silver-lt); margin-bottom: .8rem;
+    }
+    .footer-logo span { color: var(--red); }
+    .footer-tagline { font-size: .82rem; color: var(--gray); line-height: 1.6; max-width: 260px; }
+    .footer-social-icons { display: flex; gap: .7rem; margin-top: 1.2rem; }
+    .footer-social-icons a {
+      width: 34px; height: 34px; background: rgba(184,194,204,0.08);
+      border: 1px solid rgba(184,194,204,0.12);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray); text-decoration: none; font-size: .9rem;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .footer-social-icons a:hover { background: var(--red); color: #fff; border-color: var(--red); }
+    .footer-col-title {
+      font-family: 'Barlow Condensed', sans-serif; font-size: .85rem;
+      font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--silver-lt); margin-bottom: 1rem;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .footer-links a { font-size: .82rem; color: var(--gray); text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--silver-lt); }
+    .footer-bottom {
+      border-top: 1px solid rgba(184,194,204,0.08);
+      padding: 1.2rem 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: .8rem;
+    }
+    .footer-copy { font-size: .72rem; color: var(--gray); letter-spacing: .08em; }
+
+    /* ══ FLOATING CHAT ══ */
+    .chat-fab {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 300;
+      width: 58px; height: 58px;
+      background: var(--red); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 24px rgba(200,32,42,0.45);
+      transition: background .2s, transform .2s;
+    }
+    .chat-fab:hover { background: var(--red-light); transform: scale(1.06); }
+    .chat-fab svg { width: 26px; height: 26px; fill: #fff; }
+    .chat-badge {
+      position: absolute; top: -4px; right: -4px;
+      width: 18px; height: 18px; background: #fff; border-radius: 50%;
+      font-size: .65rem; font-weight: 700; color: var(--red);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .chat-panel {
+      position: fixed; bottom: 6.5rem; right: 2rem; z-index: 300;
+      width: min(360px, calc(100vw - 2rem));
+      background: var(--navy2); border: 1px solid rgba(184,194,204,0.14);
+      box-shadow: 0 12px 50px rgba(0,0,0,0.55);
+      display: flex; flex-direction: column;
+      transform: scale(.92) translateY(16px); transform-origin: bottom right;
+      opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s;
+    }
+    .chat-panel.open { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
+    .chat-header {
+      background: var(--navy3); padding: 1rem 1.2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(184,194,204,0.1);
+    }
+    .chat-header-info { display: flex; align-items: center; gap: .7rem; }
+    .chat-avatar {
+      width: 36px; height: 36px; background: var(--red); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    }
+    .chat-name {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1rem;
+      font-weight: 700; letter-spacing: .08em; color: var(--silver-lt);
+    }
+    .chat-status { font-size: .7rem; color: #5ec47a; display: flex; align-items: center; gap: .3rem; }
+    .chat-status::before { content: ''; width: 6px; height: 6px; background: #5ec47a; border-radius: 50%; display: block; }
+    .chat-close { background: none; border: none; color: var(--gray); font-size: 1.2rem; cursor: pointer; padding: .2rem; }
+    .chat-close:hover { color: var(--silver-lt); }
+    .chat-messages { padding: 1.2rem; height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: .9rem; }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(184,194,204,0.2); }
+    .msg { max-width: 85%; }
+    .msg.bot { align-self: flex-start; }
+    .msg.user { align-self: flex-end; }
+    .msg-bubble { padding: .65rem .9rem; font-size: .83rem; line-height: 1.5; }
+    .msg.bot .msg-bubble { background: var(--navy3); color: rgba(240,243,247,0.75); }
+    .msg.user .msg-bubble { background: var(--red); color: #fff; }
+    .msg-time { font-size: .62rem; color: var(--gray); margin-top: .2rem; }
+    .msg.user .msg-time { text-align: right; }
+    .chat-quick { padding: 0 1.2rem .8rem; display: flex; flex-wrap: wrap; gap: .5rem; }
+    .chat-quick-btn {
+      font-size: .72rem; padding: .3rem .75rem; background: var(--navy3);
+      border: 1px solid rgba(184,194,204,0.18); color: var(--silver); cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .chat-quick-btn:hover { border-color: var(--red); color: var(--silver-lt); }
+    .chat-input-row { border-top: 1px solid rgba(184,194,204,0.1); padding: .8rem 1rem; display: flex; gap: .6rem; }
+    .chat-input {
+      flex: 1; background: var(--navy3); border: 1px solid rgba(184,194,204,0.12);
+      color: var(--white); font-family: 'Barlow', sans-serif; font-size: .85rem;
+      padding: .55rem .8rem; outline: none; transition: border-color .2s;
+    }
+    .chat-input:focus { border-color: var(--red); }
+    .chat-send { background: var(--red); border: none; cursor: pointer; padding: .55rem .9rem; color: #fff; font-size: 1rem; transition: background .2s; }
+    .chat-send:hover { background: var(--red-light); }
+
+    /* ══ ANIMATIONS ══ */
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 900px) {
+      .footer-main { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-center { display: none; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .addons-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .trust-sep { display: none; }
+      .steps-row::before { display: none; }
+      .footer-main { grid-template-columns: 1fr; gap: 2rem; }
+      .referral-banner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PROMO BANNER -->
+<div class="promo-banner" id="promo">
+  <p>🎉 <strong>NEW CUSTOMER SPECIAL</strong> — Get <strong>$10 OFF</strong> your first detail &nbsp;·&nbsp; Mention code <span class="promo-code">EXCEL10</span> when booking</p>
+  <button class="promo-dismiss" onclick="document.getElementById('promo').style.display='none'" aria-label="Dismiss">✕</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="./logo.png" alt="Excel Mobile Detailing"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <span class="nav-logo-text" style="display:none;"><span>E</span>XCEL DETAILING</span>
+  </a>
+  <ul class="nav-center">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#services">Pricing</a></li>
+    <li><a href="./results.html">Results</a></li>
+    <li><a href="./about.html">About Us</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="tel:+18476501734" class="nav-phone">📞 (847) 650-1734</a>
+    <a href="#contact" class="nav-cta">Book Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-stripe"></div>
+  <div class="hero-content">
+    <div class="hero-logo">
+      <img src="./logo.png" alt="Excel Mobile Detailing"
+           onerror="this.parentElement.innerHTML='<div class=\'hero-logo-fallback\'><span class=\'ex\'>EX</span>CEL<br><span style=\'font-size:.45em;color:var(--silver);letter-spacing:.18em\'>MOBILE DETAILING</span></div>';">
+    </div>
+    <div class="hero-badge">Professional · Mobile · We Come to You</div>
+    <div class="hero-tagline">Showroom Clean. Your Driveway.</div>
+    <p class="hero-sub">Expert mobile detailing brought directly to you. No drop-offs, no waiting — just a spotless vehicle wherever you are.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary">See Pricing</a>
+      <a href="#contact" class="btn-outline">Book a Detail</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="ti">🛡️</span> Satisfaction Guaranteed</div>
+  <div class="trust-sep"></div>
+  <div class="trust-item"><span class="ti">🚗</span> We Come to You</div>
+  <div class="trust-sep"></div>
+  <div class="trust-item"><span class="ti">💧</span> Eco-Friendly Products</div>
+  <div class="trust-sep"></div>
+  <div class="trust-item"><span class="ti">✅</span> No Surprise Fees</div>
+  <div class="trust-sep"></div>
+  <div class="trust-item"><span class="ti">⚡</span> Fast Turnaround</div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item fade-up"><div class="stat-num">100%</div><div class="stat-label">Mobile Service</div></div>
+  <div class="stat-item fade-up"><div class="stat-num">3</div><div class="stat-label">Packages Available</div></div>
+  <div class="stat-item fade-up"><div class="stat-num">$60</div><div class="stat-label">Starting Price</div></div>
+  <div class="stat-item fade-up"><div class="stat-num">5★</div><div class="stat-label">Customer Rated</div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="fade-up">
+    <div class="section-eyebrow">Simple Process</div>
+    <h2 class="section-title">How It Works</h2>
+    <div class="section-divider"></div>
+    <p class="section-desc">Getting a professional detail has never been easier. Three steps and you're done.</p>
+  </div>
+  <div class="steps-row">
+    <div class="step fade-up">
+      <div class="step-num">1</div>
+      <div class="step-icon">📱</div>
+      <div class="step-title">Book in Minutes</div>
+      <div class="step-desc">Fill out our quick form or shoot us an email. Tell us your vehicle and what service you need — we'll confirm fast.</div>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">2</div>
+      <div class="step-icon">🚐</div>
+      <div class="step-title">We Come to You</div>
+      <div class="step-desc">We show up at your home, office, or anywhere convenient with all our professional equipment. You don't move a muscle.</div>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">3</div>
+      <div class="step-icon">✨</div>
+      <div class="step-title">Enjoy the Results</div>
+      <div class="step-desc">Walk out to a showroom-clean vehicle. No waiting rooms, no errands. Just a spotless car right where you left it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="fade-up">
+    <div class="section-eyebrow">What We Offer</div>
+    <h2 class="section-title">Service Packages</h2>
+    <div class="section-divider"></div>
+    <p class="section-desc">Every service is performed at your location. Choose what fits your vehicle.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="pricing-card fade-up">
+      <div class="card-icon">✦</div>
+      <div class="card-name">Exterior Detail</div>
+      <div class="card-desc">A thorough outside clean leaving your paint gleaming and protected.</div>
+      <div class="price-row">
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>60</div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / SUV</div><div class="price-amount"><sup>$</sup>80</div></div>
+      </div>
+      <ul class="features-list">
+        <li>Pre-wash treatment</li>
+        <li>Full contact hand wash</li>
+        <li>Wax protectant applied</li>
+        <li>Tires and rims cleaned & dressed</li>
+      </ul>
+      <button class="card-book-btn" onclick="openBooking('Exterior Detail')">Book This Service</button>
+    </div>
+    <div class="pricing-card fade-up">
+      <div class="card-icon">◈</div>
+      <div class="card-name">Interior Detail</div>
+      <div class="card-desc">Deep cleaned from floor to ceiling — every surface, every crevice.</div>
+      <div class="price-row">
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>100</div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / SUV</div><div class="price-amount"><sup>$</sup>120</div></div>
+      </div>
+      <ul class="features-list">
+        <li>Deep vacuum — seats, floors, trunk & crevices</li>
+        <li>Carpet & floor mat cleaning</li>
+        <li>Leather / upholstery cleaning</li>
+        <li>Dashboard, doors & console cleaning</li>
+        <li>Interior window cleaning</li>
+        <li>Air vent cleaning</li>
+        <li>Door jambs wiped down</li>
+      </ul>
+      <button class="card-book-btn" onclick="openBooking('Interior Detail')">Book This Service</button>
+    </div>
+    <div class="pricing-card featured fade-up">
+      <div class="card-icon">◉</div>
+      <div class="card-name">Full Detail</div>
+      <div class="card-desc">The complete transformation — everything inside and out, showroom ready.</div>
+      <div class="price-row">
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>140</div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / SUV</div><div class="price-amount"><sup>$</sup>160</div></div>
+      </div>
+      <ul class="features-list">
+        <li>Everything in Exterior Detail</li>
+        <li>Everything in Interior Detail</li>
+        <li>Best value — complete inside & out</li>
+        <li>Perfect before selling your vehicle</li>
+      </ul>
+      <button class="card-book-btn" onclick="openBooking('Full Detail')">Book This Service</button>
+    </div>
+  </div>
+
+  <!-- Compare Table -->
+  <div class="compare-wrap fade-up">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>What's Included</th>
+          <th>Exterior</th>
+          <th>Interior</th>
+          <th>Full Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Coupe/Sedan Price</td><td><span class="compare-price">$60</span></td><td><span class="compare-price">$100</span></td><td><span class="compare-price">$140</span></td></tr>
+        <tr><td>Truck/SUV Price</td><td><span class="compare-price">$80</span></td><td><span class="compare-price">$120</span></td><td><span class="compare-price">$160</span></td></tr>
+        <tr><td>Pre-wash & Hand Wash</td><td><span class="check">✔</span></td><td><span class="cross">—</span></td><td><span class="check">✔</span></td></tr>
+        <tr><td>Wax Protectant</td><td><span class="check">✔</span></td><td><span class="cross">—</span></td><td><span class="check">✔</span></td></tr>
+        <tr><td>Tires & Rims</td><td><span class="check">✔</span></td><td><span class="cross">—</span></td><td><span class="check">✔</span></td></tr>
+        <tr><td>Deep Vacuum</td><td><span class="cross">—</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+        <tr><td>Carpet & Mat Cleaning</td><td><span class="cross">—</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+        <tr><td>Leather / Upholstery</td><td><span class="cross">—</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+        <tr><td>Dashboard & Console</td><td><span class="cross">—</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+        <tr><td>Interior Windows</td><td><span class="cross">—</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+        <tr><td>Air Vents & Door Jambs</td><td><span class="cross">—</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section id="before-after">
+  <div class="fade-up">
+    <div class="section-eyebrow">See the Difference</div>
+    <h2 class="section-title">Before &amp; After</h2>
+    <div class="section-divider"></div>
+    <p class="section-desc">Drag the slider to reveal the transformation. This is what Excel Detailing does to every vehicle.</p>
+  </div>
+
+  <div class="ba-container fade-up" id="baContainer">
+    <!-- Before image (full width, sits behind) -->
+    <img class="ba-img" src="./before.jpg" alt="Car before detailing">
+
+    <!-- After image (clipped to reveal on left) -->
+    <div class="ba-after-clip" id="baAfter">
+      <img src="./after.jpg" alt="Car after detailing">
+    </div>
+
+    <!-- Corner labels -->
+    <div class="ba-label ba-label-before">BEFORE</div>
+    <div class="ba-label ba-label-after">AFTER</div>
+
+    <!-- Divider + handle -->
+    <div class="ba-divider" id="baDivider"></div>
+    <div class="ba-handle" id="baHandle">◀▶</div>
+
+    <!-- Invisible range input -->
+    <input type="range" class="ba-input" id="baSlider" min="0" max="100" value="50">
+  </div>
+</section>
+
+<!-- ADD-ONS -->
+<section id="addons">
+  <div class="fade-up">
+    <div class="section-eyebrow">Enhance Your Service</div>
+    <h2 class="section-title">Add-Ons</h2>
+    <div class="section-divider"></div>
+    <p class="section-desc">Stack on targeted treatments for maximum results.</p>
+  </div>
+  <div class="addons-grid fade-up">
+    <div class="addon-card">
+      <div class="addon-label">Visibility Upgrade</div>
+      <div class="addon-name">Headlight Restoration</div>
+      <div class="addon-price-row"><span>Both headlights</span><strong>$100</strong></div>
+      <div class="addon-price-row"><span>Single headlight</span><strong>$60</strong></div>
+    </div>
+    <div class="addon-card">
+      <div class="addon-label">Why Restore?</div>
+      <div class="addon-name">Clear = Safer Driving</div>
+      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.4rem;">Foggy headlights reduce visibility by up to 80%. Restoration makes your car look newer and keeps you safer on the road.</div>
+    </div>
+  </div>
+  <div class="notice-bar fade-up">
+    <p><strong>Pricing Notice:</strong> Prices may vary based on vehicle condition and size. Heavily soiled vehicles may incur additional charges. <strong>A quote is always provided before any extra charges — no surprises.</strong></p>
+  </div>
+
+  <!-- Gift a Detail -->
+  <div class="gift-callout fade-up">
+    <div class="gift-icon">🎁</div>
+    <div>
+      <div class="gift-title">Gift a Detail</div>
+      <div class="gift-desc">Know someone whose car could use some love? A detail makes an incredible gift for birthdays, holidays, or just because. Contact us and we'll set it up for you.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="fade-up">
+    <div class="section-eyebrow">What Customers Say</div>
+    <h2 class="section-title">Real Reviews</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="testimonials-grid">
+    <div class="review-card fade-up">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Absolutely blew me away. My truck looked brand new — they got pet hair out of places I didn't even know existed. Will never go to a car wash again."</p>
+      <div class="review-author">Marcus T.</div>
+      <div class="review-vehicle">2021 Ford F-150 · Full Detail</div>
+    </div>
+    <div class="review-card fade-up">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Super convenient — they came to my house while I worked from home. Interior looks and smells incredible. Totally transparent about pricing before starting."</p>
+      <div class="review-author">Ashley R.</div>
+      <div class="review-vehicle">2020 Honda Accord · Interior Detail</div>
+    </div>
+    <div class="review-card fade-up">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Got the headlight restoration added on and I can't believe the difference. Crystal clear. 100% worth every dollar — and they were done way faster than I expected."</p>
+      <div class="review-author">David M.</div>
+      <div class="review-vehicle">2018 Toyota Camry · Exterior + Headlights</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="fade-up">
+    <div class="section-eyebrow">The Excel Difference</div>
+    <h2 class="section-title">Why Choose Us</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-card fade-up">
+      <div class="why-icon">🚗</div>
+      <div class="why-title">We Come to You</div>
+      <div class="why-text">Skip the drive. We bring everything to your driveway, office, or apartment parking lot.</div>
+    </div>
+    <div class="why-card fade-up">
+      <div class="why-icon">💬</div>
+      <div class="why-title">Honest Quotes</div>
+      <div class="why-text">We inspect first and quote upfront. Zero surprise charges — you approve everything before we start.</div>
+    </div>
+    <div class="why-card fade-up">
+      <div class="why-icon">🧴</div>
+      <div class="why-title">Pro-Grade Products</div>
+      <div class="why-text">We use professional detailing products that protect your paint and upholstery long-term.</div>
+    </div>
+    <div class="why-card fade-up">
+      <div class="why-icon">⏱️</div>
+      <div class="why-title">Works Around You</div>
+      <div class="why-text">You keep doing your day while your car gets transformed right outside.</div>
+    </div>
+    <div class="why-card fade-up">
+      <div class="why-icon">🛡️</div>
+      <div class="why-title">Satisfaction Guaranteed</div>
+      <div class="why-text">Not happy with something? We'll make it right. Your satisfaction is the only result we accept.</div>
+    </div>
+    <div class="why-card fade-up">
+      <div class="why-icon">💧</div>
+      <div class="why-title">Eco-Friendly</div>
+      <div class="why-text">Eco-conscious products and water-efficient methods — great results, less waste.</div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERRAL BANNER -->
+<div class="referral-banner fade-up">
+  <div class="referral-left">
+    <div class="referral-eyebrow">Refer a Friend Program</div>
+    <div class="referral-title">Know Someone<br>Who Needs a Detail?<br><span>Send Them Our Way.</span></div>
+    <div class="referral-desc">When a friend books using your name as a referral, you both win. It's our way of saying thank you for spreading the word. Contact us for details.</div>
+  </div>
+  <div class="referral-right">
+    <div class="referral-amount"><span>$</span>10</div>
+    <div class="referral-amount-label">OFF for you &amp; your friend</div>
+    <a href="#contact" class="btn-primary" style="margin-top:1rem;">Refer a Friend</a>
+  </div>
+</div>
+
+<!-- SOCIAL STRIP -->
+<div class="social-strip fade-up">
+  <p>Follow Us for Before &amp; Afters, Tips &amp; Promos</p>
+  <div class="social-links">
+    <a href="#" class="social-link">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      Instagram
+    </a>
+    <a href="#" class="social-link">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      Facebook
+    </a>
+    <a href="#" class="social-link">
+      <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.77 1.52V6.79a4.85 4.85 0 01-1-.1z"/></svg>
+      TikTok
+    </a>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="fade-up">
+    <div class="section-eyebrow">Common Questions</div>
+    <h2 class="section-title">FAQ</h2>
+    <div class="section-divider"></div>
+    <p class="section-desc">Everything people ask when we knock on doors — answered right here.</p>
+  </div>
+  <div class="faq-list fade-up">
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-question-text">Do I need to bring my car anywhere?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">Not at all — that's the whole point. We come to you. All we need is access to your vehicle and a little room to work. We bring all our own equipment and supplies.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-question-text">How long does a detail take?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">Exterior: ~1–2 hrs. Interior: ~2–3 hrs. Full Detail: ~3–5 hrs. Heavily soiled vehicles may take a bit longer — we'll always give you an honest estimate upfront.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-question-text">What if my car is really dirty or hasn't been cleaned in a long time?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">That's exactly what we're here for. If extra time or effort is needed, we'll quote it before we begin. No surprises — ever. Many of our best results come from heavily neglected vehicles.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-question-text">Do you need water or electricity at my location?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">A standard garden hose connection is helpful for exterior work. If you're in an apartment or don't have one handy, let us know when booking — we'll work something out before we arrive.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-question-text">Will the products damage my paint or leather?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">Never. We use professional-grade products designed specifically for automotive surfaces — safe for all paint types, leather, fabric, and trim. They protect and enhance, not damage.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-question-text">Is it worth detailing before selling my car?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">Absolutely. A clean, detailed car consistently sells faster and for more money. Our full detail is one of the best investments you can make before listing — buyers notice immediately.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-question-text">Is the headlight restoration permanent?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">It significantly improves clarity and removes oxidation. Headlights can slowly yellow again from UV exposure over time, but most customers get several years out of a restoration — especially if parked in a garage.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-question-text">How do I book or get a quote?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">Fill out the contact form below, email us at excelmobiledetailing11@gmail.com, or hit the chat button in the corner. Give us your vehicle type, service interest, and location and we'll get back to you fast!</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="fade-up">
+      <div class="section-eyebrow">Get in Touch</div>
+      <h2 class="section-title">Book Your Detail</h2>
+      <div class="section-divider"></div>
+      <p class="section-desc">Ready for a spotless vehicle? Reach out and we'll get you on the schedule fast.</p>
+      <div class="contact-email-block">
+        <div class="email-icon">✉</div>
+        <div>
+          <a href="mailto:excelmobiledetailing11@gmail.com" class="email-link">excelmobiledetailing11@gmail.com</a>
+          <div class="email-caption">Typically responds within a few hours</div>
+        </div>
+      </div>
+      <div class="contact-phone-block">
+        <div class="email-icon">📞</div>
+        <div>
+          <a href="tel:+18476501734" class="email-link">(847) 650-1734</a>
+          <div class="email-caption">Call or text — we're mobile friendly</div>
+        </div>
+      </div>
+      <div class="service-area">📍 <span><strong>Mobile Service:</strong> We travel to you — message us to confirm your area</span></div>
+    </div>
+
+    <form class="contact-form fade-up" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" placeholder="John" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" placeholder="Doe" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="john@email.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" class="form-input" placeholder="(555) 000-0000" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Vehicle Type</label>
+          <select class="form-select form-input">
+            <option value="">Select type</option>
+            <option>Coupe</option><option>Sedan</option>
+            <option>SUV</option><option>Truck</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service</label>
+          <select class="form-select form-input">
+            <option value="">Select service</option>
+            <option>Exterior Detail</option>
+            <option>Interior Detail</option>
+            <option>Full Detail</option>
+            <option>Add-On: Headlight Restoration</option>
+            <option>Not sure — need a quote</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Promo Code (optional)</label>
+        <input type="text" class="form-input" placeholder="e.g. EXCEL10" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Additional Notes</label>
+        <textarea class="form-textarea form-input" placeholder="Your address, vehicle condition, or anything else we should know..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Send Message →</button>
+      <div id="form-success">✓ Message sent! We'll be in touch shortly.</div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="footer-logo"><span>E</span>XCEL MOBILE DETAILING</div>
+      <div class="footer-tagline">Professional mobile detailing brought directly to your door. Showroom results, your driveway.</div>
+      <div class="footer-social-icons">
+        <a href="#" title="Instagram">📸</a>
+        <a href="#" title="Facebook">f</a>
+        <a href="#" title="TikTok">♪</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <ul class="footer-links">
+        <li><a href="#services">Exterior Detail</a></li>
+        <li><a href="#services">Interior Detail</a></li>
+        <li><a href="#services">Full Detail</a></li>
+        <li><a href="#addons">Headlight Restoration</a></li>
+        <li><a href="#addons">Gift a Detail</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Book Now</a></li>
+        <li><a href="mailto:excelmobiledetailing11@gmail.com">Email Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Excel Mobile Detailing · All rights reserved</div>
+    <div class="footer-copy">excelmobiledetailing11@gmail.com</div>
+  </div>
+</footer>
+
+<!-- FLOATING CHAT -->
+<button class="chat-fab" onclick="toggleChat()" aria-label="Chat with us">
+  <span class="chat-badge" id="chat-badge">1</span>
+  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+</button>
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="chat-avatar">🚗</div>
+      <div>
+        <div class="chat-name">Excel Detailing</div>
+        <div class="chat-status">Online now</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">
+      <div class="msg-bubble">👋 Hey! Welcome to Excel Mobile Detailing. How can we help you today?</div>
+      <div class="msg-time">Just now</div>
+    </div>
+  </div>
+  <div class="chat-quick" id="chat-quick">
+    <button class="chat-quick-btn" onclick="quickMsg('What services do you offer?')">Services & Pricing</button>
+    <button class="chat-quick-btn" onclick="quickMsg('How do I book an appointment?')">Book Now</button>
+    <button class="chat-quick-btn" onclick="quickMsg('Do you come to my area?')">Service Area</button>
+    <button class="chat-quick-btn" onclick="quickMsg('How long does it take?')">How Long?</button>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<script>
+/* ── Scroll animations ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 70);
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+/* ── Before/After Slider ── */
+const slider  = document.getElementById('baSlider');
+const after   = document.getElementById('baAfter');
+const divider = document.getElementById('baDivider');
+const handle  = document.getElementById('baHandle');
+
+function updateSlider(val) {
+  after.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+  divider.style.left   = val + '%';
+  handle.style.left    = val + '%';
+}
+
+slider.addEventListener('input', () => updateSlider(slider.value));
+updateSlider(50);
+
+/* ── FAQ ── */
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ── Contact Form ── */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-submit');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  setTimeout(() => {
+    btn.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }, 900);
+}
+
+/* ── Chat ── */
+let chatOpen = false;
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+  document.getElementById('chat-badge').style.display = chatOpen ? 'none' : 'flex';
+}
+
+const botReplies = {
+  'what services do you offer?': 'We offer 3 packages: <strong>Exterior</strong> (from $60), <strong>Interior</strong> (from $100), and <strong>Full Detail</strong> (from $140). We also do headlight restoration as an add-on. Check the pricing section for full details!',
+  'how do i book an appointment?': 'Easy! Fill out the contact form on this page, email us at <strong>excelmobiledetailing11@gmail.com</strong>, or give us a call. Let us know your vehicle type and service — we\'ll confirm quickly!',
+  'do you come to my area?': 'We\'re fully mobile and come directly to you! Drop us a message with your location and we\'ll confirm availability.',
+  'how long does it take?': 'Exterior: ~1–2 hrs. Interior: ~2–3 hrs. Full Detail: ~3–5 hrs. We\'ll give you an accurate estimate before we start!',
+};
+
+function quickMsg(text) {
+  addMessage(text, 'user');
+  document.getElementById('chat-quick').style.display = 'none';
+  setTimeout(() => addMessage(botReplies[text.toLowerCase()] || 'Great question! Email us at <strong>excelmobiledetailing11@gmail.com</strong> or fill out the contact form — we respond fast!', 'bot'), 700);
+}
+
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage(text, 'user');
+  input.value = '';
+  document.getElementById('chat-quick').style.display = 'none';
+  setTimeout(() => addMessage('Thanks for reaching out! For the fastest response, email us at <strong>excelmobiledetailing11@gmail.com</strong> or use the booking form. We\'ll get back to you ASAP!', 'bot'), 800);
+}
+
+function addMessage(text, type) {
+  const msgs = document.getElementById('chat-messages');
+  const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  const div = document.createElement('div');
+  div.className = `msg ${type}`;
+  div.innerHTML = `<div class="msg-bubble">${text}</div><div class="msg-time">${time}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+</script>
+
+<!-- BOOKING MODAL -->
+<div class="bk-overlay" id="bkOverlay">
+  <div class="bk-modal">
+    <button class="bk-modal-close" onclick="closeBooking()">✕</button>
+
+    <h3 class="bk-modal-title">Book Your Detail</h3>
+    <span class="bk-service-tag" id="bkServiceTag">Full Detail</span>
+    <input type="hidden" id="bkService">
+
+    <!-- STEP 1: Calendar -->
+    <div class="bk-step active" id="bkStepCal">
+      <div class="bk-cal-nav">
+        <button class="bk-cal-arrow" id="bkPrevMo">&#8249;</button>
+        <span class="bk-cal-month-label" id="bkMonthLabel"></span>
+        <button class="bk-cal-arrow" id="bkNextMo">&#8250;</button>
+      </div>
+      <div class="bk-cal-dow">
+        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+        <span>Thu</span><span>Fri</span><span>Sat</span>
+      </div>
+      <div class="bk-cal-grid" id="bkCalGrid"></div>
+      <div class="bk-wx-loading" id="bkWxStatus">Loading weather forecast…</div>
+    </div>
+
+    <!-- STEP 2: Time Slots -->
+    <div class="bk-step" id="bkStepTime">
+      <button class="bk-back" onclick="bkGoStep(1)">&#8592; Back to Calendar</button>
+      <div class="bk-wx-banner" id="bkWxBanner"></div>
+      <div id="bkDateLabel" style="font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.06em;color:var(--silver-lt);margin-bottom:.8rem;"></div>
+      <div class="bk-slots-grid" id="bkSlotsGrid"></div>
+      <button class="bk-sel-time-btn" id="bkPickTimeBtn" onclick="bkGoStep(3)">Continue with this Time →</button>
+    </div>
+
+    <!-- STEP 3: Form -->
+    <div class="bk-step" id="bkStepForm">
+      <button class="bk-back" onclick="bkGoStep(2)">&#8592; Change Time</button>
+      <div class="bk-appt-summary" id="bkApptSummary"></div>
+
+      <div class="bk-row">
+        <div class="bk-field">
+          <label>First Name</label>
+          <input type="text" id="bkFirst" placeholder="John" required>
+        </div>
+        <div class="bk-field">
+          <label>Last Name</label>
+          <input type="text" id="bkLast" placeholder="Smith" required>
+        </div>
+      </div>
+      <div class="bk-field">
+        <label>Phone Number</label>
+        <input type="tel" id="bkPhone" placeholder="(555) 000-0000" required>
+      </div>
+      <div class="bk-field">
+        <label>Email Address</label>
+        <input type="email" id="bkEmail" placeholder="you@example.com">
+      </div>
+      <div class="bk-row">
+        <div class="bk-field">
+          <label>Car Make</label>
+          <input type="text" id="bkMake" placeholder="e.g. Toyota" required>
+        </div>
+        <div class="bk-field">
+          <label>Car Model</label>
+          <input type="text" id="bkModel" placeholder="e.g. Camry" required>
+        </div>
+      </div>
+      <div class="bk-field">
+        <label>Vehicle Type</label>
+        <select id="bkVehicleType">
+          <option value="">Select type</option>
+          <option value="Coupe / Sedan">Coupe / Sedan</option>
+          <option value="Truck / SUV">Truck / SUV</option>
+        </select>
+      </div>
+      <div class="bk-field">
+        <label>Additional Notes</label>
+        <textarea id="bkNotes" placeholder="Anything we should know about your vehicle?"></textarea>
+      </div>
+      <button class="bk-submit" onclick="submitBooking()">Confirm Appointment Request</button>
+    </div>
+
+    <!-- Success -->
+    <div class="bk-success" id="bkSuccess">
+      <div class="bk-check">✅</div>
+      <h4>You're Booked!</h4>
+      <p>We've received your request and will confirm within a few hours.</p>
+      <p class="bk-conf" id="bkConfText"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Weather (Open-Meteo, free, no key) ──
+// Northbrook, IL
+const BK_LAT = 42.1303, BK_LON = -87.8265;
+const WMO = {
+  0:{i:'☀️',d:'Clear Sky'}, 1:{i:'🌤️',d:'Mainly Clear'},
+  2:{i:'⛅',d:'Partly Cloudy'}, 3:{i:'☁️',d:'Overcast'},
+  45:{i:'🌫️',d:'Foggy'}, 48:{i:'🌫️',d:'Freezing Fog'},
+  51:{i:'🌦️',d:'Light Drizzle'}, 53:{i:'🌦️',d:'Drizzle'}, 55:{i:'🌧️',d:'Heavy Drizzle'},
+  61:{i:'🌧️',d:'Light Rain'}, 63:{i:'🌧️',d:'Rain'}, 65:{i:'🌧️',d:'Heavy Rain'},
+  71:{i:'❄️',d:'Light Snow'}, 73:{i:'❄️',d:'Snow'}, 75:{i:'❄️',d:'Heavy Snow'},
+  77:{i:'🌨️',d:'Snow Grains'},
+  80:{i:'🌦️',d:'Light Showers'}, 81:{i:'🌦️',d:'Showers'}, 82:{i:'⛈️',d:'Heavy Showers'},
+  85:{i:'🌨️',d:'Snow Showers'}, 86:{i:'🌨️',d:'Heavy Snow Showers'},
+  95:{i:'⛈️',d:'Thunderstorm'}, 96:{i:'⛈️',d:'Thunderstorm+Hail'}, 99:{i:'⛈️',d:'Severe Storm'}
+};
+function getWx(code) {
+  return WMO[code] || WMO[Math.floor(code/10)*10] || {i:'🌡️',d:'Weather Data'};
+}
+let bkWeather = {}; // keyed by "YYYY-MM-DD"
+
+async function fetchWeather() {
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${BK_LAT}&longitude=${BK_LON}`
+      + `&daily=weathercode,temperature_2m_max,precipitation_probability_max`
+      + `&temperature_unit=fahrenheit&timezone=America%2FChicago&forecast_days=16`;
+    const res = await fetch(url);
+    const data = await res.json();
+    bkWeather = {};
+    data.daily.time.forEach((d, i) => {
+      bkWeather[d] = {
+        code:  data.daily.weathercode[i],
+        tmax:  Math.round(data.daily.temperature_2m_max[i]),
+        rain:  data.daily.precipitation_probability_max[i]
+      };
+    });
+    document.getElementById('bkWxStatus').textContent = '';
+    renderCalendar();
+  } catch(e) {
+    document.getElementById('bkWxStatus').textContent = '(Weather unavailable)';
+    renderCalendar();
+  }
+}
+
+// ── Booking slots (localStorage) ──
+const SLOTS = [
+  {key:'9',  label:'9:00 AM'},
+  {key:'11', label:'11:00 AM'},
+  {key:'13', label:'1:00 PM'},
+  {key:'15', label:'3:00 PM'}
+];
+function slotKey(dateStr, key) { return `excel_bk_${dateStr}_${key}`; }
+function isSlotTaken(dateStr, key) { return localStorage.getItem(slotKey(dateStr,key)) === '1'; }
+function bookSlot(dateStr, key)   { localStorage.setItem(slotKey(dateStr,key), '1'); }
+function slotsAvail(dateStr) { return SLOTS.filter(s => !isSlotTaken(dateStr, s.key)).length; }
+
+// ── Calendar state ──
+let bkViewDate = new Date();
+let bkSelectedDate = null;
+let bkSelectedSlot = null;
+
+function pad(n){ return String(n).padStart(2,'0'); }
+function toDateStr(y,m,d){ return `${y}-${pad(m+1)}-${pad(d)}`; }
+function today() {
+  const t = new Date();
+  return toDateStr(t.getFullYear(), t.getMonth(), t.getDate());
+}
+
+function renderCalendar() {
+  const grid  = document.getElementById('bkCalGrid');
+  const label = document.getElementById('bkMonthLabel');
+  const y = bkViewDate.getFullYear();
+  const m = bkViewDate.getMonth();
+  const monthNames = ['January','February','March','April','May','June',
+                      'July','August','September','October','November','December'];
+  label.textContent = `${monthNames[m]} ${y}`;
+  grid.innerHTML = '';
+  const todayStr = today();
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+
+  // Empty cells
+  for(let i=0; i<firstDay; i++){
+    const e = document.createElement('div');
+    e.className = 'bk-day bk-empty';
+    grid.appendChild(e);
+  }
+  for(let d=1; d<=daysInMonth; d++){
+    const dateStr = toDateStr(y, m, d);
+    const isPast  = dateStr < todayStr;
+    const avail   = slotsAvail(dateStr);
+    const isFull  = avail === 0;
+    const wx      = bkWeather[dateStr];
+    const isSel   = dateStr === bkSelectedDate;
+    const isToday = dateStr === todayStr;
+
+    const cell = document.createElement('div');
+    cell.className = 'bk-day' +
+      (isPast ? ' bk-past' : '') +
+      (isFull && !isPast ? ' bk-full' : '') +
+      (isToday ? ' bk-today' : '') +
+      (isSel ? ' bk-sel' : '');
+
+    cell.innerHTML = `<span class="bk-day-num">${d}</span>`
+      + (wx ? `<span class="bk-day-wx">${getWx(wx.code).i}</span>
+               <span class="bk-day-temp">${wx.tmax}°F</span>` : '');
+
+    if(!isPast && !isFull) {
+      cell.addEventListener('click', () => {
+        bkSelectedDate = dateStr;
+        bkSelectedSlot = null;
+        renderCalendar();
+        showTimeSlots(dateStr);
+        bkGoStep(2);
+      });
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function showTimeSlots(dateStr) {
+  // Weather banner
+  const wx = bkWeather[dateStr];
+  const banner = document.getElementById('bkWxBanner');
+  if(wx) {
+    const w = getWx(wx.code);
+    const rainTxt = wx.rain > 0 ? ` · ${wx.rain}% chance of rain` : '';
+    banner.innerHTML = `<div class="bk-wx-icon">${w.i}</div>
+      <div class="bk-wx-info">
+        <div class="bk-wx-desc">${w.d}</div>
+        <div class="bk-wx-detail">High ${wx.tmax}°F${rainTxt}</div>
+      </div>`;
+  } else {
+    banner.innerHTML = '';
+  }
+
+  // Date label
+  const dt = new Date(dateStr + 'T12:00:00');
+  document.getElementById('bkDateLabel').textContent =
+    dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+  // Slots
+  const grid = document.getElementById('bkSlotsGrid');
+  grid.innerHTML = '';
+  SLOTS.forEach(s => {
+    const taken = isSlotTaken(dateStr, s.key);
+    const div = document.createElement('div');
+    div.className = 'bk-slot' + (taken ? ' bk-taken' : '');
+    div.innerHTML = `<div class="bk-slot-time">${s.label}</div>
+      <div class="bk-slot-avail">${taken ? 'Booked' : 'Available'}</div>`;
+    if(!taken) {
+      div.addEventListener('click', () => {
+        document.querySelectorAll('.bk-slot').forEach(el => el.classList.remove('bk-sel-slot'));
+        div.classList.add('bk-sel-slot');
+        bkSelectedSlot = s;
+        document.getElementById('bkPickTimeBtn').classList.add('ready');
+      });
+    }
+    grid.appendChild(div);
+  });
+  document.getElementById('bkPickTimeBtn').classList.remove('ready');
+  bkSelectedSlot = null;
+}
+
+function bkGoStep(n) {
+  document.querySelectorAll('.bk-step').forEach(s => s.classList.remove('active'));
+  if(n===1) document.getElementById('bkStepCal').classList.add('active');
+  if(n===2) document.getElementById('bkStepTime').classList.add('active');
+  if(n===3) {
+    document.getElementById('bkStepForm').classList.add('active');
+    const dt = new Date(bkSelectedDate + 'T12:00:00');
+    const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+    document.getElementById('bkApptSummary').textContent =
+      `📅 ${dateLabel}  ·  🕐 ${bkSelectedSlot.label}  ·  ${document.getElementById('bkServiceTag').textContent}`;
+  }
+}
+
+// ── Open / Close ──
+function openBooking(service) {
+  document.getElementById('bkServiceTag').textContent = service;
+  document.getElementById('bkService').value = service;
+  document.querySelectorAll('.bk-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('bkStepCal').classList.add('active');
+  document.getElementById('bkSuccess').style.display = 'none';
+  document.getElementById('bkOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  bkSelectedDate = null; bkSelectedSlot = null;
+  bkViewDate = new Date();
+  renderCalendar();
+  fetchWeather();
+}
+function closeBooking() {
+  document.getElementById('bkOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Month navigation ──
+document.getElementById('bkPrevMo').addEventListener('click', () => {
+  const d = new Date(bkViewDate);
+  d.setMonth(d.getMonth()-1);
+  const now = new Date(); now.setDate(1);
+  if(d >= now) { bkViewDate = d; renderCalendar(); }
+});
+document.getElementById('bkNextMo').addEventListener('click', () => {
+  const d = new Date(bkViewDate);
+  d.setMonth(d.getMonth()+1);
+  // max 3 months ahead
+  const max = new Date(); max.setMonth(max.getMonth()+3);
+  if(d <= max) { bkViewDate = d; renderCalendar(); }
+});
+
+// ── Submit ──
+function submitBooking() {
+  const first = document.getElementById('bkFirst').value.trim();
+  const phone = document.getElementById('bkPhone').value.trim();
+  const make  = document.getElementById('bkMake').value.trim();
+  const model = document.getElementById('bkModel').value.trim();
+  if(!first || !phone || !make || !model) {
+    alert('Please fill in your name, phone number, car make, and model.');
+    return;
+  }
+  // Lock the slot in localStorage
+  if(bkSelectedDate && bkSelectedSlot) {
+    bookSlot(bkSelectedDate, bkSelectedSlot.key);
+  }
+  const dt = new Date(bkSelectedDate + 'T12:00:00');
+  const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('bkConfText').textContent =
+    `${dateLabel} · ${bkSelectedSlot ? bkSelectedSlot.label : ''} · ${make} ${model}`;
+  document.querySelectorAll('.bk-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('bkSuccess').style.display = 'block';
+  setTimeout(closeBooking, 4500);
+}
+
+document.getElementById('bkOverlay').addEventListener('click', function(e){
+  if(e.target === this) closeBooking();
+});
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeBooking();
+});
+</script>
+</body>
+</html>
