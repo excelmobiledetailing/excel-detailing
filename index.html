@@ -1993,15 +1993,22 @@ bkDb.ref('bookings').on('value', (snapshot) => {
 });
 
 // ── Booking slots ──
-const SLOTS = [
+const SLOTS_ALL = [
   {key:'10', label:'10:00 AM'},
   {key:'13', label:'1:00 PM'},
   {key:'17', label:'5:00 PM'}
 ];
+const SLOTS_WEEKDAY = [
+  {key:'17', label:'5:00 PM'}
+];
+function getSlotsForDate(dateStr) {
+  const day = new Date(dateStr + 'T12:00:00').getDay(); // 0=Sun,6=Sat
+  return (day === 0 || day === 6) ? SLOTS_ALL : SLOTS_WEEKDAY;
+}
 function slotKey(dateStr, key) { return `${dateStr}_${key}`; }
 function isSlotTaken(dateStr, key) { return !!bookedSlots[slotKey(dateStr, key)]; }
 function bookSlot(dateStr, key) { bkDb.ref(`bookings/${slotKey(dateStr, key)}`).set(true); }
-function slotsAvail(dateStr) { return SLOTS.filter(s => !isSlotTaken(dateStr, s.key)).length; }
+function slotsAvail(dateStr) { return getSlotsForDate(dateStr).filter(s => !isSlotTaken(dateStr, s.key)).length; }
 
 // ── Calendar state ──
 let bkViewDate = new Date();
@@ -2091,7 +2098,7 @@ function showTimeSlots(dateStr) {
   // Slots
   const grid = document.getElementById('bkSlotsGrid');
   grid.innerHTML = '';
-  SLOTS.forEach(s => {
+  getSlotsForDate(dateStr).forEach(s => {
     const taken = isSlotTaken(dateStr, s.key);
     const div = document.createElement('div');
     div.className = 'bk-slot' + (taken ? ' bk-taken' : '');
