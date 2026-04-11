@@ -1995,8 +1995,8 @@ bkDb.ref('bookings').on('value', (snapshot) => {
 // ── Booking slots ──
 const SLOTS = [
   {key:'10', label:'10:00 AM'},
-  {key:'14', label:'2:00 PM'},
-  {key:'18', label:'6:00 PM'}
+  {key:'13', label:'1:00 PM'},
+  {key:'17', label:'5:00 PM'}
 ];
 function slotKey(dateStr, key) { return `${dateStr}_${key}`; }
 function isSlotTaken(dateStr, key) { return !!bookedSlots[slotKey(dateStr, key)]; }
