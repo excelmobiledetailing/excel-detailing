@@ -1911,6 +1911,37 @@ function addMessage(text, type) {
         <label>Additional Notes</label>
         <textarea id="bkNotes" placeholder="Anything we should know about your vehicle?"></textarea>
       </div>
+      <button class="bk-submit" onclick="goToAddress()">Next: Service Address →</button>
+    </div>
+
+    <!-- STEP 4: Address -->
+    <div class="bk-step" id="bkStepAddr">
+      <button class="bk-back" onclick="bkGoStep(3)">&#8592; Back</button>
+      <div class="bk-appt-summary" id="bkApptSummary2"></div>
+      <div style="font-family:'Barlow Condensed',sans-serif; font-size:.75rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--silver); margin-bottom:1.2rem;">Where should we come?</div>
+
+      <div class="bk-field">
+        <label>Street Address</label>
+        <input type="text" id="bkStreet" placeholder="123 Main St" required>
+      </div>
+      <div class="bk-field">
+        <label>Apt / Unit <span style="color:var(--gray);font-weight:400;">(optional)</span></label>
+        <input type="text" id="bkApt" placeholder="Apt 2B">
+      </div>
+      <div class="bk-row">
+        <div class="bk-field">
+          <label>City</label>
+          <input type="text" id="bkCity" placeholder="Northbrook" required>
+        </div>
+        <div class="bk-field">
+          <label>State</label>
+          <input type="text" id="bkState" placeholder="IL" maxlength="2" style="text-transform:uppercase;" required>
+        </div>
+      </div>
+      <div class="bk-field">
+        <label>ZIP Code</label>
+        <input type="text" id="bkZip" placeholder="60062" maxlength="10" required>
+      </div>
       <button class="bk-submit" onclick="submitBooking()">Confirm Appointment Request</button>
     </div>
 
@@ -2126,9 +2157,28 @@ function bkGoStep(n) {
     document.getElementById('bkStepForm').classList.add('active');
     const dt = new Date(bkSelectedDate + 'T12:00:00');
     const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-    document.getElementById('bkApptSummary').textContent =
+    const summary = `${dateLabel}  ·  ${bkSelectedSlot.label}  ·  ${document.getElementById('bkServiceTag').textContent}`;
+    document.getElementById('bkApptSummary').textContent = summary;
+  }
+  if(n===4) {
+    document.getElementById('bkStepAddr').classList.add('active');
+    const dt = new Date(bkSelectedDate + 'T12:00:00');
+    const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+    document.getElementById('bkApptSummary2').textContent =
       `${dateLabel}  ·  ${bkSelectedSlot.label}  ·  ${document.getElementById('bkServiceTag').textContent}`;
   }
+}
+
+function goToAddress() {
+  const first = document.getElementById('bkFirst').value.trim();
+  const phone = document.getElementById('bkPhone').value.trim();
+  const make  = document.getElementById('bkMake').value.trim();
+  const model = document.getElementById('bkModel').value.trim();
+  if(!first || !phone || !make || !model) {
+    alert('Please fill in your name, phone number, car make, and model.');
+    return;
+  }
+  bkGoStep(4);
 }
 
 // ── Open / Close ──
@@ -2179,9 +2229,18 @@ async function submitBooking() {
   const vtype    = document.getElementById('bkVehicleType').value;
   const notes    = document.getElementById('bkNotes').value.trim();
   const service  = document.getElementById('bkService') ? document.getElementById('bkService').value : '';
+  const street   = document.getElementById('bkStreet').value.trim();
+  const apt      = document.getElementById('bkApt').value.trim();
+  const city     = document.getElementById('bkCity').value.trim();
+  const state    = document.getElementById('bkState').value.trim();
+  const zip      = document.getElementById('bkZip').value.trim();
 
   if(!first || !phone || !make || !model) {
     alert('Please fill in your name, phone number, car make, and model.');
+    return;
+  }
+  if(!street || !city || !state || !zip) {
+    alert('Please fill in your full service address.');
     return;
   }
 
@@ -2206,6 +2265,7 @@ async function submitBooking() {
           'Vehicle Type': vtype || 'Not specified',
           Date:           dateLabel,
           Time:           timeLabel,
+          Address:        `${street}${apt ? ', ' + apt : ''}, ${city}, ${state} ${zip}`,
           Notes:          notes || 'None'
         })
       });
