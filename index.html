@@ -1157,7 +1157,7 @@
 <div class="stats-bar">
   <div class="stat-item fade-up"><div class="stat-num">100%</div><div class="stat-label">Mobile Service</div></div>
   <div class="stat-item fade-up"><div class="stat-num">3</div><div class="stat-label">Packages Available</div></div>
-  <div class="stat-item fade-up"><div class="stat-num">$60</div><div class="stat-label">Starting Price</div></div>
+  <div class="stat-item fade-up"><div class="stat-num">$70</div><div class="stat-label">Starting Price</div></div>
   <div class="stat-item fade-up"><div class="stat-num">5★</div><div class="stat-label">Customer Rated</div></div>
 </div>
 
@@ -1260,8 +1260,9 @@
       <div class="card-name">Exterior Detail</div>
       <div class="card-desc">A thorough outside clean leaving your paint gleaming and protected.</div>
       <div class="price-row">
-        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>60</div></div>
-        <div class="price-item"><div class="price-vehicle">Truck / SUV</div><div class="price-amount"><sup>$</sup>80</div></div>
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>70</div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup>85</div></div>
+        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup>100</div></div>
       </div>
       <ul class="features-list">
         <li>Pre-wash treatment</li>
@@ -1276,8 +1277,9 @@
       <div class="card-name">Interior Detail</div>
       <div class="card-desc">Deep cleaned from floor to ceiling — every surface, every crevice.</div>
       <div class="price-row">
-        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>100</div></div>
-        <div class="price-item"><div class="price-vehicle">Truck / SUV</div><div class="price-amount"><sup>$</sup>120</div></div>
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>115</div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup>135</div></div>
+        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup>160</div></div>
       </div>
       <ul class="features-list">
         <li>Deep vacuum — seats, floors, trunk & crevices</li>
@@ -1295,8 +1297,9 @@
       <div class="card-name">Full Detail</div>
       <div class="card-desc">The complete transformation — everything inside and out, showroom ready.</div>
       <div class="price-row">
-        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>140</div></div>
-        <div class="price-item"><div class="price-vehicle">Truck / SUV</div><div class="price-amount"><sup>$</sup>160</div></div>
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>160</div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup>210</div></div>
+        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup>225</div></div>
       </div>
       <ul class="features-list">
         <li>Everything in Exterior Detail</li>
@@ -1747,7 +1750,7 @@ const botRules = [
 
   // Pricing / cost
   { keys: ['price','pricing','cost','how much','rates','charge','fee','expensive','cheap','affordable','quote'],
-    reply: 'Here\'s a quick breakdown:<br><br><strong>Exterior Detail</strong> — from $60 (sedans) / $75 (SUVs & trucks)<br><strong>Interior Detail</strong> — from $100 (sedans) / $120 (SUVs & trucks)<br><strong>Full Detail</strong> — from $140 (sedans) / $160 (SUVs & trucks)<br><br>We also offer headlight restoration as an add-on. Text us for an exact quote!' },
+    reply: 'Here\'s a quick breakdown:<br><br><strong>Exterior Detail</strong> — $70 (sedan) · $85 (truck/SUV) · $100 (3-row SUV)<br><strong>Interior Detail</strong> — $115 (sedan) · $135 (truck/SUV) · $160 (3-row SUV)<br><strong>Full Detail</strong> — $160 (sedan) · $210 (truck/SUV) · $225 (3-row SUV)<br><br>We also offer headlight restoration as an add-on. Text us for an exact quote!' },
 
   // Services
   { keys: ['service','offer','package','exterior','interior','full detail','what do you do','what can you'],
@@ -1904,7 +1907,8 @@ function addMessage(text, type) {
         <select id="bkVehicleType">
           <option value="">Select type</option>
           <option value="Coupe / Sedan">Coupe / Sedan</option>
-          <option value="Truck / SUV">Truck / SUV</option>
+          <option value="Truck / Full-Size SUV">Truck / Full-Size SUV</option>
+          <option value="3-Row SUV">3-Row SUV (Suburban, Tahoe, Traverse, etc.)</option>
         </select>
       </div>
       <div class="bk-field">
