@@ -1454,7 +1454,7 @@
       <div class="why-text">Skip the drive. We bring everything to your driveway, office, or apartment parking lot.</div>
     </div>
     <div class="why-card fade-up">
-      <div class="why-icon">💬</div>
+      
       <div class="why-title">Honest Quotes</div>
       <div class="why-text">We inspect first and quote upfront. Zero surprise charges — you approve everything before we start.</div>
     </div>
@@ -1464,7 +1464,7 @@
       <div class="why-text">We use professional detailing products that protect your paint and upholstery long-term.</div>
     </div>
     <div class="why-card fade-up">
-      <div class="why-icon">⏱️</div>
+      
       <div class="why-title">Works Around You</div>
       <div class="why-text">You keep doing your day while your car gets transformed right outside.</div>
     </div>
@@ -1656,7 +1656,7 @@
   </div>
   <div class="chat-input-row">
     <input type="text" class="chat-input" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChat()">
-    <button class="chat-send" onclick="sendChat()">➤</button>
+    <button class="chat-send" onclick="sendChat()">Send</button>
   </div>
 </div>
 
@@ -1796,7 +1796,7 @@ const botRules = [
 
   // Contact
   { keys: ['contact','email','phone','text','call','reach','number','get in touch'],
-    reply: 'You can reach us anytime:<br><br>📞 <strong>(847) 650-1734</strong> — call or text<br>✉ <strong>excelmobiledetailing11@gmail.com</strong><br><br>We usually respond within a few hours!' },
+    reply: 'You can reach us anytime:<br><br><strong>(847) 650-1734</strong> — call or text<br><strong>excelmobiledetailing11@gmail.com</strong><br><br>We usually respond within a few hours!' },
 
   // Who are you / about
   { keys: ['who are you','about you','students','high school','glenbrook','young','teenager','how old'],
@@ -2239,7 +2239,7 @@ document.getElementById('bkNextMo').addEventListener('click', () => {
 });
 
 // ── Submit ──
-// 👇 PASTE YOUR FORMSPREE FORM ID HERE (e.g. "xyzabcde")
+// PASTE YOUR FORMSPREE FORM ID HERE (e.g. "xyzabcde")
 const FORMSPREE_ID = 'mwvwdrao';
 
 async function submitBooking() {
