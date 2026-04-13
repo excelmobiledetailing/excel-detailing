@@ -1918,8 +1918,21 @@ function addMessage(text, type) {
         </select>
       </div>
       <div class="bk-field">
+        <label>Add-Ons <span style="color:var(--gray);font-weight:400;">(optional)</span></label>
+        <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:.3rem;">
+          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;background:var(--navy3);border:1px solid rgba(184,194,204,0.1);padding:.7rem 1rem;font-size:.88rem;font-weight:400;text-transform:none;letter-spacing:0;color:var(--silver-lt);">
+            <input type="checkbox" id="bkAddonPetHair" style="width:16px;height:16px;accent-color:var(--red);cursor:pointer;">
+            Pet Hair Removal &nbsp;<strong style="color:var(--red);">+$30</strong>
+          </label>
+          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;background:var(--navy3);border:1px solid rgba(184,194,204,0.1);padding:.7rem 1rem;font-size:.88rem;font-weight:400;text-transform:none;letter-spacing:0;color:var(--silver-lt);">
+            <input type="checkbox" id="bkAddonHeadlight" style="width:16px;height:16px;accent-color:var(--red);cursor:pointer;">
+            Headlight Restoration &nbsp;<strong style="color:var(--red);">+$60–$100</strong>
+          </label>
+        </div>
+      </div>
+      <div class="bk-field">
         <label>Additional Notes</label>
-        <textarea id="bkNotes" placeholder="Add-ons? (e.g. Pet Hair Removal +$30, Headlight Restoration) or anything else we should know..."></textarea>
+        <textarea id="bkNotes" placeholder="Anything else we should know about your vehicle?"></textarea>
       </div>
       <button class="bk-submit" onclick="goToAddress()">Next: Service Address →</button>
     </div>
@@ -2239,6 +2252,9 @@ async function submitBooking() {
   const vtype    = document.getElementById('bkVehicleType').value;
   const notes    = document.getElementById('bkNotes').value.trim();
   const service  = document.getElementById('bkService') ? document.getElementById('bkService').value : '';
+  const addonPet = document.getElementById('bkAddonPetHair').checked;
+  const addonHL  = document.getElementById('bkAddonHeadlight').checked;
+  const addons   = [addonPet && 'Pet Hair Removal (+$30)', addonHL && 'Headlight Restoration (+$60–$100)'].filter(Boolean).join(', ') || 'None';
   const street   = document.getElementById('bkStreet').value.trim();
   const apt      = document.getElementById('bkApt').value.trim();
   const city     = document.getElementById('bkCity').value.trim();
@@ -2276,6 +2292,7 @@ async function submitBooking() {
           Date:           dateLabel,
           Time:           timeLabel,
           Address:        `${street}${apt ? ', ' + apt : ''}, ${city}, ${state} ${zip}`,
+          'Add-Ons':      addons,
           Notes:          notes || 'None'
         })
       });
