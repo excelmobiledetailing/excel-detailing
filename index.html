@@ -1386,6 +1386,12 @@
       <div class="addon-price-row"><span>Single headlight</span><strong>$60</strong></div>
     </div>
     <div class="addon-card">
+      <div class="addon-label">Interior Add-On</div>
+      <div class="addon-name">Pet Hair Removal</div>
+      <div class="addon-price-row"><span>Add to any service</span><strong>+$30</strong></div>
+      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Stubborn pet hair embedded in seats and carpet — fully removed using professional brushes and a multi-pass vacuum process.</div>
+    </div>
+    <div class="addon-card">
       <div class="addon-label">Why Restore?</div>
       <div class="addon-name">Clear = Safer Driving</div>
       <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.4rem;">Foggy headlights reduce visibility by up to 80%. Restoration makes your car look newer and keeps you safer on the road.</div>
@@ -1786,7 +1792,7 @@ const botRules = [
 
   // Headlights
   { keys: ['headlight','light','foggy','yellow','restoration','oxidized'],
-    reply: 'Yes, we do headlight restoration! Over time headlights get foggy and yellowed — we can restore them to clear. It\'s available as an add-on to any service. Ask us when booking!' },
+    reply: 'Yes! We offer two add-ons:<br><br><strong>Headlight Restoration</strong> — $60 (single) / $100 (both). Clears up foggy, yellowed headlights.<br><strong>Pet Hair Removal</strong> — +$30. Full removal of embedded pet hair from seats and carpet.<br><br>Just mention it in the notes when booking!' },
 
   // Contact
   { keys: ['contact','email','phone','text','call','reach','number','get in touch'],
@@ -1913,7 +1919,7 @@ function addMessage(text, type) {
       </div>
       <div class="bk-field">
         <label>Additional Notes</label>
-        <textarea id="bkNotes" placeholder="Anything we should know about your vehicle?"></textarea>
+        <textarea id="bkNotes" placeholder="Add-ons? (e.g. Pet Hair Removal +$30, Headlight Restoration) or anything else we should know..."></textarea>
       </div>
       <button class="bk-submit" onclick="goToAddress()">Next: Service Address →</button>
     </div>
