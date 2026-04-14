@@ -28,6 +28,26 @@
       background: var(--dark);
       color: var(--white);
       overflow-x: hidden;
+      opacity: 0;
+    }
+
+    /* ══ SCROLL PROGRESS BAR ══ */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--red), var(--red-light), #ff6060);
+      z-index: 9999; pointer-events: none;
+      transition: width .06s linear;
+    }
+
+    /* ══ PHOTO CARD FADE-IN ══ */
+    .photo-card {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .photo-card.card-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ══ NAV ══ */
@@ -343,6 +363,7 @@
 </head>
 <body>
 
+<div id="scroll-progress"></div>
 <!-- NAV -->
 <nav>
   <a href="./index.html" class="nav-logo">
@@ -704,6 +725,44 @@
     if (e.key === 'ArrowLeft') showSlide(currentIdx - 1);
     if (e.key === 'ArrowRight') showSlide(currentIdx + 1);
   });
+
+  // ── Page fade-in ──
+  requestAnimationFrame(() => {
+    document.body.style.transition = 'opacity .5s ease';
+    document.body.style.opacity = '1';
+  });
+
+  // ── Page fade-out on navigation ──
+  document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    if (href.includes('.html') && !link.getAttribute('onclick')) {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        document.body.style.transition = 'opacity .28s ease';
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = href; }, 290);
+      });
+    }
+  });
+
+  // ── Scroll progress bar ──
+  const progressEl = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const sy = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    progressEl.style.width = (total > 0 ? (sy / total) * 100 : 0) + '%';
+  }, { passive: true });
+
+  // ── Photo cards fade in as they scroll into view ──
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('card-visible'), i * 60);
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.photo-card').forEach(c => cardObserver.observe(c));
 
   // ── Filter ──
   const filterBtns = document.querySelectorAll('.filter-btn');
