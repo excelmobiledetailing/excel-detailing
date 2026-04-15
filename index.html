@@ -425,6 +425,19 @@
       padding: .2rem .7rem; margin-bottom: 1.4rem;
     }
 
+    /* ── Car count toggle ── */
+    .bk-cars-btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; cursor: pointer;
+      padding: .55rem 1.4rem;
+      background: transparent; color: var(--silver);
+      border: 1px solid rgba(184,194,204,0.2);
+      transition: all .2s;
+    }
+    .bk-cars-btn:hover { border-color: var(--silver); color: var(--silver-lt); }
+    .bk-cars-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
+
     /* ── Steps ── */
     .bk-step { display: none; }
     .bk-step.active {
@@ -1952,6 +1965,43 @@ function addMessage(text, type) {
           <option value="3-Row SUV">3-Row SUV (Suburban, Tahoe, Traverse, etc.)</option>
         </select>
       </div>
+      <!-- Number of cars -->
+      <div class="bk-field">
+        <label>Number of Cars</label>
+        <div style="display:flex;gap:.6rem;margin-top:.4rem;">
+          <button type="button" class="bk-cars-btn active" id="bkCarsBtn1" onclick="setCarCount(1)">1 Car</button>
+          <button type="button" class="bk-cars-btn" id="bkCarsBtn2" onclick="setCarCount(2)">2 Cars</button>
+        </div>
+      </div>
+
+      <!-- Second car (hidden until 2 cars selected) -->
+      <div id="bkSecondCar" style="max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.22,.68,0,1.1),opacity .35s ease;opacity:0;">
+        <div style="display:flex;align-items:center;gap:.8rem;margin:.8rem 0 1rem;">
+          <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);">Second Vehicle</span>
+          <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
+        </div>
+        <div class="bk-row">
+          <div class="bk-field">
+            <label>Car 2 Make</label>
+            <input type="text" id="bkMake2" placeholder="e.g. BMW">
+          </div>
+          <div class="bk-field">
+            <label>Car 2 Model</label>
+            <input type="text" id="bkModel2" placeholder="e.g. X5">
+          </div>
+        </div>
+        <div class="bk-field">
+          <label>Car 2 Vehicle Type</label>
+          <select id="bkVehicleType2">
+            <option value="">Select type</option>
+            <option value="Coupe / Sedan">Coupe / Sedan</option>
+            <option value="Truck / Full-Size SUV">Truck / Full-Size SUV</option>
+            <option value="3-Row SUV">3-Row SUV (Suburban, Tahoe, Traverse, etc.)</option>
+          </select>
+        </div>
+      </div>
+
       <div class="bk-field">
         <label>Add-Ons <span style="color:var(--gray);font-weight:400;">(optional)</span></label>
         <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:.3rem;">
@@ -2241,6 +2291,21 @@ function bkGoStep(n) {
   }
 }
 
+let bkCarCount = 1;
+function setCarCount(n) {
+  bkCarCount = n;
+  document.getElementById('bkCarsBtn1').classList.toggle('active', n === 1);
+  document.getElementById('bkCarsBtn2').classList.toggle('active', n === 2);
+  const sec = document.getElementById('bkSecondCar');
+  if (n === 2) {
+    sec.style.maxHeight = '400px';
+    sec.style.opacity   = '1';
+  } else {
+    sec.style.maxHeight = '0';
+    sec.style.opacity   = '0';
+  }
+}
+
 function goToAddress() {
   const first = document.getElementById('bkFirst').value.trim();
   const phone = document.getElementById('bkPhone').value.trim();
@@ -2249,6 +2314,14 @@ function goToAddress() {
   if(!first || !phone || !make || !model) {
     alert('Please fill in your name, phone number, car make, and model.');
     return;
+  }
+  if(bkCarCount === 2) {
+    const make2  = document.getElementById('bkMake2').value.trim();
+    const model2 = document.getElementById('bkModel2').value.trim();
+    if(!make2 || !model2) {
+      alert('Please fill in the make and model for your second car.');
+      return;
+    }
   }
   bkGoStep(4);
 }
@@ -2261,6 +2334,7 @@ function openBooking(service) {
   document.getElementById('bkStepCal').classList.add('active');
   document.getElementById('bkSuccess').style.display = 'none';
   document.getElementById('bkOverlay').classList.add('open');
+  setCarCount(1); // reset to 1 car each time modal opens
   document.body.style.overflow = 'hidden';
   bkSelectedDate = null; bkSelectedSlot = null;
   bkViewDate = new Date();
@@ -2304,6 +2378,9 @@ async function submitBooking() {
   const addonPet = document.getElementById('bkAddonPetHair').checked;
   const addonHL  = document.getElementById('bkAddonHeadlight').checked;
   const addons   = [addonPet && 'Pet Hair Removal (+$30)', addonHL && 'Headlight Restoration (+$60–$100)'].filter(Boolean).join(', ') || 'None';
+  const make2    = bkCarCount === 2 ? document.getElementById('bkMake2').value.trim() : '';
+  const model2   = bkCarCount === 2 ? document.getElementById('bkModel2').value.trim() : '';
+  const vtype2   = bkCarCount === 2 ? document.getElementById('bkVehicleType2').value : '';
   const street   = document.getElementById('bkStreet').value.trim();
   const apt      = document.getElementById('bkApt').value.trim();
   const city     = document.getElementById('bkCity').value.trim();
@@ -2330,19 +2407,25 @@ async function submitBooking() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
-          _subject:       `New Booking Request — ${first} ${last}`.trim(),
-          Name:           `${first} ${last}`.trim(),
-          Phone:          phone,
-          Email:          email || 'Not provided',
-          Service:        service || 'Not specified',
-          'Car Make':     make,
-          'Car Model':    model,
-          'Vehicle Type': vtype || 'Not specified',
-          Date:           dateLabel,
-          Time:           timeLabel,
-          Address:        `${street}${apt ? ', ' + apt : ''}, ${city}, ${state} ${zip}`,
-          'Add-Ons':      addons,
-          Notes:          notes || 'None'
+          _subject:         `New Booking Request — ${first} ${last}`.trim(),
+          Name:             `${first} ${last}`.trim(),
+          Phone:            phone,
+          Email:            email || 'Not provided',
+          Service:          service || 'Not specified',
+          'Number of Cars': bkCarCount,
+          'Car 1 Make':     make,
+          'Car 1 Model':    model,
+          'Car 1 Type':     vtype || 'Not specified',
+          ...(bkCarCount === 2 && {
+            'Car 2 Make':  make2,
+            'Car 2 Model': model2,
+            'Car 2 Type':  vtype2 || 'Not specified'
+          }),
+          Date:             dateLabel,
+          Time:             timeLabel,
+          Address:          `${street}${apt ? ', ' + apt : ''}, ${city}, ${state} ${zip}`,
+          'Add-Ons':        addons,
+          Notes:            notes || 'None'
         })
       });
     } catch(err) {
