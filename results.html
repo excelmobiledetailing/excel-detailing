@@ -39,15 +39,28 @@
       transition: width .06s linear;
     }
 
-    /* ══ PHOTO CARD FADE-IN ══ */
+    /* ══ PHOTO CARD REVEAL ══ */
     .photo-card {
       opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .55s ease, transform .55s ease;
+      transform: translateY(22px) scale(0.95);
+      transition: opacity .6s cubic-bezier(.22,.68,0,1.1), transform .6s cubic-bezier(.22,.68,0,1.1);
+      will-change: transform, opacity;
     }
     .photo-card.card-visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+    }
+
+    /* ══ 3D TILT (desktop only) ══ */
+    @media (hover: hover) {
+      .photo-card { transform-style: preserve-3d; }
+      .photo-card img { transition: transform .5s ease; }
+      .photo-card:hover img { transform: scale(1.07); }
+    }
+    /* on touch devices — NO tilt, standard hover */
+    @media (hover: none) {
+      .photo-card { transform: none !important; }
+      .photo-card.card-visible { transform: translateY(0) scale(1) !important; }
     }
 
     /* ══ NAV ══ */
@@ -272,9 +285,12 @@
     /* ══ LIGHTBOX ══ */
     .lightbox {
       position: fixed; inset: 0; z-index: 1000;
-      background: rgba(4,8,16,0.96);
+      background: rgba(4,8,16,0.97);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity .3s;
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s ease, backdrop-filter .35s ease;
     }
     .lightbox.open { opacity: 1; pointer-events: all; }
     .lightbox-inner {
@@ -285,40 +301,57 @@
     .lightbox-img {
       max-width: 85vw; max-height: 85vh;
       object-fit: contain; display: block;
-      box-shadow: 0 0 80px rgba(0,0,0,0.8);
+      box-shadow: 0 8px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(184,194,204,0.06);
+      border-radius: 2px;
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    .lightbox-img.lb-fade { opacity: 0; transform: scale(0.97); }
+    @keyframes lbScaleIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .lightbox.open .lightbox-img:not(.lb-fade) {
+      animation: lbScaleIn .3s cubic-bezier(.22,.68,0,1.1) both;
     }
     .lightbox-close {
       position: fixed; top: 1.5rem; right: 1.5rem;
-      background: var(--red); border: none; color: #fff;
-      width: 44px; height: 44px; font-size: 1.3rem;
+      background: rgba(200,32,42,0.9); border: none; color: #fff;
+      width: 44px; height: 44px; font-size: 1.1rem;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background .2s;
+      transition: background .2s, transform .2s;
+      border-radius: 2px;
     }
-    .lightbox-close:hover { background: var(--red-light); }
+    .lightbox-close:hover { background: var(--red-light); transform: scale(1.1); }
     .lightbox-prev, .lightbox-next {
       position: fixed; top: 50%; transform: translateY(-50%);
-      background: rgba(11,30,61,0.85); border: 1px solid rgba(184,194,204,0.2);
-      color: var(--silver-lt); width: 50px; height: 60px;
-      font-size: 1.4rem; cursor: pointer;
+      background: rgba(11,30,61,0.7); border: 1px solid rgba(184,194,204,0.15);
+      color: var(--silver-lt); width: 50px; height: 70px;
+      font-size: 1.6rem; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background .2s;
+      transition: background .2s, border-color .2s;
+      backdrop-filter: blur(6px);
     }
-    .lightbox-prev:hover, .lightbox-next:hover { background: var(--navy3); }
+    .lightbox-prev:hover, .lightbox-next:hover {
+      background: rgba(200,32,42,0.8); border-color: rgba(200,32,42,0.5);
+    }
     .lightbox-prev { left: 1.5rem; }
     .lightbox-next { right: 1.5rem; }
     .lightbox-caption {
       position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: .85rem; font-weight: 700; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--silver);
-      background: rgba(11,30,61,0.9); padding: .5rem 1.4rem;
-      border: 1px solid rgba(184,194,204,0.1);
-      white-space: nowrap;
+      font-size: .85rem; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--silver-lt);
+      background: rgba(11,30,61,0.85); padding: .5rem 1.6rem;
+      border: 1px solid rgba(184,194,204,0.12);
+      white-space: nowrap; backdrop-filter: blur(8px);
+      transition: opacity .2s ease;
     }
     .lightbox-counter {
       position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%);
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: .8rem; letter-spacing: .12em; color: var(--gray);
+      font-size: .8rem; letter-spacing: .14em; color: var(--gray);
+      background: rgba(8,15,28,0.7); padding: .3rem .9rem;
+      backdrop-filter: blur(6px);
     }
 
     /* ══ FOOTER ══ */
@@ -691,7 +724,9 @@
   function openLightbox(card) {
     const visible = getVisibleCards();
     currentIdx = visible.indexOf(card);
-    showSlide(currentIdx, visible);
+    lbImg.src = card.dataset.src;
+    lbCap.textContent = card.dataset.caption || '';
+    lbCount.textContent = `${currentIdx + 1} / ${visible.length}`;
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -702,15 +737,20 @@
     if (idx >= visible.length) idx = 0;
     currentIdx = idx;
     const card = visible[idx];
-    lbImg.src = card.dataset.src;
-    lbCap.textContent = card.dataset.caption || '';
-    lbCount.textContent = `${idx + 1} / ${visible.length}`;
+    // crossfade
+    lbImg.classList.add('lb-fade');
+    setTimeout(() => {
+      lbImg.src = card.dataset.src;
+      lbCap.textContent = card.dataset.caption || '';
+      lbCount.textContent = `${idx + 1} / ${visible.length}`;
+      lbImg.classList.remove('lb-fade');
+    }, 200);
   }
 
   function closeLightbox() {
     lb.classList.remove('open');
     document.body.style.overflow = '';
-    lbImg.src = '';
+    setTimeout(() => { lbImg.src = ''; }, 350);
   }
 
   cards.forEach(card => card.addEventListener('click', () => openLightbox(card)));
@@ -725,6 +765,16 @@
     if (e.key === 'ArrowLeft') showSlide(currentIdx - 1);
     if (e.key === 'ArrowRight') showSlide(currentIdx + 1);
   });
+
+  // swipe support for mobile lightbox
+  let lbTouchX = null;
+  lb.addEventListener('touchstart', e => { lbTouchX = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', e => {
+    if (lbTouchX === null) return;
+    const dx = e.changedTouches[0].clientX - lbTouchX;
+    if (Math.abs(dx) > 45) showSlide(dx < 0 ? currentIdx + 1 : currentIdx - 1);
+    lbTouchX = null;
+  }, { passive: true });
 
   // ── Page fade-in ──
   requestAnimationFrame(() => {
@@ -753,16 +803,46 @@
     progressEl.style.width = (total > 0 ? (sy / total) * 100 : 0) + '%';
   }, { passive: true });
 
-  // ── Photo cards fade in as they scroll into view ──
+  // ── Photo cards: staggered scale+fade reveal ──
   const cardObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('card-visible'), i * 60);
-        cardObserver.unobserve(entry.target);
-      }
+    // group by row using offsetTop
+    const visible = entries.filter(e => e.isIntersecting);
+    const rows = {};
+    visible.forEach(e => {
+      const top = Math.round(e.target.getBoundingClientRect().top / 10) * 10;
+      (rows[top] = rows[top] || []).push(e.target);
     });
-  }, { threshold: 0.08 });
+    let delay = 0;
+    Object.values(rows).forEach(row => {
+      row.forEach(card => {
+        setTimeout(() => card.classList.add('card-visible'), delay);
+        delay += 75;
+      });
+    });
+    visible.forEach(e => cardObserver.unobserve(e.target));
+  }, { threshold: 0.07 });
   document.querySelectorAll('.photo-card').forEach(c => cardObserver.observe(c));
+
+  // ── 3D tilt on hover (desktop / mouse only — disabled on touch) ──
+  const isTouchDevice = window.matchMedia('(hover: none)').matches;
+  if (!isTouchDevice) {
+    document.querySelectorAll('.photo-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5;
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) scale(1.02)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        // restore card-visible scale
+        card.style.transition = 'transform .5s cubic-bezier(.22,.68,0,1.1)';
+      });
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'transform .15s ease';
+      });
+    });
+  }
 
   // ── Filter ──
   const filterBtns = document.querySelectorAll('.filter-btn');
