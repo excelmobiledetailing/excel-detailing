@@ -2090,7 +2090,15 @@ const SLOTS_ALL = [
 const SLOTS_WEEKDAY = [
   {key:'17', label:'5:00 PM'}
 ];
+// Special date overrides — add any day you have off school here
+const SLOTS_OVERRIDE = {
+  '2026-04-16': [
+    {key:'10', label:'10:00 AM'},
+    {key:'14', label:'2:00 PM'}
+  ]
+};
 function getSlotsForDate(dateStr) {
+  if (SLOTS_OVERRIDE[dateStr]) return SLOTS_OVERRIDE[dateStr];
   const day = new Date(dateStr + 'T12:00:00').getDay(); // 0=Sun,6=Sat
   return (day === 0 || day === 6) ? SLOTS_ALL : SLOTS_WEEKDAY;
 }
