@@ -2147,14 +2147,35 @@ const SLOTS_OVERRIDE = {
     {key:'14', label:'2:00 PM'}
   ]
 };
-function getSlotsForDate(dateStr) {
-  if (SLOTS_OVERRIDE[dateStr]) return SLOTS_OVERRIDE[dateStr];
-  const day = new Date(dateStr + 'T12:00:00').getDay(); // 0=Sun,6=Sat
-  return (day === 0 || day === 6) ? SLOTS_ALL : SLOTS_WEEKDAY;
+function getSlotsForDate(dateStr, twoCarMode = false) {
+  let slots;
+  if (SLOTS_OVERRIDE[dateStr]) { slots = SLOTS_OVERRIDE[dateStr]; }
+  else {
+    const day = new Date(dateStr + 'T12:00:00').getDay(); // 0=Sun,6=Sat
+    slots = (day === 0 || day === 6) ? SLOTS_ALL : SLOTS_WEEKDAY;
+  }
+  if (!twoCarMode) return slots;
+  // In 2-car mode, only show slots where the current slot AND the next slot are both free
+  return slots.filter((s, idx) => {
+    if (isSlotTaken(dateStr, s.key)) return false;
+    const nextSlot = slots[idx + 1];
+    if (!nextSlot) return true; // last slot — book it alone (only one block needed at end of day)
+    return !isSlotTaken(dateStr, nextSlot.key);
+  });
 }
 function slotKey(dateStr, key) { return `${dateStr}_${key}`; }
 function isSlotTaken(dateStr, key) { return !!bookedSlots[slotKey(dateStr, key)]; }
-function bookSlot(dateStr, key) { bkDb.ref(`bookings/${slotKey(dateStr, key)}`).set(true); }
+function bookSlot(dateStr, key) {
+  bkDb.ref(`bookings/${slotKey(dateStr, key)}`).set(true);
+  if (bkCarCount === 2) {
+    // Also lock the next slot so no one else books during the 2-car job
+    const allSlots = getSlotsForDate(dateStr, false);
+    const idx = allSlots.findIndex(s => s.key === key);
+    if (idx !== -1 && idx < allSlots.length - 1) {
+      bkDb.ref(`bookings/${slotKey(dateStr, allSlots[idx + 1].key)}`).set(true);
+    }
+  }
+}
 function slotsAvail(dateStr) { return getSlotsForDate(dateStr).filter(s => !isSlotTaken(dateStr, s.key)).length; }
 
 // ── Calendar state ──
@@ -2245,7 +2266,7 @@ function showTimeSlots(dateStr) {
   // Slots
   const grid = document.getElementById('bkSlotsGrid');
   grid.innerHTML = '';
-  getSlotsForDate(dateStr).forEach(s => {
+  getSlotsForDate(dateStr, bkCarCount === 2).forEach(s => {
     const taken = isSlotTaken(dateStr, s.key);
     const div = document.createElement('div');
     div.className = 'bk-slot' + (taken ? ' bk-taken' : '');
@@ -2304,6 +2325,8 @@ function setCarCount(n) {
     sec.style.maxHeight = '0';
     sec.style.opacity   = '0';
   }
+  // Re-render time slots if a date is already selected so availability updates instantly
+  if (bkSelectedDate) showTimeSlots(bkSelectedDate);
 }
 
 function goToAddress() {
