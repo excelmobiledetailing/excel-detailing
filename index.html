@@ -2140,18 +2140,27 @@ const SLOTS_ALL = [
 const SLOTS_WEEKDAY = [
   {key:'17', label:'5:00 PM'}
 ];
+const SLOTS_SATURDAY = [
+  {key:'9',  label:'9:00 AM'},
+  {key:'13', label:'1:00 PM'},
+  {key:'17', label:'5:00 PM'}
+];
+const SLOTS_SUNDAY = [
+  {key:'15', label:'3:00 PM'}
+];
 // Special date overrides — add any day you have off school here
 const SLOTS_OVERRIDE = {
   '2026-04-16': [{key:'10', label:'10:00 AM'}],
-  '2026-04-18': [{key:'10', label:'10:00 AM'},{key:'13', label:'1:00 PM'}],
-  '2026-04-19': [{key:'15', label:'3:00 PM'}]
+  '2026-04-18': [{key:'10', label:'10:00 AM'},{key:'13', label:'1:00 PM'}]
 };
 function getSlotsForDate(dateStr, twoCarMode = false) {
   let slots;
   if (SLOTS_OVERRIDE[dateStr]) { slots = SLOTS_OVERRIDE[dateStr]; }
   else {
     const day = new Date(dateStr + 'T12:00:00').getDay(); // 0=Sun,6=Sat
-    slots = (day === 0 || day === 6) ? SLOTS_ALL : SLOTS_WEEKDAY;
+    if (day === 6) slots = SLOTS_SATURDAY;
+    else if (day === 0) slots = SLOTS_SUNDAY;
+    else slots = SLOTS_WEEKDAY;
   }
   if (!twoCarMode) return slots;
   // In 2-car mode, only show slots where the current slot AND the next slot are both free
