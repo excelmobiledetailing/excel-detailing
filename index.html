@@ -438,6 +438,48 @@
     .bk-cars-btn:hover { border-color: var(--silver); color: var(--silver-lt); }
     .bk-cars-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
 
+    /* ── Step Progress ── */
+    .bk-progress {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; margin: 1.2rem 0 1.6rem; padding: 0 .5rem;
+    }
+    .bk-progress-step {
+      display: flex; flex-direction: column; align-items: center; gap: .3rem;
+      flex-shrink: 0;
+    }
+    .bk-prog-circle {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif; font-size: .85rem;
+      font-weight: 700; letter-spacing: .04em;
+      border: 2px solid rgba(184,194,204,0.2);
+      color: rgba(184,194,204,0.35);
+      background: transparent;
+      transition: all .3s ease;
+    }
+    .bk-prog-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: .6rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(184,194,204,0.3);
+      transition: color .3s ease;
+    }
+    .bk-prog-line {
+      flex: 1; height: 2px; background: rgba(184,194,204,0.12);
+      margin: 0 6px; margin-bottom: 18px;
+      transition: background .3s ease;
+    }
+    .bk-progress-step.active .bk-prog-circle {
+      background: var(--red); border-color: var(--red);
+      color: #fff; box-shadow: 0 0 12px rgba(200,32,42,0.4);
+    }
+    .bk-progress-step.active .bk-prog-label { color: var(--silver-lt); }
+    .bk-progress-step.done .bk-prog-circle {
+      background: transparent; border-color: var(--red);
+      color: var(--red);
+    }
+    .bk-progress-step.done .bk-prog-label { color: var(--gray); }
+    .bk-prog-line.done { background: var(--red); }
+
     /* ── Steps ── */
     .bk-step { display: none; }
     .bk-step.active {
@@ -1900,6 +1942,29 @@ function addMessage(text, type) {
     <span class="bk-service-tag" id="bkServiceTag">Full Detail</span>
     <input type="hidden" id="bkService">
 
+    <!-- Step Progress Indicator -->
+    <div class="bk-progress" id="bkProgress">
+      <div class="bk-progress-step active" id="bkProg1">
+        <div class="bk-prog-circle">1</div>
+        <div class="bk-prog-label">Date</div>
+      </div>
+      <div class="bk-prog-line"></div>
+      <div class="bk-progress-step" id="bkProg2">
+        <div class="bk-prog-circle">2</div>
+        <div class="bk-prog-label">Time</div>
+      </div>
+      <div class="bk-prog-line"></div>
+      <div class="bk-progress-step" id="bkProg3">
+        <div class="bk-prog-circle">3</div>
+        <div class="bk-prog-label">Details</div>
+      </div>
+      <div class="bk-prog-line"></div>
+      <div class="bk-progress-step" id="bkProg4">
+        <div class="bk-prog-circle">4</div>
+        <div class="bk-prog-label">Address</div>
+      </div>
+    </div>
+
     <!-- STEP 1: Calendar -->
     <div class="bk-step active" id="bkStepCal">
       <div class="bk-cal-nav">
@@ -2303,6 +2368,18 @@ function bkGoStep(n) {
   const stepIds = {1:'bkStepCal', 2:'bkStepTime', 3:'bkStepForm', 4:'bkStepAddr'};
   const el = document.getElementById(stepIds[n]);
   if (el) { if (goingBack) el.classList.add('step-back'); el.classList.add('active'); }
+
+  // Update progress indicator
+  for (let i = 1; i <= 4; i++) {
+    const prog = document.getElementById('bkProg' + i);
+    const line = prog ? prog.nextElementSibling : null;
+    prog.classList.remove('active', 'done');
+    if (i < n) prog.classList.add('done');
+    else if (i === n) prog.classList.add('active');
+    if (line && line.classList.contains('bk-prog-line')) {
+      line.classList.toggle('done', i < n);
+    }
+  }
   if(n===1) {} // already handled above
   if(n===2) {} // already handled above
   if(n===3) {
@@ -2365,6 +2442,7 @@ function openBooking(service) {
   document.querySelectorAll('.bk-step').forEach(s => s.classList.remove('active'));
   document.getElementById('bkStepCal').classList.add('active');
   document.getElementById('bkSuccess').style.display = 'none';
+  document.getElementById('bkProgress').style.display = 'flex';
   document.getElementById('bkOverlay').classList.add('open');
   setCarCount(1); // reset to 1 car each time modal opens
   document.body.style.overflow = 'hidden';
@@ -2474,6 +2552,7 @@ async function submitBooking() {
     `${dateLabel} · ${timeLabel} · ${make} ${model}`;
   document.querySelectorAll('.bk-step').forEach(s => s.classList.remove('active'));
   document.getElementById('bkSuccess').style.display = 'block';
+  document.getElementById('bkProgress').style.display = 'none';
   setTimeout(closeBooking, 4500);
 }
 
