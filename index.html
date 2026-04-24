@@ -480,6 +480,21 @@
     .bk-progress-step.done .bk-prog-label { color: var(--gray); }
     .bk-prog-line.done { background: var(--red); }
 
+    /* ── Add-on cards ── */
+    .bk-addon-card {
+      background: var(--navy3); border: 1px solid rgba(184,194,204,0.12);
+      padding: .85rem 1rem; cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .bk-addon-card:hover { border-color: rgba(200,32,42,0.4); background: rgba(200,32,42,0.05); }
+    .bk-addon-card.selected { border-color: var(--red); background: rgba(200,32,42,0.08); }
+    .bk-addon-check {
+      font-family:'Barlow Condensed',sans-serif; font-size:.72rem;
+      font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--gray); margin-top:.25rem; transition: color .2s;
+    }
+    .bk-addon-card.selected .bk-addon-check { color: var(--red); }
+
     /* ── Steps ── */
     .bk-step { display: none; }
     .bk-step.active {
@@ -2068,17 +2083,40 @@ function addMessage(text, type) {
         </div>
       </div>
 
+      <!-- Add-Ons -->
       <div class="bk-field">
-        <label>Add-Ons <span style="color:var(--gray);font-weight:400;">(optional)</span></label>
-        <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:.3rem;">
-          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;background:var(--navy3);border:1px solid rgba(184,194,204,0.1);padding:.7rem 1rem;font-size:.88rem;font-weight:400;text-transform:none;letter-spacing:0;color:var(--silver-lt);">
-            <input type="checkbox" id="bkAddonPetHair" style="width:16px;height:16px;accent-color:var(--red);cursor:pointer;">
-            Pet Hair Removal &nbsp;<strong style="color:var(--red);">+$30</strong>
-          </label>
-          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;background:var(--navy3);border:1px solid rgba(184,194,204,0.1);padding:.7rem 1rem;font-size:.88rem;font-weight:400;text-transform:none;letter-spacing:0;color:var(--silver-lt);">
-            <input type="checkbox" id="bkAddonHeadlight" style="width:16px;height:16px;accent-color:var(--red);cursor:pointer;">
-            Headlight Restoration &nbsp;<strong style="color:var(--red);">+$60–$100</strong>
-          </label>
+        <div style="display:flex;align-items:center;gap:.8rem;margin:.4rem 0 .9rem;">
+          <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);">Enhance Your Service</span>
+          <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
+        </div>
+        <input type="hidden" id="bkAddonPetHair" value="0">
+        <input type="hidden" id="bkAddonHeadlight" value="0">
+        <div style="display:flex;flex-direction:column;gap:.7rem;">
+          <div class="bk-addon-card" id="bkAddonCardPet" onclick="toggleAddon('pet')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--silver-lt);">Pet Hair Removal</div>
+                <div style="font-size:.78rem;color:var(--gray);margin-top:.2rem;">Full removal from seats & carpet</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;margin-left:1rem;">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red);">+$30</div>
+                <div class="bk-addon-check" id="bkAddonCheckPet">+ Add</div>
+              </div>
+            </div>
+          </div>
+          <div class="bk-addon-card" id="bkAddonCardHL" onclick="toggleAddon('hl')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--silver-lt);">Headlight Restoration</div>
+                <div style="font-size:.78rem;color:var(--gray);margin-top:.2rem;">Clear up foggy, yellowed headlights</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;margin-left:1rem;">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red);">+$60–$100</div>
+                <div class="bk-addon-check" id="bkAddonCheckHL">+ Add</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="bk-field">
@@ -2398,6 +2436,16 @@ function bkGoStep(n) {
   }
 }
 
+function toggleAddon(type) {
+  const isPet = type === 'pet';
+  const card  = document.getElementById(isPet ? 'bkAddonCardPet' : 'bkAddonCardHL');
+  const check = document.getElementById(isPet ? 'bkAddonCheckPet' : 'bkAddonCheckHL');
+  const input = document.getElementById(isPet ? 'bkAddonPetHair' : 'bkAddonHeadlight');
+  const isOn  = card.classList.toggle('selected');
+  check.textContent = isOn ? '✓ Added' : '+ Add';
+  input.value = isOn ? '1' : '0';
+}
+
 let bkCarCount = 1;
 function setCarCount(n) {
   bkCarCount = n;
@@ -2445,6 +2493,11 @@ function openBooking(service) {
   document.getElementById('bkProgress').style.display = 'flex';
   document.getElementById('bkOverlay').classList.add('open');
   setCarCount(1); // reset to 1 car each time modal opens
+  // Reset add-on cards
+  ['bkAddonCardPet','bkAddonCardHL'].forEach(id => document.getElementById(id).classList.remove('selected'));
+  ['bkAddonCheckPet','bkAddonCheckHL'].forEach(id => document.getElementById(id).textContent = '+ Add');
+  document.getElementById('bkAddonPetHair').value = '0';
+  document.getElementById('bkAddonHeadlight').value = '0';
   document.body.style.overflow = 'hidden';
   bkSelectedDate = null; bkSelectedSlot = null;
   bkViewDate = new Date();
@@ -2485,8 +2538,8 @@ async function submitBooking() {
   const vtype    = document.getElementById('bkVehicleType').value;
   const notes    = document.getElementById('bkNotes').value.trim();
   const service  = document.getElementById('bkService') ? document.getElementById('bkService').value : '';
-  const addonPet = document.getElementById('bkAddonPetHair').checked;
-  const addonHL  = document.getElementById('bkAddonHeadlight').checked;
+  const addonPet = document.getElementById('bkAddonPetHair').value === '1';
+  const addonHL  = document.getElementById('bkAddonHeadlight').value === '1';
   const addons   = [addonPet && 'Pet Hair Removal (+$30)', addonHL && 'Headlight Restoration (+$60–$100)'].filter(Boolean).join(', ') || 'None';
   const make2    = bkCarCount === 2 ? document.getElementById('bkMake2').value.trim() : '';
   const model2   = bkCarCount === 2 ? document.getElementById('bkModel2').value.trim() : '';
