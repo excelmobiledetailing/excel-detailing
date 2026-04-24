@@ -1860,10 +1860,6 @@ const botRules = [
   { keys: ['hi','hello','hey','what\'s up','sup','yo','howdy','hiya'],
     reply: 'Hey! Welcome to Excel Mobile Detailing. What can I help you with today? You can ask about pricing, booking, how long it takes, or our service area!' },
 
-  // Founders / who made it
-  { keys: ['founder','who made','who created','who built','who owns','owner','who started','about you','who are you','your name','behind this','behind excel'],
-    reply: 'Excel Mobile Detailing was founded by <strong>Josh Ruderman</strong> and <strong>Aren Stolyarov</strong>. We\'re passionate about cars and making detailing as easy and convenient as possible — that\'s why we come to you!' },
-
   // Pricing / cost
   { keys: ['price','pricing','cost','how much','rates','charge','fee','expensive','cheap','affordable','quote'],
     reply: 'Here\'s a quick breakdown:<br><br><strong>Exterior Detail</strong> — $80 (sedan) · $90 (truck/SUV) · $100 (3-row SUV)<br><strong>Interior Detail</strong> — $140 (sedan) · $160 (truck/SUV) · $180 (3-row SUV)<br><strong>Full Detail</strong> — $185 (sedan) · $225 (truck/SUV) · $250 (3-row SUV)<br><br>We also offer headlight restoration as an add-on. Text us for an exact quote!' },
@@ -1909,8 +1905,8 @@ const botRules = [
     reply: 'You can reach us anytime:<br><br><strong>(847) 650-1734</strong> — call or text<br><strong>excelmobiledetailing11@gmail.com</strong><br><br>We usually respond within a few hours!' },
 
   // Who are you / about
-  { keys: ['who are you','about you','students','high school','glenbrook','young','teenager','how old'],
-    reply: 'We\'re <strong>Josh & Aren</strong>, two students at Glenbrook North High School in Northbrook, IL. We started Excel Mobile Detailing because we love cars and wanted to build something real. We treat every car like it\'s our own!' },
+  { keys: ['who are you','about you','students','high school','glenbrook','young','teenager','how old','founder','who made','who created','who built','who owns','owner','who started','behind this','behind excel','your name'],
+    reply: 'Excel Mobile Detailing was founded by <strong>Josh Ruderman</strong> and <strong>Aren Stolyarov</strong> — two students at Glenbrook North High School in Northbrook, IL. We started this because we love cars and wanted to build something real. We treat every car like it\'s our own!' },
 
   // Thank you
   { keys: ['thank','thanks','appreciate','helpful','great','awesome','perfect','nice'],
@@ -2460,9 +2456,10 @@ function bkGoStep(n) {
 }
 
 const BK_PRICES = {
-  'Exterior Detail': {'Coupe / Sedan': 80,  'Truck / Full-Size SUV': 90,  '3-Row SUV': 100},
-  'Interior Detail': {'Coupe / Sedan': 140, 'Truck / Full-Size SUV': 160, '3-Row SUV': 180},
-  'Full Detail':     {'Coupe / Sedan': 185, 'Truck / Full-Size SUV': 225, '3-Row SUV': 250},
+  'Exterior Detail':  {'Coupe / Sedan': 80,  'Truck / Full-Size SUV': 90,  '3-Row SUV': 100},
+  'Interior Detail':  {'Coupe / Sedan': 140, 'Truck / Full-Size SUV': 160, '3-Row SUV': 180},
+  'Full Detail':      {'Coupe / Sedan': 185, 'Truck / Full-Size SUV': 225, '3-Row SUV': 250},
+  'Book a Service':   {'Coupe / Sedan': null, 'Truck / Full-Size SUV': null, '3-Row SUV': null},
 };
 function updateEstimate() {
   const service = document.getElementById('bkService').value;
@@ -2556,6 +2553,7 @@ function openBooking(service) {
   document.getElementById('bkAddonPetHair').value = '0';
   document.getElementById('bkAddonHeadlight').value = '0';
   document.getElementById('bkEstimate').style.display = 'none';
+  document.getElementById('bkVehicleType').value = '';
   const drop = document.getElementById('bkHLDropdown');
   drop.style.display = 'none'; drop.style.maxHeight = '0'; drop.style.opacity = '0';
   document.getElementById('bkHLCount').value = 'both';
