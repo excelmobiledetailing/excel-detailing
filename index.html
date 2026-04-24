@@ -2117,6 +2117,16 @@ function addMessage(text, type) {
               </div>
             </div>
           </div>
+          <!-- Headlight count dropdown — shown when HL is selected -->
+          <div id="bkHLDropdown" style="display:none;max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.22,.68,0,1.1),opacity .3s;opacity:0;">
+            <div class="bk-field" style="margin-top:.4rem;">
+              <label>How many headlights?</label>
+              <select id="bkHLCount" onchange="updateEstimate()" style="margin-top:.35rem;">
+                <option value="both">Both headlights — $100</option>
+                <option value="single">Single headlight — $60</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
       <!-- Estimate -->
@@ -2446,10 +2456,9 @@ function bkGoStep(n) {
 }
 
 const BK_PRICES = {
-  'Exterior Detail':  {'Coupe / Sedan': 80, 'Truck / Full-Size SUV': 90, '3-Row SUV': 100},
-  'Interior Detail':  {'Coupe / Sedan': 140,'Truck / Full-Size SUV': 160,'3-Row SUV': 180},
-  'Full Detail':      {'Coupe / Sedan': 185,'Truck / Full-Size SUV': 225,'3-Row SUV': 250},
-  'Book a Service':   {'Coupe / Sedan': null,'Truck / Full-Size SUV': null,'3-Row SUV': null},
+  'Exterior Detail': {'Coupe / Sedan': 80,  'Truck / Full-Size SUV': 90,  '3-Row SUV': 100},
+  'Interior Detail': {'Coupe / Sedan': 140, 'Truck / Full-Size SUV': 160, '3-Row SUV': 180},
+  'Full Detail':     {'Coupe / Sedan': 185, 'Truck / Full-Size SUV': 225, '3-Row SUV': 250},
 };
 function updateEstimate() {
   const service = document.getElementById('bkService').value;
@@ -2460,7 +2469,10 @@ function updateEstimate() {
   if (!prices || !vtype || !prices[vtype]) { el.style.display = 'none'; return; }
   let total = prices[vtype];
   if (document.getElementById('bkAddonPetHair').value === '1') total += 30;
-  if (document.getElementById('bkAddonHeadlight').value === '1') total += 80;
+  if (document.getElementById('bkAddonHeadlight').value === '1') {
+    const hlCount = document.getElementById('bkHLCount').value;
+    total += (hlCount === 'single') ? 60 : 100;
+  }
   amt.textContent = '$' + total;
   el.style.display = 'block';
 }
@@ -2473,6 +2485,17 @@ function toggleAddon(type) {
   const isOn  = card.classList.toggle('selected');
   check.textContent = isOn ? '✓ Added' : '+ Add';
   input.value = isOn ? '1' : '0';
+  // Show/hide headlight count dropdown
+  if (!isPet) {
+    const drop = document.getElementById('bkHLDropdown');
+    if (isOn) {
+      drop.style.display = 'block';
+      setTimeout(() => { drop.style.maxHeight = '120px'; drop.style.opacity = '1'; }, 10);
+    } else {
+      drop.style.maxHeight = '0'; drop.style.opacity = '0';
+      setTimeout(() => { drop.style.display = 'none'; }, 350);
+    }
+  }
   updateEstimate();
 }
 
@@ -2529,6 +2552,9 @@ function openBooking(service) {
   document.getElementById('bkAddonPetHair').value = '0';
   document.getElementById('bkAddonHeadlight').value = '0';
   document.getElementById('bkEstimate').style.display = 'none';
+  const drop = document.getElementById('bkHLDropdown');
+  drop.style.display = 'none'; drop.style.maxHeight = '0'; drop.style.opacity = '0';
+  document.getElementById('bkHLCount').value = 'both';
   document.body.style.overflow = 'hidden';
   bkSelectedDate = null; bkSelectedSlot = null;
   bkViewDate = new Date();
@@ -2571,7 +2597,9 @@ async function submitBooking() {
   const service  = document.getElementById('bkService') ? document.getElementById('bkService').value : '';
   const addonPet = document.getElementById('bkAddonPetHair').value === '1';
   const addonHL  = document.getElementById('bkAddonHeadlight').value === '1';
-  const addons   = [addonPet && 'Pet Hair Removal (+$30)', addonHL && 'Headlight Restoration (+$60–$100)'].filter(Boolean).join(', ') || 'None';
+  const hlCount  = document.getElementById('bkHLCount').value;
+  const hlLabel  = addonHL ? (hlCount === 'single' ? 'Headlight Restoration — Single (+$60)' : 'Headlight Restoration — Both (+$100)') : '';
+  const addons   = [addonPet && 'Pet Hair Removal (+$30)', hlLabel].filter(Boolean).join(', ') || 'None';
   const make2    = bkCarCount === 2 ? document.getElementById('bkMake2').value.trim() : '';
   const model2   = bkCarCount === 2 ? document.getElementById('bkModel2').value.trim() : '';
   const vtype2   = bkCarCount === 2 ? document.getElementById('bkVehicleType2').value : '';
