@@ -2039,7 +2039,7 @@ function addMessage(text, type) {
       </div>
       <div class="bk-field">
         <label>Vehicle Type</label>
-        <select id="bkVehicleType">
+        <select id="bkVehicleType" onchange="updateEstimate()">
           <option value="">Select type</option>
           <option value="Coupe / Sedan">Coupe / Sedan</option>
           <option value="Truck / Full-Size SUV">Truck / Full-Size SUV</option>
@@ -2119,6 +2119,15 @@ function addMessage(text, type) {
           </div>
         </div>
       </div>
+      <!-- Estimate -->
+      <div id="bkEstimate" style="display:none;background:rgba(200,32,42,0.07);border:1px solid rgba(200,32,42,0.3);padding:.9rem 1.1rem;margin:.2rem 0 .4rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gray);">Estimated Total</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.06em;color:var(--silver-lt);" id="bkEstimateAmt">$—</div>
+        </div>
+        <div style="font-size:.74rem;color:var(--gray);margin-top:.2rem;">Price may vary based on vehicle condition</div>
+      </div>
+
       <div class="bk-field">
         <label>Additional Notes</label>
         <textarea id="bkNotes" placeholder="Anything else we should know about your vehicle?"></textarea>
@@ -2436,6 +2445,26 @@ function bkGoStep(n) {
   }
 }
 
+const BK_PRICES = {
+  'Exterior Detail':  {'Coupe / Sedan': 80, 'Truck / Full-Size SUV': 90, '3-Row SUV': 100},
+  'Interior Detail':  {'Coupe / Sedan': 140,'Truck / Full-Size SUV': 160,'3-Row SUV': 180},
+  'Full Detail':      {'Coupe / Sedan': 185,'Truck / Full-Size SUV': 225,'3-Row SUV': 250},
+  'Book a Service':   {'Coupe / Sedan': null,'Truck / Full-Size SUV': null,'3-Row SUV': null},
+};
+function updateEstimate() {
+  const service = document.getElementById('bkService').value;
+  const vtype   = document.getElementById('bkVehicleType').value;
+  const el      = document.getElementById('bkEstimate');
+  const amt     = document.getElementById('bkEstimateAmt');
+  const prices  = BK_PRICES[service];
+  if (!prices || !vtype || !prices[vtype]) { el.style.display = 'none'; return; }
+  let total = prices[vtype];
+  if (document.getElementById('bkAddonPetHair').value === '1') total += 30;
+  if (document.getElementById('bkAddonHeadlight').value === '1') total += 80;
+  amt.textContent = '$' + total;
+  el.style.display = 'block';
+}
+
 function toggleAddon(type) {
   const isPet = type === 'pet';
   const card  = document.getElementById(isPet ? 'bkAddonCardPet' : 'bkAddonCardHL');
@@ -2444,6 +2473,7 @@ function toggleAddon(type) {
   const isOn  = card.classList.toggle('selected');
   check.textContent = isOn ? '✓ Added' : '+ Add';
   input.value = isOn ? '1' : '0';
+  updateEstimate();
 }
 
 let bkCarCount = 1;
@@ -2498,6 +2528,7 @@ function openBooking(service) {
   ['bkAddonCheckPet','bkAddonCheckHL'].forEach(id => document.getElementById(id).textContent = '+ Add');
   document.getElementById('bkAddonPetHair').value = '0';
   document.getElementById('bkAddonHeadlight').value = '0';
+  document.getElementById('bkEstimate').style.display = 'none';
   document.body.style.overflow = 'hidden';
   bkSelectedDate = null; bkSelectedSlot = null;
   bkViewDate = new Date();
