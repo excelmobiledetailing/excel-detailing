@@ -1487,6 +1487,24 @@
       <div class="addon-price-row"><span>Add to any service</span><strong>+$30</strong></div>
       <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Stubborn pet hair embedded in seats and carpet — fully removed using professional brushes and a multi-pass vacuum process.</div>
     </div>
+    <div class="addon-card">
+      <div class="addon-label">Interior Add-On</div>
+      <div class="addon-name">Stain Removal</div>
+      <div class="addon-price-row"><span>Add to any service</span><strong>+$30</strong></div>
+      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Targeted treatment for stains on carpet and seats. Steam-assisted extraction for deep-set spots.</div>
+    </div>
+    <div class="addon-card">
+      <div class="addon-label">Exterior Add-On</div>
+      <div class="addon-name">Trim Restoration</div>
+      <div class="addon-price-row"><span>Add to any service</span><strong>+$25</strong></div>
+      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Faded black plastic trim restored to a deep, dark finish — makes the whole car look newer.</div>
+    </div>
+    <div class="addon-card">
+      <div class="addon-label">Exterior Add-On</div>
+      <div class="addon-name">Clay Bar Treatment</div>
+      <div class="addon-price-row"><span>Add to any service</span><strong>+$35</strong></div>
+      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Removes bonded contaminants like tar, rail dust, and industrial fallout. Paint feels smooth as glass after.</div>
+    </div>
     <div class="addon-card" style="grid-column: 1 / -1;">
       <div class="addon-label">Why Restore?</div>
       <div class="addon-name">Clear = Safer Driving</div>
@@ -2092,6 +2110,9 @@ function addMessage(text, type) {
         </div>
         <input type="hidden" id="bkAddonPetHair" value="0">
         <input type="hidden" id="bkAddonHeadlight" value="0">
+        <input type="hidden" id="bkAddonStain" value="0">
+        <input type="hidden" id="bkAddonTrim" value="0">
+        <input type="hidden" id="bkAddonClay" value="0">
         <div style="display:flex;flex-direction:column;gap:.7rem;">
           <div class="bk-addon-card" id="bkAddonCardPet" onclick="toggleAddon('pet')">
             <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -2102,6 +2123,42 @@ function addMessage(text, type) {
               <div style="text-align:right;flex-shrink:0;margin-left:1rem;">
                 <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red);">+$30</div>
                 <div class="bk-addon-check" id="bkAddonCheckPet">+ Add</div>
+              </div>
+            </div>
+          </div>
+          <div class="bk-addon-card" id="bkAddonCardStain" onclick="toggleAddon('stain')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--silver-lt);">Stain Removal</div>
+                <div style="font-size:.82rem;color:var(--gray);margin-top:.2rem;">Carpet & seat stain treatment</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;margin-left:1rem;">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red);">+$30</div>
+                <div class="bk-addon-check" id="bkAddonCheckStain">+ Add</div>
+              </div>
+            </div>
+          </div>
+          <div class="bk-addon-card" id="bkAddonCardTrim" onclick="toggleAddon('trim')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--silver-lt);">Trim Restoration</div>
+                <div style="font-size:.82rem;color:var(--gray);margin-top:.2rem;">Faded exterior plastic trim restored</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;margin-left:1rem;">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red);">+$25</div>
+                <div class="bk-addon-check" id="bkAddonCheckTrim">+ Add</div>
+              </div>
+            </div>
+          </div>
+          <div class="bk-addon-card" id="bkAddonCardClay" onclick="toggleAddon('clay')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--silver-lt);">Clay Bar Treatment</div>
+                <div style="font-size:.82rem;color:var(--gray);margin-top:.2rem;">Removes bonded contaminants, ultra-smooth paint</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;margin-left:1rem;">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red);">+$35</div>
+                <div class="bk-addon-check" id="bkAddonCheckClay">+ Add</div>
               </div>
             </div>
           </div>
@@ -2470,6 +2527,9 @@ function updateEstimate() {
   if (!prices || !vtype || !prices[vtype]) { el.style.display = 'none'; return; }
   let total = prices[vtype];
   if (document.getElementById('bkAddonPetHair').value === '1') total += 30;
+  if (document.getElementById('bkAddonStain').value === '1') total += 30;
+  if (document.getElementById('bkAddonTrim').value === '1') total += 25;
+  if (document.getElementById('bkAddonClay').value === '1') total += 35;
   if (document.getElementById('bkAddonHeadlight').value === '1') {
     const hlCount = document.getElementById('bkHLCount').value;
     total += (hlCount === 'single') ? 60 : 100;
@@ -2479,13 +2539,21 @@ function updateEstimate() {
 }
 
 function toggleAddon(type) {
-  const isPet = type === 'pet';
-  const card  = document.getElementById(isPet ? 'bkAddonCardPet' : 'bkAddonCardHL');
-  const check = document.getElementById(isPet ? 'bkAddonCheckPet' : 'bkAddonCheckHL');
-  const input = document.getElementById(isPet ? 'bkAddonPetHair' : 'bkAddonHeadlight');
+  const map = {
+    pet:   { card:'bkAddonCardPet',   check:'bkAddonCheckPet',   input:'bkAddonPetHair' },
+    stain: { card:'bkAddonCardStain', check:'bkAddonCheckStain', input:'bkAddonStain' },
+    trim:  { card:'bkAddonCardTrim',  check:'bkAddonCheckTrim',  input:'bkAddonTrim' },
+    clay:  { card:'bkAddonCardClay',  check:'bkAddonCheckClay',  input:'bkAddonClay' },
+    hl:    { card:'bkAddonCardHL',    check:'bkAddonCheckHL',    input:'bkAddonHeadlight' },
+  };
+  const { card: cardId, check: checkId, input: inputId } = map[type];
+  const card  = document.getElementById(cardId);
+  const check = document.getElementById(checkId);
+  const input = document.getElementById(inputId);
   const isOn  = card.classList.toggle('selected');
   check.textContent = isOn ? '✓ Added' : '+ Add';
   input.value = isOn ? '1' : '0';
+  const isPet = type === 'pet';
   // Show/hide headlight count dropdown
   if (!isPet) {
     const drop = document.getElementById('bkHLDropdown');
@@ -2548,9 +2616,12 @@ function openBooking(service) {
   document.getElementById('bkOverlay').classList.add('open');
   setCarCount(1); // reset to 1 car each time modal opens
   // Reset add-on cards
-  ['bkAddonCardPet','bkAddonCardHL'].forEach(id => document.getElementById(id).classList.remove('selected'));
-  ['bkAddonCheckPet','bkAddonCheckHL'].forEach(id => document.getElementById(id).textContent = '+ Add');
+  ['bkAddonCardPet','bkAddonCardStain','bkAddonCardTrim','bkAddonCardClay','bkAddonCardHL'].forEach(id => document.getElementById(id).classList.remove('selected'));
+  ['bkAddonCheckPet','bkAddonCheckStain','bkAddonCheckTrim','bkAddonCheckClay','bkAddonCheckHL'].forEach(id => document.getElementById(id).textContent = '+ Add');
   document.getElementById('bkAddonPetHair').value = '0';
+  document.getElementById('bkAddonStain').value = '0';
+  document.getElementById('bkAddonTrim').value = '0';
+  document.getElementById('bkAddonClay').value = '0';
   document.getElementById('bkAddonHeadlight').value = '0';
   document.getElementById('bkEstimate').style.display = 'none';
   document.getElementById('bkVehicleType').value = '';
@@ -2597,11 +2668,14 @@ async function submitBooking() {
   const vtype    = document.getElementById('bkVehicleType').value;
   const notes    = document.getElementById('bkNotes').value.trim();
   const service  = document.getElementById('bkService') ? document.getElementById('bkService').value : '';
-  const addonPet = document.getElementById('bkAddonPetHair').value === '1';
-  const addonHL  = document.getElementById('bkAddonHeadlight').value === '1';
-  const hlCount  = document.getElementById('bkHLCount').value;
-  const hlLabel  = addonHL ? (hlCount === 'single' ? 'Headlight Restoration — Single (+$60)' : 'Headlight Restoration — Both (+$100)') : '';
-  const addons   = [addonPet && 'Pet Hair Removal (+$30)', hlLabel].filter(Boolean).join(', ') || 'None';
+  const addonPet   = document.getElementById('bkAddonPetHair').value === '1';
+  const addonStain = document.getElementById('bkAddonStain').value === '1';
+  const addonTrim  = document.getElementById('bkAddonTrim').value === '1';
+  const addonClay  = document.getElementById('bkAddonClay').value === '1';
+  const addonHL    = document.getElementById('bkAddonHeadlight').value === '1';
+  const hlCount    = document.getElementById('bkHLCount').value;
+  const hlLabel    = addonHL ? (hlCount === 'single' ? 'Headlight Restoration — Single (+$60)' : 'Headlight Restoration — Both (+$100)') : '';
+  const addons     = [addonPet && 'Pet Hair Removal (+$30)', addonStain && 'Stain Removal (+$30)', addonTrim && 'Trim Restoration (+$25)', addonClay && 'Clay Bar Treatment (+$35)', hlLabel].filter(Boolean).join(', ') || 'None';
   const make2    = bkCarCount === 2 ? document.getElementById('bkMake2').value.trim() : '';
   const model2   = bkCarCount === 2 ? document.getElementById('bkModel2').value.trim() : '';
   const vtype2   = bkCarCount === 2 ? document.getElementById('bkVehicleType2').value : '';
