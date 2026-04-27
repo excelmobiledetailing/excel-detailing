@@ -2553,9 +2553,8 @@ function toggleAddon(type) {
   const isOn  = card.classList.toggle('selected');
   check.textContent = isOn ? '✓ Added' : '+ Add';
   input.value = isOn ? '1' : '0';
-  const isPet = type === 'pet';
   // Show/hide headlight count dropdown
-  if (!isPet) {
+  if (type === 'hl') {
     const drop = document.getElementById('bkHLDropdown');
     if (isOn) {
       drop.style.display = 'block';
