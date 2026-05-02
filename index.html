@@ -2331,7 +2331,9 @@ const SLOTS_SUNDAY = [
 // Special date overrides — add any day you have off school here
 const SLOTS_OVERRIDE = {
   '2026-04-16': [{key:'10', label:'10:00 AM'}],
-  '2026-04-18': [{key:'10', label:'10:00 AM'},{key:'13', label:'1:00 PM'}]
+  '2026-04-18': [{key:'10', label:'10:00 AM'},{key:'13', label:'1:00 PM'}],
+  '2026-05-02': [],
+  '2026-05-03': []
 };
 function getSlotsForDate(dateStr, twoCarMode = false) {
   let slots;
@@ -2697,6 +2699,19 @@ async function submitBooking() {
   const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
   const timeLabel = bkSelectedSlot ? bkSelectedSlot.label : '';
 
+  // Calculate estimate for email
+  const emailPrices = BK_PRICES[service];
+  let estimateTotal = null;
+  if (emailPrices && vtype && emailPrices[vtype]) {
+    estimateTotal = emailPrices[vtype];
+    if (addonPet)                  estimateTotal += 30;
+    if (addonStain)                estimateTotal += 30;
+    if (addonTrim)                 estimateTotal += 25;
+    if (addonClay)                 estimateTotal += 35;
+    if (addonHL) estimateTotal += (document.getElementById('bkHLCount').value === 'single') ? 60 : 100;
+  }
+  const estimateLabel = estimateTotal ? `$${estimateTotal} (estimate — final price may vary based on vehicle condition)` : 'N/A';
+
   // Send email via Formspree
   if(FORMSPREE_ID !== 'YOUR_FORMSPREE_ID') {
     try {
@@ -2722,6 +2737,7 @@ async function submitBooking() {
           Time:             timeLabel,
           Address:          `${street}${apt ? ', ' + apt : ''}, ${city}, ${state} ${zip}`,
           'Add-Ons':        addons,
+          'Estimate':       estimateLabel,
           Notes:            notes || 'None'
         })
       });
