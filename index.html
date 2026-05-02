@@ -865,6 +865,28 @@
     .serviced-note {
       font-size: .78rem; color: var(--gray); line-height: 1.55; margin-top: .3rem;
     }
+    .serviced-more {
+      background: linear-gradient(135deg, rgba(200,32,42,0.12), rgba(11,30,61,0.6));
+      border-left: 3px solid var(--red);
+      justify-content: center; align-items: flex-start;
+      gap: .3rem;
+    }
+    .serviced-more:hover { background: linear-gradient(135deg, rgba(200,32,42,0.18), rgba(15,37,73,0.7)); }
+    .serviced-more::before { display: none; }
+    .serviced-more-count {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.8rem; line-height: 1;
+      color: var(--red); letter-spacing: .04em;
+      margin-bottom: .1rem;
+    }
+    .serviced-more-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--silver-lt);
+    }
+    .serviced-more-sub {
+      font-size: .78rem; color: var(--gray); line-height: 1.55; margin-top: .4rem;
+    }
 
     /* ══ WHY US ══ */
     #why { background: var(--navy); }
@@ -1612,6 +1634,12 @@
       <div class="serviced-car">Jeep Grand Cherokee</div>
       <div class="serviced-service">Interior Detail</div>
       <div class="serviced-note">Deep clean on a heavily used interior — floors, seats, console, and all surfaces restored.</div>
+    </div>
+
+    <div class="serviced-card serviced-more">
+      <div class="serviced-more-count">50+</div>
+      <div class="serviced-more-label">Vehicles Detailed</div>
+      <div class="serviced-more-sub">And growing every week. Every make, every model — detailed right at your door.</div>
     </div>
 
   </div>
