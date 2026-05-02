@@ -824,24 +824,47 @@
 
     /* ══ TESTIMONIALS ══ */
     #testimonials { background: var(--dark); }
-    .testimonials-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5px; max-width: 1100px; margin-top: 4rem;
-      background: rgba(184,194,204,0.07);
-      border: 1px solid rgba(184,194,204,0.07);
+    /* ══ RECENTLY SERVICED ══ */
+    .serviced-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1px;
+      max-width: 1100px; margin-top: 4rem;
+      background: rgba(184,194,204,0.08);
+      border: 1px solid rgba(184,194,204,0.08);
     }
-    .review-card { background: var(--navy2); padding: 2.2rem; transition: background .2s; }
-    .review-card:hover { background: var(--navy3); }
-    .stars { color: #f5b800; font-size: 1rem; letter-spacing: .1em; margin-bottom: 1rem; }
-    .review-text {
-      font-size: .9rem; color: rgba(240,243,247,0.65);
-      line-height: 1.7; font-style: italic; margin-bottom: 1.2rem;
+    .serviced-card {
+      background: var(--navy2);
+      padding: 1.8rem 1.8rem 1.6rem;
+      display: flex; flex-direction: column; gap: .5rem;
+      transition: background .2s;
+      position: relative; overflow: hidden;
     }
-    .review-author {
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-      font-size: .9rem; letter-spacing: .1em; text-transform: uppercase; color: var(--silver);
+    .serviced-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--red); opacity: 0;
+      transition: opacity .2s;
     }
-    .review-vehicle { font-size: .75rem; color: var(--gray); margin-top: .15rem; }
+    .serviced-card:hover { background: var(--navy3); }
+    .serviced-card:hover::before { opacity: 1; }
+    .serviced-stars { color: #f5b800; font-size: .85rem; letter-spacing: .12em; }
+    .serviced-car {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.15rem; font-weight: 700; letter-spacing: .04em;
+      color: var(--silver-lt); line-height: 1.2; margin-top: .1rem;
+    }
+    .serviced-service {
+      display: inline-block;
+      font-size: .68rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--red);
+      background: rgba(200,32,42,0.1);
+      border: 1px solid rgba(200,32,42,0.25);
+      padding: .18rem .55rem; margin-top: .2rem; width: fit-content;
+    }
+    .serviced-note {
+      font-size: .78rem; color: var(--gray); line-height: 1.55; margin-top: .3rem;
+    }
 
     /* ══ WHY US ══ */
     #why { background: var(--navy); }
@@ -1528,29 +1551,69 @@
 <!-- TESTIMONIALS -->
 <section id="testimonials">
   <div class="fade-up">
-    <div class="section-eyebrow">What Customers Say</div>
-    <h2 class="section-title">Real Reviews</h2>
+    <div class="section-eyebrow">Our Work Speaks</div>
+    <h2 class="section-title">Recently Serviced</h2>
     <div class="section-divider"></div>
+    <p class="section-desc">Every car on this list was detailed by us — at your driveway, on your schedule.</p>
   </div>
-  <div class="testimonials-grid">
-    <div class="review-card fade-up">
-      <div class="stars">★★★★★</div>
-      <p class="review-text">"Absolutely blew me away. My truck looked brand new — they got pet hair out of places I didn't even know existed. Will never go to a car wash again."</p>
-      <div class="review-author">Marcus T.</div>
-      <div class="review-vehicle">2021 Ford F-150 · Full Detail</div>
+  <div class="serviced-grid fade-up">
+
+    <div class="serviced-card">
+      <div class="serviced-stars">★★★★★</div>
+      <div class="serviced-car">Porsche Taycan Turbo S</div>
+      <div class="serviced-service">Full Detail</div>
+      <div class="serviced-note">Paint decontamination, full interior steam clean, and exterior hand wash on one of the most exciting EVs on the road.</div>
     </div>
-    <div class="review-card fade-up">
-      <div class="stars">★★★★★</div>
-      <p class="review-text">"Super convenient — they came to my house while I worked from home. Interior looks and smells incredible. Totally transparent about pricing before starting."</p>
-      <div class="review-author">Ashley R.</div>
-      <div class="review-vehicle">2020 Honda Accord · Interior Detail</div>
+
+    <div class="serviced-card">
+      <div class="serviced-stars">★★★★★</div>
+      <div class="serviced-car">Mercedes-Benz G-Wagon</div>
+      <div class="serviced-service">Full Detail</div>
+      <div class="serviced-note">Deep interior clean and exterior detail on an iconic luxury off-roader — brought back to showroom condition.</div>
     </div>
-    <div class="review-card fade-up">
-      <div class="stars">★★★★★</div>
-      <p class="review-text">"Got the headlight restoration added on and I can't believe the difference. Crystal clear. 100% worth every dollar — and they were done way faster than I expected."</p>
-      <div class="review-author">David M.</div>
-      <div class="review-vehicle">2018 Toyota Camry · Exterior + Headlights</div>
+
+    <div class="serviced-card">
+      <div class="serviced-stars">★★★★★</div>
+      <div class="serviced-car">Porsche Cayenne</div>
+      <div class="serviced-service">Full Detail</div>
+      <div class="serviced-note">Full interior and exterior detail. Paint was brought back to a deep, glossy black finish from top to bottom.</div>
     </div>
+
+    <div class="serviced-card">
+      <div class="serviced-stars">★★★★★</div>
+      <div class="serviced-car">Mercedes-Benz E350</div>
+      <div class="serviced-service">Full Detail</div>
+      <div class="serviced-note">Complete interior and exterior service on a classic Mercedes sedan — every surface cleaned, conditioned, and protected.</div>
+    </div>
+
+    <div class="serviced-card">
+      <div class="serviced-stars">★★★★★</div>
+      <div class="serviced-car">Hummer</div>
+      <div class="serviced-service">Full Detail</div>
+      <div class="serviced-note">One of the biggest vehicles we've worked on — every inch of the interior vacuumed, wiped, and steamed to perfection.</div>
+    </div>
+
+    <div class="serviced-card">
+      <div class="serviced-stars">★★★★★</div>
+      <div class="serviced-car">Range Rover</div>
+      <div class="serviced-service">Interior Detail</div>
+      <div class="serviced-note">Full interior steam clean, leather conditioning, and vacuum on a premium SUV.</div>
+    </div>
+
+    <div class="serviced-card">
+      <div class="serviced-stars">★★★★★</div>
+      <div class="serviced-car">Mercedes-Benz 4MATIC</div>
+      <div class="serviced-service">Exterior Detail</div>
+      <div class="serviced-note">Full exterior hand wash, tire dressing, and paint protection on a sleek white Mercedes.</div>
+    </div>
+
+    <div class="serviced-card">
+      <div class="serviced-stars">★★★★★</div>
+      <div class="serviced-car">Jeep Grand Cherokee</div>
+      <div class="serviced-service">Interior Detail</div>
+      <div class="serviced-note">Deep clean on a heavily used interior — floors, seats, console, and all surfaces restored.</div>
+    </div>
+
   </div>
 </section>
 
