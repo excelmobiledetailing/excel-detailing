@@ -1253,9 +1253,9 @@
       <img src="./logo.png" alt="Excel Mobile Detailing"
            onerror="this.parentElement.innerHTML='<div class=\'hero-logo-fallback\'><span class=\'ex\'>EX</span>CEL<br><span style=\'font-size:.45em;color:var(--silver);letter-spacing:.18em\'>MOBILE DETAILING</span></div>';">
     </div>
-    <div class="hero-badge">Professional · Mobile · We Come to You</div>
-    <div class="hero-tagline">Spotless Car. Your Driveway.</div>
-    <p class="hero-sub">Expert mobile detailing brought directly to you. No drop-offs, no waiting — just a spotless vehicle wherever you are.</p>
+    <div class="hero-badge" id="heroBadge">Professional · Mobile · We Come to You</div>
+    <div class="hero-tagline" id="heroTagline">Spotless Car. Your Driveway.</div>
+    <p class="hero-sub" id="heroSub">Expert mobile detailing brought directly to you. No drop-offs, no waiting — just a spotless vehicle wherever you are.</p>
     <div class="hero-actions">
       <a href="#services" class="btn-primary">See Pricing</a>
       <button class="btn-outline" onclick="openBooking('Book a Service')" style="cursor:pointer;">Book a Detail</button>
@@ -1385,7 +1385,7 @@
     <div class="pricing-card fade-up">
       <div class="card-icon">✦</div>
       <div class="card-name">Exterior Detail</div>
-      <div class="card-desc">A thorough outside clean leaving your paint gleaming and protected.</div>
+      <div class="card-desc" id="desc-ext">A thorough outside clean leaving your paint gleaming and protected.</div>
       <div class="price-row">
         <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="ext-sedan">80</span></div></div>
         <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="ext-truck">90</span></div></div>
@@ -1402,7 +1402,7 @@
     <div class="pricing-card fade-up">
       <div class="card-icon">◈</div>
       <div class="card-name">Interior Detail</div>
-      <div class="card-desc">Steam cleaned & deep cleaned from floor to ceiling — every surface, every crevice.</div>
+      <div class="card-desc" id="desc-int">Steam cleaned & deep cleaned from floor to ceiling — every surface, every crevice.</div>
       <div class="price-row">
         <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="int-sedan">140</span></div></div>
         <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="int-truck">160</span></div></div>
@@ -1422,7 +1422,7 @@
     <div class="pricing-card featured fade-up">
       <div class="card-icon">◉</div>
       <div class="card-name">Full Detail</div>
-      <div class="card-desc">The complete transformation — everything inside and out, looking brand new.</div>
+      <div class="card-desc" id="desc-full">The complete transformation — everything inside and out, looking brand new.</div>
       <div class="price-row">
         <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="full-sedan">185</span></div></div>
         <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="full-truck">225</span></div></div>
@@ -1704,7 +1704,7 @@
     <div class="section-divider"></div>
     <p class="section-desc">Everything people ask when we knock on doors — answered right here.</p>
   </div>
-  <div class="faq-list fade-up">
+  <div class="faq-list fade-up" id="faqContainer">
     <div class="faq-item">
       <button class="faq-question" onclick="toggleFaq(this)">
         <span class="faq-question-text">Do I need to bring my car anywhere?</span>
@@ -2905,6 +2905,56 @@ bkDb.ref('clients').on('value', snap => {
   if (adminAuthed && adminActiveTab === 'clients') renderAdminClients();
 });
 
+const DEFAULT_FAQS = [
+  {q:'Do I need to bring my car anywhere?', a:'Not at all — that\'s the whole point. We come to you. All we need is access to your vehicle and a little room to work. We bring all our own equipment and supplies.'},
+  {q:'How long does a detail take?', a:'Exterior: ~1–2 hrs. Interior: ~2–3 hrs. Full Detail: ~3–5 hrs. Heavily soiled vehicles may take a bit longer — we\'ll always give you an honest estimate upfront.'},
+  {q:'What if my car is really dirty or hasn\'t been cleaned in a long time?', a:'That\'s exactly what we\'re here for. If extra time or effort is needed, we\'ll quote it before we begin. No surprises — ever. Many of our best results come from heavily neglected vehicles.'},
+  {q:'Do you need water or electricity at my location?', a:'A standard garden hose connection is helpful for exterior work. If you\'re in an apartment or don\'t have one handy, let us know when booking — we\'ll work something out before we arrive.'},
+  {q:'Will the products damage my paint or leather?', a:'Never. We use professional-grade products designed specifically for automotive surfaces — safe for all paint types, leather, fabric, and trim. They protect and enhance, not damage.'},
+  {q:'Is it worth detailing before selling my car?', a:'Absolutely. A clean, detailed car consistently sells faster and for more money. Our full detail is one of the best investments you can make before listing — buyers notice immediately.'},
+  {q:'Is the headlight restoration permanent?', a:'It significantly improves clarity and removes oxidation. Headlights can slowly yellow again from UV exposure over time, but most customers get several years out of a restoration — especially if parked in a garage.'},
+  {q:'How do I book or get a quote?', a:'Use the Book Now button on any pricing card, email us at excelmobiledetailing11@gmail.com, or hit the chat button in the corner. Give us your vehicle type, service interest, and location and we\'ll get back to you fast!'}
+];
+let liveFAQs = null;
+
+bkDb.ref('content/hero').on('value', snap => {
+  const h = snap.val(); if (h) applyHeroToDOM(h);
+  if (adminAuthed && adminActiveTab === 'content') renderAdminContent();
+});
+bkDb.ref('content/services').on('value', snap => {
+  const s = snap.val(); if (s) applyServicesToDOM(s);
+  if (adminAuthed && adminActiveTab === 'content') renderAdminContent();
+});
+bkDb.ref('content/faqs').on('value', snap => {
+  const f = snap.val();
+  liveFAQs = f ? (Array.isArray(f) ? f : Object.values(f)) : null;
+  renderFAQs(liveFAQs || DEFAULT_FAQS);
+  if (adminAuthed && adminActiveTab === 'content') renderAdminContent();
+});
+
+function applyHeroToDOM(h) {
+  if (h.badge)   { const el = document.getElementById('heroBadge');   if (el) el.textContent = h.badge; }
+  if (h.tagline) { const el = document.getElementById('heroTagline'); if (el) el.textContent = h.tagline; }
+  if (h.sub)     { const el = document.getElementById('heroSub');     if (el) el.textContent = h.sub; }
+}
+function applyServicesToDOM(s) {
+  if (s.ext)  { const el = document.getElementById('desc-ext');  if (el) el.textContent = s.ext; }
+  if (s.int)  { const el = document.getElementById('desc-int');  if (el) el.textContent = s.int; }
+  if (s.full) { const el = document.getElementById('desc-full'); if (el) el.textContent = s.full; }
+}
+function renderFAQs(items) {
+  const container = document.getElementById('faqContainer');
+  if (!container || !items) return;
+  container.innerHTML = items.map(faq => `
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-question-text">${faq.q}</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">${faq.a}</div>
+    </div>`).join('');
+}
+
 function applyPricingToDOM(p) {
   const map = {
     'ext-sedan':p.ext_sedan,'ext-truck':p.ext_truck,'ext-suv':p.ext_suv,
@@ -2973,6 +3023,64 @@ function adminShowTab(tab) {
   if (tab === 'pricing')      renderAdminPricing();
   if (tab === 'business')     renderAdminBusiness();
   if (tab === 'clients')      renderAdminClients();
+  if (tab === 'content')      renderAdminContent();
+}
+
+// Content tab
+function renderAdminContent() {
+  bkDb.ref('content/hero').once('value', snap => {
+    const h = snap.val() || {};
+    document.getElementById('adminHeroBadge').value   = h.badge   || 'Professional · Mobile · We Come to You';
+    document.getElementById('adminHeroTagline').value = h.tagline || 'Spotless Car. Your Driveway.';
+    document.getElementById('adminHeroSub').value     = h.sub     || 'Expert mobile detailing brought directly to you. No drop-offs, no waiting — just a spotless vehicle wherever you are.';
+  });
+  bkDb.ref('content/services').once('value', snap => {
+    const s = snap.val() || {};
+    document.getElementById('adminDescExt').value  = s.ext  || 'A thorough outside clean leaving your paint gleaming and protected.';
+    document.getElementById('adminDescInt').value  = s.int  || 'Steam cleaned & deep cleaned from floor to ceiling — every surface, every crevice.';
+    document.getElementById('adminDescFull').value = s.full || 'The complete transformation — everything inside and out, looking brand new.';
+  });
+  renderAdminFAQList();
+}
+function adminSaveHero() {
+  const badge   = document.getElementById('adminHeroBadge').value.trim();
+  const tagline = document.getElementById('adminHeroTagline').value.trim();
+  const sub     = document.getElementById('adminHeroSub').value.trim();
+  bkDb.ref('content/hero').set({badge, tagline, sub}).then(() => { applyHeroToDOM({badge, tagline, sub}); showAdminToast('Hero saved!'); });
+}
+function adminSaveServices() {
+  const ext  = document.getElementById('adminDescExt').value.trim();
+  const int  = document.getElementById('adminDescInt').value.trim();
+  const full = document.getElementById('adminDescFull').value.trim();
+  bkDb.ref('content/services').set({ext, int, full}).then(() => { applyServicesToDOM({ext, int, full}); showAdminToast('Service descriptions saved!'); });
+}
+function renderAdminFAQList() {
+  const faqs = liveFAQs || DEFAULT_FAQS;
+  const list = document.getElementById('adminFAQList');
+  list.innerHTML = faqs.map((f, i) => `
+    <div class="admin-row" style="flex-direction:column;align-items:flex-start;gap:.4rem;">
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+        <span class="admin-row-label" style="font-size:.82rem;">${f.q}</span>
+        <button class="admin-btn-red" onclick="adminDeleteFAQ(${i})">Delete</button>
+      </div>
+      <span class="admin-row-sub">${f.a.substring(0,80)}${f.a.length>80?'…':''}</span>
+    </div>`).join('');
+}
+function adminDeleteFAQ(i) {
+  if (!confirm('Delete this FAQ?')) return;
+  const faqs = (liveFAQs || DEFAULT_FAQS).filter((_, idx) => idx !== i);
+  bkDb.ref('content/faqs').set(faqs).then(() => showAdminToast('FAQ deleted!'));
+}
+function adminAddFAQ() {
+  const q = document.getElementById('adminFAQQ').value.trim();
+  const a = document.getElementById('adminFAQA').value.trim();
+  if (!q || !a) { alert('Fill in both question and answer.'); return; }
+  const faqs = [...(liveFAQs || DEFAULT_FAQS), {q, a}];
+  bkDb.ref('content/faqs').set(faqs).then(() => {
+    document.getElementById('adminFAQQ').value = '';
+    document.getElementById('adminFAQA').value = '';
+    showAdminToast('FAQ added!');
+  });
 }
 
 // Clients tab
@@ -2989,6 +3097,7 @@ function renderAdminClients() {
     return;
   }
   tbody.innerHTML = filtered.map(c => {
+    const key  = (c.phone||'').replace(/\D/g,'');
     const date = c.lastDetailDate
       ? new Date(c.lastDetailDate + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
       : '—';
@@ -3000,6 +3109,7 @@ function renderAdminClients() {
       <td>${c.lastService||'—'}</td>
       <td>${date}</td>
       <td class="admin-clients-count">${c.bookingCount||1}</td>
+      <td><button class="admin-btn-red" onclick="deleteClient('${key}')">✕</button></td>
     </tr>`;
   }).join('');
 }
@@ -3130,6 +3240,11 @@ function adminSaveBusiness() {
   bkDb.ref('admin/business').set({phone,email}).then(() => { applyBusinessToDOM({phone,email}); showAdminToast('Info saved!'); });
 }
 
+function deleteClient(key) {
+  if (!confirm('Delete this client record?')) return;
+  bkDb.ref(`clients/${key}`).set(null).then(() => showAdminToast('Client deleted.'));
+}
+
 function showAdminToast(msg) {
   const t = document.getElementById('adminToast');
   t.textContent = msg; t.classList.add('show');
@@ -3219,6 +3334,7 @@ function handleAdminTrigger() {
     background:#0d0d0d; color:#fff; font-size:.9rem; box-sizing:border-box; margin-bottom:.85rem;
   }
   .admin-input:focus { outline:none; border-color:var(--red); }
+  .admin-textarea { resize:vertical; min-height:60px; line-height:1.5; }
   .admin-section-title {
     color:#fff; font-size:.82rem; font-weight:700; letter-spacing:.06em;
     text-transform:uppercase; margin:1rem 0 .6rem; padding-bottom:.4rem; border-bottom:1px solid #222;
@@ -3287,6 +3403,7 @@ function handleAdminTrigger() {
         <button class="admin-tab"        data-tab="pricing"      onclick="adminShowTab('pricing')">Pricing</button>
         <button class="admin-tab"        data-tab="business"     onclick="adminShowTab('business')">Info</button>
         <button class="admin-tab"        data-tab="clients"      onclick="adminShowTab('clients')">Clients</button>
+        <button class="admin-tab"        data-tab="content"      onclick="adminShowTab('content')">Content</button>
       </div>
 
       <!-- BOOKINGS TAB -->
@@ -3388,13 +3505,44 @@ function handleAdminTrigger() {
           <table class="admin-clients-table">
             <thead>
               <tr>
-                <th>Name</th><th>Phone</th><th>Email</th><th>Car</th><th>Last Service</th><th>Last Date</th><th>#</th>
+                <th>Name</th><th>Phone</th><th>Email</th><th>Car</th><th>Last Service</th><th>Last Date</th><th>#</th><th></th>
               </tr>
             </thead>
             <tbody id="adminClientsTbody">
               <tr><td colspan="7" class="admin-clients-empty">No clients yet.</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- CONTENT TAB -->
+      <div class="admin-tab-panel" id="adminTab-content" style="display:none;">
+        <div class="admin-section-title">Hero Section</div>
+        <label class="admin-label">Badge Text</label>
+        <input type="text" class="admin-input" id="adminHeroBadge">
+        <label class="admin-label">Main Headline</label>
+        <input type="text" class="admin-input" id="adminHeroTagline">
+        <label class="admin-label">Subtitle</label>
+        <textarea class="admin-input admin-textarea" id="adminHeroSub" rows="2"></textarea>
+        <button class="admin-btn-save" onclick="adminSaveHero()">Save Hero</button>
+
+        <div class="admin-section-title" style="margin-top:1.25rem;">Service Descriptions</div>
+        <label class="admin-label">Exterior Detail</label>
+        <textarea class="admin-input admin-textarea" id="adminDescExt" rows="2"></textarea>
+        <label class="admin-label">Interior Detail</label>
+        <textarea class="admin-input admin-textarea" id="adminDescInt" rows="2"></textarea>
+        <label class="admin-label">Full Detail</label>
+        <textarea class="admin-input admin-textarea" id="adminDescFull" rows="2"></textarea>
+        <button class="admin-btn-save" onclick="adminSaveServices()">Save Descriptions</button>
+
+        <div class="admin-section-title" style="margin-top:1.25rem;">FAQ</div>
+        <div id="adminFAQList"></div>
+        <div style="margin-top:.75rem;">
+          <label class="admin-label">New Question</label>
+          <input type="text" class="admin-input" id="adminFAQQ" placeholder="e.g. Do you work on weekends?">
+          <label class="admin-label">Answer</label>
+          <textarea class="admin-input admin-textarea" id="adminFAQA" rows="2" placeholder="Your answer here…"></textarea>
+          <button class="admin-btn-save" onclick="adminAddFAQ()">Add FAQ</button>
         </div>
       </div>
 
