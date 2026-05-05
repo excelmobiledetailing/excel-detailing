@@ -676,6 +676,43 @@
     }
     .bk-submit:hover { background: var(--red-light); }
 
+    /* ── Vehicle & Service picker ── */
+    .bk-pick-label {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.7rem;font-weight:700;letter-spacing:.22em;
+      text-transform:uppercase;color:var(--gray);margin-bottom:.85rem;
+    }
+    .bk-vehicle-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem; }
+    .bk-vehicle-card {
+      border:1px solid rgba(184,194,204,0.14);
+      background:rgba(255,255,255,0.02);
+      padding:1rem .6rem .85rem;cursor:pointer;text-align:center;
+      transition:border-color .2s,background .2s,transform .15s;
+    }
+    .bk-vehicle-card:hover { border-color:rgba(200,32,42,0.45);background:rgba(200,32,42,0.04);transform:translateY(-2px); }
+    .bk-vehicle-card.selected { border-color:var(--red);background:rgba(200,32,42,0.08); }
+    .bk-vehicle-card.selected path,.bk-vehicle-card.selected ellipse { stroke:rgba(200,32,42,0.65);fill:rgba(200,32,42,0.1); }
+    .bk-vehicle-svg { height:46px;display:flex;align-items:center;justify-content:center;margin-bottom:.55rem; }
+    .bk-vehicle-name { font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.05em;color:var(--silver-lt);margin-bottom:.22rem; }
+    .bk-vehicle-eg { font-size:.67rem;color:var(--gray);line-height:1.4; }
+    .bk-service-slide { max-height:0;overflow:hidden;opacity:0;transition:max-height .5s cubic-bezier(.22,.68,0,1.05),opacity .4s; }
+    .bk-service-slide.open { max-height:900px;opacity:1; }
+    .bk-svc-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem; }
+    .bk-svc-card {
+      border:1px solid rgba(184,194,204,0.14);background:rgba(255,255,255,0.02);
+      padding:1rem .75rem;cursor:pointer;position:relative;
+      transition:border-color .2s,background .2s,transform .15s;
+    }
+    .bk-svc-card:hover { border-color:rgba(200,32,42,0.45);background:rgba(200,32,42,0.04);transform:translateY(-2px); }
+    .bk-svc-card.featured { border-color:rgba(200,32,42,0.28); }
+    .bk-svc-card.pre-sel { border-color:var(--red);background:rgba(200,32,42,0.08); }
+    .bk-svc-badge { font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:.3rem; }
+    .bk-svc-name { font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.04em;color:var(--silver-lt);margin-bottom:.3rem; }
+    .bk-svc-price { font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.06em;color:var(--white);line-height:1;margin-bottom:.5rem; }
+    .bk-svc-feats { list-style:none;padding:0; }
+    .bk-svc-feats li { font-size:.68rem;color:var(--gray);padding:.14rem 0 .14rem .85rem;position:relative;line-height:1.35; }
+    .bk-svc-feats li::before { content:'✓';position:absolute;left:0;color:var(--red);font-size:.65rem; }
+
     /* ── Success ── */
     .bk-success {
       text-align: center; padding: 2.5rem 1rem; display: none;
@@ -2047,26 +2084,76 @@ function addMessage(text, type) {
     <div class="bk-progress" id="bkProgress">
       <div class="bk-progress-step active" id="bkProg1">
         <div class="bk-prog-circle">1</div>
-        <div class="bk-prog-label">Date</div>
+        <div class="bk-prog-label">Your Car</div>
       </div>
       <div class="bk-prog-line"></div>
       <div class="bk-progress-step" id="bkProg2">
         <div class="bk-prog-circle">2</div>
-        <div class="bk-prog-label">Time</div>
+        <div class="bk-prog-label">Date</div>
       </div>
       <div class="bk-prog-line"></div>
       <div class="bk-progress-step" id="bkProg3">
         <div class="bk-prog-circle">3</div>
-        <div class="bk-prog-label">Details</div>
+        <div class="bk-prog-label">Time</div>
       </div>
       <div class="bk-prog-line"></div>
       <div class="bk-progress-step" id="bkProg4">
         <div class="bk-prog-circle">4</div>
+        <div class="bk-prog-label">Info</div>
+      </div>
+      <div class="bk-prog-line"></div>
+      <div class="bk-progress-step" id="bkProg5">
+        <div class="bk-prog-circle">5</div>
         <div class="bk-prog-label">Address</div>
       </div>
     </div>
 
-    <!-- STEP 1: Calendar -->
+    <!-- STEP 1: Vehicle + Service picker -->
+    <div class="bk-step active" id="bkStepVehicle">
+      <div class="bk-pick-label">What type of vehicle?</div>
+      <div class="bk-vehicle-grid">
+        <div class="bk-vehicle-card" onclick="selectVehicle('Coupe / Sedan')" id="bkVCard0">
+          <div class="bk-vehicle-svg">
+            <svg width="72" height="38" viewBox="0 0 72 38" fill="none">
+              <path d="M4 28C4 28 7 19 16 16L27 12.5L39 12L51 12.5L57 16L65 21L67 28Z" fill="rgba(184,194,204,0.16)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2" stroke-linejoin="round"/>
+              <ellipse cx="18" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
+              <ellipse cx="54" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <div class="bk-vehicle-name">Coupe / Sedan</div>
+          <div class="bk-vehicle-eg">Civic, Camry, Accord…</div>
+        </div>
+        <div class="bk-vehicle-card" onclick="selectVehicle('Truck / Full-Size SUV')" id="bkVCard1">
+          <div class="bk-vehicle-svg">
+            <svg width="72" height="38" viewBox="0 0 72 38" fill="none">
+              <path d="M4 28L4 15L11 15L11 12L61 12L61 15L68 15L68 28Z" fill="rgba(184,194,204,0.16)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2" stroke-linejoin="round"/>
+              <ellipse cx="18" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
+              <ellipse cx="54" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <div class="bk-vehicle-name">Truck / SUV</div>
+          <div class="bk-vehicle-eg">F-150, Tahoe, Silverado…</div>
+        </div>
+        <div class="bk-vehicle-card" onclick="selectVehicle('3-Row SUV')" id="bkVCard2">
+          <div class="bk-vehicle-svg">
+            <svg width="72" height="38" viewBox="0 0 72 38" fill="none">
+              <path d="M3 28L3 13L9 13L9 10L63 10L63 13L69 13L69 28Z" fill="rgba(184,194,204,0.16)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2" stroke-linejoin="round"/>
+              <ellipse cx="17" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
+              <ellipse cx="55" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <div class="bk-vehicle-name">3-Row SUV</div>
+          <div class="bk-vehicle-eg">Traverse, Pilot, Atlas…</div>
+        </div>
+      </div>
+      <!-- Service cards slide in after vehicle is picked -->
+      <div class="bk-service-slide" id="bkServiceSlide">
+        <div class="bk-pick-label" style="margin-top:1.3rem;">Which service?</div>
+        <div class="bk-svc-grid" id="bkServiceCards"></div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Calendar -->
     <div class="bk-step active" id="bkStepCal">
       <div class="bk-cal-nav">
         <button class="bk-cal-arrow" id="bkPrevMo">&#8249;</button>
@@ -2083,16 +2170,16 @@ function addMessage(text, type) {
 
     <!-- STEP 2: Time Slots -->
     <div class="bk-step" id="bkStepTime">
-      <button class="bk-back" onclick="bkGoStep(1)">&#8592; Back to Calendar</button>
+      <button class="bk-back" onclick="bkGoStep(2)">&#8592; Back to Calendar</button>
       <div class="bk-wx-banner" id="bkWxBanner"></div>
       <div id="bkDateLabel" style="font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.06em;color:var(--silver-lt);margin-bottom:.8rem;"></div>
       <div class="bk-slots-grid" id="bkSlotsGrid"></div>
-      <button class="bk-sel-time-btn" id="bkPickTimeBtn" onclick="bkGoStep(3)">Continue with this Time →</button>
+      <button class="bk-sel-time-btn" id="bkPickTimeBtn" onclick="bkGoStep(4)">Continue with this Time →</button>
     </div>
 
     <!-- STEP 3: Form -->
     <div class="bk-step" id="bkStepForm">
-      <button class="bk-back" onclick="bkGoStep(2)">&#8592; Change Time</button>
+      <button class="bk-back" onclick="bkGoStep(3)">&#8592; Change Time</button>
       <div class="bk-appt-summary" id="bkApptSummary"></div>
 
       <div class="bk-row">
@@ -2246,7 +2333,7 @@ function addMessage(text, type) {
 
     <!-- STEP 4: Address -->
     <div class="bk-step" id="bkStepAddr">
-      <button class="bk-back" onclick="bkGoStep(3)">&#8592; Back</button>
+      <button class="bk-back" onclick="bkGoStep(4)">&#8592; Back</button>
       <div class="bk-appt-summary" id="bkApptSummary2"></div>
       <div style="font-family:'Barlow Condensed',sans-serif; font-size:.75rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--silver); margin-bottom:1.2rem;">Where should we come?</div>
 
@@ -2479,7 +2566,7 @@ function renderCalendar() {
         bkSelectedSlot = null;
         renderCalendar();
         showTimeSlots(dateStr);
-        bkGoStep(2);
+        bkGoStep(3);
       });
     }
     grid.appendChild(cell);
@@ -2535,14 +2622,15 @@ function bkGoStep(n) {
   const goingBack = n < bkCurrentStep;
   bkCurrentStep = n;
   document.querySelectorAll('.bk-step').forEach(s => s.classList.remove('active', 'step-back'));
-  const stepIds = {1:'bkStepCal', 2:'bkStepTime', 3:'bkStepForm', 4:'bkStepAddr'};
+  const stepIds = {1:'bkStepVehicle', 2:'bkStepCal', 3:'bkStepTime', 4:'bkStepForm', 5:'bkStepAddr'};
   const el = document.getElementById(stepIds[n]);
   if (el) { if (goingBack) el.classList.add('step-back'); el.classList.add('active'); }
 
   // Update progress indicator
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 5; i++) {
     const prog = document.getElementById('bkProg' + i);
-    const line = prog ? prog.nextElementSibling : null;
+    if (!prog) continue;
+    const line = prog.nextElementSibling;
     prog.classList.remove('active', 'done');
     if (i < n) prog.classList.add('done');
     else if (i === n) prog.classList.add('active');
@@ -2550,21 +2638,22 @@ function bkGoStep(n) {
       line.classList.toggle('done', i < n);
     }
   }
-  if(n===1) {} // already handled above
-  if(n===2) {} // already handled above
-  if(n===3) {
-    document.getElementById('bkStepForm').classList.add('active');
+  if (n === 4) {
     const dt = new Date(bkSelectedDate + 'T12:00:00');
     const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-    const summary = `${dateLabel}  ·  ${bkSelectedSlot.label}  ·  ${document.getElementById('bkServiceTag').textContent}`;
+    const summary = `${dateLabel}  ·  ${bkSelectedSlot.label}  ·  ${document.getElementById('bkService').value}`;
     document.getElementById('bkApptSummary').textContent = summary;
+    // Auto-fill vehicle type and update estimate since vehicle was picked in step 1
+    if (bkSelectedVehicle) {
+      document.getElementById('bkVehicleType').value = bkSelectedVehicle;
+      updateEstimate();
+    }
   }
-  if(n===4) {
-    document.getElementById('bkStepAddr').classList.add('active');
+  if (n === 5) {
     const dt = new Date(bkSelectedDate + 'T12:00:00');
     const dateLabel = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
     document.getElementById('bkApptSummary2').textContent =
-      `${dateLabel}  ·  ${bkSelectedSlot.label}  ·  ${document.getElementById('bkServiceTag').textContent}`;
+      `${dateLabel}  ·  ${bkSelectedSlot.label}  ·  ${document.getElementById('bkService').value}`;
   }
 }
 
@@ -2653,7 +2742,53 @@ function goToAddress() {
       return;
     }
   }
-  bkGoStep(4);
+  bkGoStep(5);
+}
+
+// ── Vehicle & Service selection ──
+let bkSelectedVehicle = null;
+
+function selectVehicle(vtype) {
+  bkSelectedVehicle = vtype;
+  document.querySelectorAll('.bk-vehicle-card').forEach(c => c.classList.remove('selected'));
+  const idx = ['Coupe / Sedan','Truck / Full-Size SUV','3-Row SUV'].indexOf(vtype);
+  if (idx >= 0) document.getElementById('bkVCard' + idx).classList.add('selected');
+  // Auto-fill vehicle type in the form step
+  document.getElementById('bkVehicleType').value = vtype;
+  // Render service cards priced for this vehicle
+  const preSelected = document.getElementById('bkService').value;
+  renderServiceCards(vtype, preSelected !== 'Book a Service' ? preSelected : null);
+  // Slide service cards in
+  document.getElementById('bkServiceSlide').classList.add('open');
+}
+
+function renderServiceCards(vtype, preSelected) {
+  const prices = {
+    'Coupe / Sedan':        {ext:80,  int:140, full:185},
+    'Truck / Full-Size SUV':{ext:90,  int:160, full:225},
+    '3-Row SUV':            {ext:100, int:180, full:250},
+  };
+  const p = prices[vtype] || prices['Coupe / Sedan'];
+  const svcs = [
+    {name:'Exterior Detail', price:p.ext,  feats:['Hand wash & wax','Tires & rims','Wax protectant']},
+    {name:'Interior Detail', price:p.int,  feats:['Deep vacuum','Steam cleaned seats','Dashboard & vents']},
+    {name:'Full Detail',     price:p.full, feats:['Inside & out','Best value','Most popular'], badge:'Best Value', featured:true},
+  ];
+  document.getElementById('bkServiceCards').innerHTML = svcs.map(s => `
+    <div class="bk-svc-card${s.featured?' featured':''}${s.name===preSelected?' pre-sel':''}"
+         onclick="selectService('${s.name}')">
+      ${s.badge ? `<div class="bk-svc-badge">${s.badge}</div>` : ''}
+      <div class="bk-svc-name">${s.name}</div>
+      <div class="bk-svc-price">$${s.price}</div>
+      <ul class="bk-svc-feats">${s.feats.map(f=>`<li>${f}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+}
+
+function selectService(service) {
+  document.getElementById('bkService').value = service;
+  document.getElementById('bkServiceTag').textContent = service;
+  bkGoStep(2);
 }
 
 // ── Open / Close ──
@@ -2661,11 +2796,25 @@ function openBooking(service) {
   document.getElementById('bkServiceTag').textContent = service;
   document.getElementById('bkService').value = service;
   document.querySelectorAll('.bk-step').forEach(s => s.classList.remove('active'));
-  document.getElementById('bkStepCal').classList.add('active');
+  // Reset vehicle step
+  bkSelectedVehicle = null;
+  document.querySelectorAll('.bk-vehicle-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('bkServiceSlide').classList.remove('open');
+  document.getElementById('bkServiceCards').innerHTML = '';
+  // Start at vehicle step
+  bkCurrentStep = 1;
+  document.getElementById('bkStepVehicle').classList.add('active');
+  // Update progress bar to step 1
+  for (let i = 1; i <= 5; i++) {
+    const prog = document.getElementById('bkProg' + i);
+    if (!prog) continue;
+    prog.classList.remove('active','done');
+    if (i === 1) prog.classList.add('active');
+  }
   document.getElementById('bkSuccess').style.display = 'none';
   document.getElementById('bkProgress').style.display = 'flex';
   document.getElementById('bkOverlay').classList.add('open');
-  setCarCount(1); // reset to 1 car each time modal opens
+  setCarCount(1);
   // Reset add-on cards
   ['bkAddonCardPet','bkAddonCardClay','bkAddonCardHL'].forEach(id => document.getElementById(id).classList.remove('selected'));
   ['bkAddonCheckPet','bkAddonCheckClay','bkAddonCheckHL'].forEach(id => document.getElementById(id).textContent = '+ Add');
