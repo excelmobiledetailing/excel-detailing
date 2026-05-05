@@ -3087,31 +3087,79 @@ function adminAddFAQ() {
 function renderAdminClients() {
   const search = (document.getElementById('adminClientSearch')?.value || '').toLowerCase();
   const tbody  = document.getElementById('adminClientsTbody');
-  const rows   = Object.values(allClients);
+  const entries = Object.entries(allClients);
   const filtered = search
-    ? rows.filter(c => [c.name, c.phone, c.email, c.carMake, c.carModel].some(v => (v||'').toLowerCase().includes(search)))
-    : rows;
-  filtered.sort((a,b) => (b.lastDetailDate||'').localeCompare(a.lastDetailDate||''));
+    ? entries.filter(([,c]) => [c.name,c.phone,c.email,c.carMake,c.carModel,c.crew,c.split].some(v=>(v||'').toLowerCase().includes(search)))
+    : entries;
+  filtered.sort(([,a],[,b]) => (b.lastDetailDate||'').localeCompare(a.lastDetailDate||''));
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" class="admin-clients-empty">No clients yet.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" class="admin-clients-empty">No clients yet.</td></tr>`;
     return;
   }
-  tbody.innerHTML = filtered.map(c => {
-    const key  = (c.phone||'').replace(/\D/g,'');
+  tbody.innerHTML = filtered.map(([key, c]) => {
     const date = c.lastDetailDate
-      ? new Date(c.lastDetailDate + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+      ? new Date(c.lastDetailDate+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
       : '—';
+    const car = [c.carMake, c.carModel].filter(Boolean).join(' ') || '—';
     return `<tr>
       <td>${c.name||'—'}</td>
+      <td>${car}</td>
+      <td>${c.pay != null ? '$'+c.pay : '—'}</td>
       <td>${c.phone||'—'}</td>
       <td>${c.email||'—'}</td>
-      <td>${c.carMake||''} ${c.carModel||''}</td>
-      <td>${c.lastService||'—'}</td>
+      <td>${c.crew||'—'}</td>
       <td>${date}</td>
+      <td>${c.split||'—'}</td>
       <td class="admin-clients-count">${c.bookingCount||1}</td>
       <td><button class="admin-btn-red" onclick="deleteClient('${key}')">✕</button></td>
     </tr>`;
   }).join('');
+}
+
+const PAST_CLIENTS_DATA = [
+  {name:'Dimitry Ruderman', carMake:'Porsche',  carModel:'',              pay:60,  phone:'847-344-8933', email:'dmr975@gmail.com',    crew:'Aren and Josh',          lastDetailDate:'2025-10-26', split:'Josh: $60'},
+  {name:'Julia R',          carMake:'Range Rover',carModel:'',            pay:60,  phone:'847-346-9852', email:'juliaoks11@gmail.com', crew:'Aren and Josh',          lastDetailDate:'2025-10-26', split:'Josh: $60'},
+  {name:'Kate K',           carMake:'Chevy',    carModel:'SUV',           pay:100, phone:'773-220-2571', email:'',                    crew:'Aren and Josh',          lastDetailDate:'2025-10-26', split:'Josh: $50, Aren: $50'},
+  {name:'Josh K',           carMake:'Hyundai',  carModel:'',              pay:100, phone:'773-220-2571', email:'',                    crew:'Aren and Josh',          lastDetailDate:'2025-10-26', split:'Josh: $50, Aren: $50'},
+  {name:'Nate K',           carMake:'Ford',     carModel:'',              pay:50,  phone:'224-500-2778', email:'',                    crew:'Aren, Josh and Nate',    lastDetailDate:'2025-10-27', split:'Josh: $20, Aren: $20'},
+  {name:'Christian',        carMake:'Jeep',     carModel:'',              pay:100, phone:'',             email:'',                    crew:'Aren, Josh and Matthew', lastDetailDate:'2025-10-29', split:'Aren: $50, Josh: $25'},
+  {name:'Roman Oks',        carMake:'Mercedes', carModel:'',              pay:60,  phone:"Josh's grandpa",email:'',                  crew:'Josh',                   lastDetailDate:'2026-04-08', split:'Josh: $60'},
+  {name:'Igor Michin',      carMake:'GMC',      carModel:'Hummer',        pay:200, phone:'',             email:'',                    crew:'Josh and Aren',          lastDetailDate:'2026-04-11', split:'Josh: $100, Aren: $100'},
+  {name:'Mr. Kislyuk',      carMake:'Mercedes', carModel:'G Wagon',       pay:90,  phone:'847-366-7438', email:'',                    crew:'Josh and Aren',          lastDetailDate:'2026-04-25', split:'Josh: $50, Aren: $40'},
+  {name:'Xavier Welke',     carMake:'Subaru',   carModel:'Forester',      pay:180, phone:'Snapchat',     email:'',                    crew:'Josh and Aren',          lastDetailDate:'2026-05-02', split:'Josh: $90, Aren: $90'},
+  {name:'Mr. Welke',        carMake:'Porsche',  carModel:'Cayenne Turbo', pay:310, phone:'Snapchat',     email:'',                    crew:'Josh and Aren',          lastDetailDate:'2026-05-02', split:'Josh: $155, Aren: $155'},
+  {name:'Felix Dudalves',   carMake:'Acura',    carModel:'Type A',        pay:200, phone:'847-912-6622', email:'',                    crew:'Josh, Aren and Sander',  lastDetailDate:'2026-05-03', split:'Josh: $100, Aren: $70, Sander: $30'},
+];
+function seedPastClients() {
+  PAST_CLIENTS_DATA.forEach(c => {
+    const key = c.name.toLowerCase().replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+    bkDb.ref(`clients/${key}`).set({...c, bookingCount: c.bookingCount||1});
+  });
+  showAdminToast('Past clients imported!');
+}
+
+function adminAddManualClient() {
+  const name  = document.getElementById('mcName').value.trim();
+  const car   = document.getElementById('mcCar').value.trim();
+  const pay   = document.getElementById('mcPay').value.trim();
+  const phone = document.getElementById('mcPhone').value.trim();
+  const email = document.getElementById('mcEmail').value.trim();
+  const crew  = document.getElementById('mcCrew').value.trim();
+  const date  = document.getElementById('mcDate').value;
+  const split = document.getElementById('mcSplit').value.trim();
+  if (!name) { alert('Name is required.'); return; }
+  const [make, ...modelParts] = car.split(' ');
+  const key = name.toLowerCase().replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'') + '_' + Date.now();
+  bkDb.ref(`clients/${key}`).set({
+    name, carMake: make||'', carModel: modelParts.join(' '),
+    pay: pay ? parseFloat(pay) : null,
+    phone, email, crew,
+    lastDetailDate: date||null,
+    split, bookingCount: 1
+  }).then(() => {
+    ['mcName','mcCar','mcPay','mcPhone','mcEmail','mcCrew','mcDate','mcSplit'].forEach(id => document.getElementById(id).value='');
+    showAdminToast('Client added!');
+  });
 }
 
 function fmtSlotKey(k) {
@@ -3496,20 +3544,38 @@ function handleAdminTrigger() {
       </div>
 
       <!-- CLIENTS TAB -->
-      <div class="admin-tab-panel" id="adminTab-clients" style="display:none; padding:0;">
-        <div style="padding:1rem 1.25rem .75rem; border-bottom:1px solid #222; flex-shrink:0;">
-          <input type="text" class="admin-input" id="adminClientSearch" placeholder="Search by name, phone, email, or car…"
-            oninput="renderAdminClients()" style="margin-bottom:0;">
+      <div class="admin-tab-panel" id="adminTab-clients" style="display:none; padding:0; flex-direction:column;">
+        <!-- Search + actions bar -->
+        <div style="padding:.75rem 1.25rem; border-bottom:1px solid #222; flex-shrink:0; display:flex; gap:.5rem; align-items:center;">
+          <input type="text" class="admin-input" id="adminClientSearch" placeholder="Search…"
+            oninput="renderAdminClients()" style="margin-bottom:0; flex:1;">
+          <button class="admin-btn-save" style="white-space:nowrap;font-size:.8rem;padding:.5rem .9rem;" onclick="document.getElementById('adminAddClientForm').style.display=document.getElementById('adminAddClientForm').style.display==='none'?'block':'none'">+ Add</button>
+          <button class="admin-btn-red" style="white-space:nowrap;font-size:.8rem;padding:.5rem .9rem;" onclick="if(confirm('Import all 12 past clients?')) seedPastClients()">Import Past</button>
         </div>
-        <div style="overflow-x:auto; overflow-y:auto; max-height:58vh;">
+        <!-- Manual add form -->
+        <div id="adminAddClientForm" style="display:none; padding:.75rem 1.25rem; border-bottom:1px solid #222; background:#111;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:.5rem;">
+            <div><label class="admin-label">Name *</label><input type="text" class="admin-input" id="mcName" placeholder="Full name" style="margin-bottom:0;"></div>
+            <div><label class="admin-label">Car (Make Model)</label><input type="text" class="admin-input" id="mcCar" placeholder="e.g. Toyota Camry" style="margin-bottom:0;"></div>
+            <div><label class="admin-label">Pay ($)</label><input type="number" class="admin-input" id="mcPay" placeholder="0" style="margin-bottom:0;"></div>
+            <div><label class="admin-label">Phone</label><input type="text" class="admin-input" id="mcPhone" placeholder="Phone or contact" style="margin-bottom:0;"></div>
+            <div><label class="admin-label">Email</label><input type="text" class="admin-input" id="mcEmail" placeholder="Email" style="margin-bottom:0;"></div>
+            <div><label class="admin-label">Crew</label><input type="text" class="admin-input" id="mcCrew" placeholder="e.g. Josh and Aren" style="margin-bottom:0;"></div>
+            <div><label class="admin-label">Date</label><input type="date" class="admin-input" id="mcDate" style="margin-bottom:0;"></div>
+            <div><label class="admin-label">Split</label><input type="text" class="admin-input" id="mcSplit" placeholder="e.g. Josh: $50, Aren: $50" style="margin-bottom:0;"></div>
+          </div>
+          <button class="admin-btn-save" style="margin-top:.75rem;" onclick="adminAddManualClient()">Save Client</button>
+        </div>
+        <!-- Table -->
+        <div style="overflow-x:auto; overflow-y:auto; flex:1; min-height:0;">
           <table class="admin-clients-table">
             <thead>
               <tr>
-                <th>Name</th><th>Phone</th><th>Email</th><th>Car</th><th>Last Service</th><th>Last Date</th><th>#</th><th></th>
+                <th>Name</th><th>Car</th><th>Pay</th><th>Phone</th><th>Email</th><th>Crew</th><th>Date</th><th>Split</th><th>#</th><th></th>
               </tr>
             </thead>
             <tbody id="adminClientsTbody">
-              <tr><td colspan="7" class="admin-clients-empty">No clients yet.</td></tr>
+              <tr><td colspan="10" class="admin-clients-empty">No clients yet.</td></tr>
             </tbody>
           </table>
         </div>
