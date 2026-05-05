@@ -2838,9 +2838,26 @@ async function submitBooking() {
     }
   }
 
-  // Lock the slot in localStorage
+  // Lock the slot in Firebase
   if(bkSelectedDate && bkSelectedSlot) {
     bookSlot(bkSelectedDate, bkSelectedSlot.key);
+  }
+
+  // Save / update client record in Firebase
+  if (phone) {
+    const clientKey = phone.replace(/\D/g, '');
+    bkDb.ref(`clients/${clientKey}`).transaction(existing => ({
+      name:           `${first} ${last}`.trim(),
+      phone,
+      email:          email || (existing && existing.email) || '',
+      carMake:        make,
+      carModel:       model,
+      vehicleType:    vtype || '',
+      lastService:    service || '',
+      lastDetailDate: bkSelectedDate,
+      lastDetailTime: timeLabel,
+      bookingCount:   ((existing && existing.bookingCount) || 0) + 1
+    }));
   }
 
   document.getElementById('bkConfText').textContent =
@@ -2930,6 +2947,12 @@ bkDb.ref('bookings').on('value', () => {
   if (adminAuthed && adminActiveTab === 'bookings') renderAdminBookings();
 });
 
+let allClients = {};
+bkDb.ref('clients').on('value', snap => {
+  allClients = snap.val() || {};
+  if (adminAuthed && adminActiveTab === 'clients') renderAdminClients();
+});
+
 function applyPricingToDOM(p) {
   const map = {
     'ext-sedan':p.ext_sedan,'ext-truck':p.ext_truck,'ext-suv':p.ext_suv,
@@ -2997,6 +3020,36 @@ function adminShowTab(tab) {
   if (tab === 'promo')        renderAdminPromo();
   if (tab === 'pricing')      renderAdminPricing();
   if (tab === 'business')     renderAdminBusiness();
+  if (tab === 'clients')      renderAdminClients();
+}
+
+// Clients tab
+function renderAdminClients() {
+  const search = (document.getElementById('adminClientSearch')?.value || '').toLowerCase();
+  const tbody  = document.getElementById('adminClientsTbody');
+  const rows   = Object.values(allClients);
+  const filtered = search
+    ? rows.filter(c => [c.name, c.phone, c.email, c.carMake, c.carModel].some(v => (v||'').toLowerCase().includes(search)))
+    : rows;
+  filtered.sort((a,b) => (b.lastDetailDate||'').localeCompare(a.lastDetailDate||''));
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="admin-clients-empty">No clients yet.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map(c => {
+    const date = c.lastDetailDate
+      ? new Date(c.lastDetailDate + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+      : '—';
+    return `<tr>
+      <td>${c.name||'—'}</td>
+      <td>${c.phone||'—'}</td>
+      <td>${c.email||'—'}</td>
+      <td>${c.carMake||''} ${c.carModel||''}</td>
+      <td>${c.lastService||'—'}</td>
+      <td>${date}</td>
+      <td class="admin-clients-count">${c.bookingCount||1}</td>
+    </tr>`;
+  }).join('');
 }
 
 function fmtSlotKey(k) {
@@ -3237,6 +3290,19 @@ function handleAdminTrigger() {
   }
   .admin-slot-check-label input { accent-color:var(--red); }
   /* Toast */
+  .admin-clients-table {
+    width:100%; border-collapse:collapse; font-size:.8rem; min-width:560px;
+  }
+  .admin-clients-table thead th {
+    background:#1a1a1a; color:#888; font-size:.7rem; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase; padding:.65rem .9rem;
+    text-align:left; position:sticky; top:0; white-space:nowrap; border-bottom:1px solid #272727;
+  }
+  .admin-clients-table tbody tr { border-bottom:1px solid #1e1e1e; transition:background .15s; }
+  .admin-clients-table tbody tr:hover { background:#1a1a1a; }
+  .admin-clients-table td { color:#ccc; padding:.6rem .9rem; vertical-align:middle; white-space:nowrap; }
+  .admin-clients-count { color:#888; text-align:center; }
+  .admin-clients-empty { color:#555; text-align:center; padding:2rem; }
   .admin-toast {
     position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(2rem);
     background:#222; color:#fff; padding:.6rem 1.4rem; border-radius:20px;
@@ -3268,6 +3334,7 @@ function handleAdminTrigger() {
         <button class="admin-tab"        data-tab="promo"        onclick="adminShowTab('promo')">Promo</button>
         <button class="admin-tab"        data-tab="pricing"      onclick="adminShowTab('pricing')">Pricing</button>
         <button class="admin-tab"        data-tab="business"     onclick="adminShowTab('business')">Info</button>
+        <button class="admin-tab"        data-tab="clients"      onclick="adminShowTab('clients')">Clients</button>
       </div>
 
       <!-- BOOKINGS TAB -->
@@ -3359,6 +3426,26 @@ function handleAdminTrigger() {
           <div class="admin-price-cell"><label>Clay Bar</label><input type="number" class="admin-price-input" id="ap-clay"></div>
         </div>
         <button class="admin-btn-save" onclick="adminSavePricing()">Save Pricing</button>
+      </div>
+
+      <!-- CLIENTS TAB -->
+      <div class="admin-tab-panel" id="adminTab-clients" style="display:none; padding:0;">
+        <div style="padding:1rem 1.25rem .75rem; border-bottom:1px solid #222; flex-shrink:0;">
+          <input type="text" class="admin-input" id="adminClientSearch" placeholder="Search by name, phone, email, or car…"
+            oninput="renderAdminClients()" style="margin-bottom:0;">
+        </div>
+        <div style="overflow-x:auto; overflow-y:auto; max-height:58vh;">
+          <table class="admin-clients-table">
+            <thead>
+              <tr>
+                <th>Name</th><th>Phone</th><th>Email</th><th>Car</th><th>Last Service</th><th>Last Date</th><th>#</th>
+              </tr>
+            </thead>
+            <tbody id="adminClientsTbody">
+              <tr><td colspan="7" class="admin-clients-empty">No clients yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <!-- BUSINESS INFO TAB -->
