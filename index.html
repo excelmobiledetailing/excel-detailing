@@ -1815,7 +1815,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2025 Excel Mobile Detailing · All rights reserved</div>
+    <div class="footer-copy"><span id="adminTrigger" onclick="handleAdminTrigger()" style="cursor:default;user-select:none;">©</span> 2025 Excel Mobile Detailing · All rights reserved</div>
     <div class="footer-copy">excelmobiledetailing11@gmail.com</div>
   </div>
 </footer>
@@ -2943,10 +2943,14 @@ function renderAdminSlots() {
 bkDb.ref('bookings').on('value', () => {
   if (adminAuthed) renderAdminSlots();
 });
-// Open via URL hash #admin
-window.addEventListener('DOMContentLoaded', () => {
-  if (window.location.hash === '#admin') openAdmin();
-});
+// Hidden admin trigger — triple-click the © in the footer
+let adminTriggerCount = 0, adminTriggerTimer = null;
+function handleAdminTrigger() {
+  adminTriggerCount++;
+  clearTimeout(adminTriggerTimer);
+  adminTriggerTimer = setTimeout(() => { adminTriggerCount = 0; }, 1000);
+  if (adminTriggerCount >= 3) { adminTriggerCount = 0; openAdmin(); }
+}
 </script>
 
 <!-- ADMIN PANEL -->
