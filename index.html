@@ -3305,8 +3305,8 @@ function handleAdminTrigger() {
   .admin-tab.active { color:#fff; border-bottom-color:var(--red); }
   .admin-tab:hover:not(.active) { color:#aaa; }
   /* Dashboard body */
-  #adminDashboard { display:flex; flex-direction:column; flex:1; overflow:hidden; }
-  .admin-tab-panel { padding:1.25rem 1.5rem; overflow-y:auto; flex:1; }
+  #adminDashboard { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }
+  .admin-tab-panel { padding:1.25rem 1.5rem; overflow-y:auto; flex:1; min-height:0; }
   /* Rows */
   .admin-row {
     display:flex; align-items:center; justify-content:space-between;
