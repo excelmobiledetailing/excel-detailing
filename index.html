@@ -1520,18 +1520,6 @@
       <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Stubborn pet hair embedded in seats and carpet — fully removed using professional brushes and a multi-pass vacuum process.</div>
     </div>
     <div class="addon-card">
-      <div class="addon-label">Interior Add-On</div>
-      <div class="addon-name">Stain Removal</div>
-      <div class="addon-price-row"><span>Add to any service</span><strong>+$<span data-price="stain">30</span></strong></div>
-      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Targeted treatment for stains on carpet and seats. Steam-assisted extraction for deep-set spots.</div>
-    </div>
-    <div class="addon-card">
-      <div class="addon-label">Exterior Add-On</div>
-      <div class="addon-name">Trim Restoration</div>
-      <div class="addon-price-row"><span>Add to any service</span><strong>+$<span data-price="trim">25</span></strong></div>
-      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Faded black plastic trim restored to a deep, dark finish — makes the whole car look newer.</div>
-    </div>
-    <div class="addon-card">
       <div class="addon-label">Exterior Add-On</div>
       <div class="addon-name">Clay Bar Treatment</div>
       <div class="addon-price-row"><span>Add to any service</span><strong>+$<span data-price="clay">35</span></strong></div>
@@ -1996,7 +1984,7 @@ const botRules = [
 
   // Headlights
   { keys: ['headlight','light','foggy','yellow','restoration','oxidized'],
-    reply: 'Yes! We offer two add-ons:<br><br><strong>Headlight Restoration</strong> — $60 (single) / $100 (both). Clears up foggy, yellowed headlights.<br><strong>Pet Hair Removal</strong> — +$30. Full removal of embedded pet hair from seats and carpet.<br><br>Just mention it in the notes when booking!' },
+    reply: 'Yes! We offer a few add-ons:<br><br><strong>Headlight Restoration</strong> — $60 (single) / $100 (both). Clears up foggy, yellowed headlights.<br><strong>Pet Hair Removal</strong> — +$30. Full removal of embedded pet hair from seats and carpet.<br><strong>Clay Bar Treatment</strong> — +$35. Removes bonded contaminants for ultra-smooth paint.<br><br>Just mention it in the notes when booking!' },
 
   // Contact
   { keys: ['contact','email','phone','text','call','reach','number','get in touch'],
@@ -2190,8 +2178,6 @@ function addMessage(text, type) {
         </div>
         <input type="hidden" id="bkAddonPetHair" value="0">
         <input type="hidden" id="bkAddonHeadlight" value="0">
-        <input type="hidden" id="bkAddonStain" value="0">
-        <input type="hidden" id="bkAddonTrim" value="0">
         <input type="hidden" id="bkAddonClay" value="0">
         <div style="display:flex;flex-direction:column;gap:.7rem;">
           <div class="bk-addon-card" id="bkAddonCardPet" onclick="toggleAddon('pet')">
@@ -2203,30 +2189,6 @@ function addMessage(text, type) {
               <div style="text-align:right;flex-shrink:0;margin-left:1rem;">
                 <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red);">+$30</div>
                 <div class="bk-addon-check" id="bkAddonCheckPet">+ Add</div>
-              </div>
-            </div>
-          </div>
-          <div class="bk-addon-card" id="bkAddonCardStain" onclick="toggleAddon('stain')">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--silver-lt);">Stain Removal</div>
-                <div style="font-size:.82rem;color:var(--gray);margin-top:.2rem;">Carpet & seat stain treatment</div>
-              </div>
-              <div style="text-align:right;flex-shrink:0;margin-left:1rem;">
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red);">+$30</div>
-                <div class="bk-addon-check" id="bkAddonCheckStain">+ Add</div>
-              </div>
-            </div>
-          </div>
-          <div class="bk-addon-card" id="bkAddonCardTrim" onclick="toggleAddon('trim')">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--silver-lt);">Trim Restoration</div>
-                <div style="font-size:.82rem;color:var(--gray);margin-top:.2rem;">Faded exterior plastic trim restored</div>
-              </div>
-              <div style="text-align:right;flex-shrink:0;margin-left:1rem;">
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red);">+$25</div>
-                <div class="bk-addon-check" id="bkAddonCheckTrim">+ Add</div>
               </div>
             </div>
           </div>
@@ -2621,8 +2583,6 @@ function updateEstimate() {
   if (!prices || !vtype || !prices[vtype]) { el.style.display = 'none'; return; }
   let total = prices[vtype];
   if (document.getElementById('bkAddonPetHair').value === '1') total += 30;
-  if (document.getElementById('bkAddonStain').value === '1') total += 30;
-  if (document.getElementById('bkAddonTrim').value === '1') total += 25;
   if (document.getElementById('bkAddonClay').value === '1') total += 35;
   if (document.getElementById('bkAddonHeadlight').value === '1') {
     const hlCount = document.getElementById('bkHLCount').value;
@@ -2635,8 +2595,6 @@ function updateEstimate() {
 function toggleAddon(type) {
   const map = {
     pet:   { card:'bkAddonCardPet',   check:'bkAddonCheckPet',   input:'bkAddonPetHair' },
-    stain: { card:'bkAddonCardStain', check:'bkAddonCheckStain', input:'bkAddonStain' },
-    trim:  { card:'bkAddonCardTrim',  check:'bkAddonCheckTrim',  input:'bkAddonTrim' },
     clay:  { card:'bkAddonCardClay',  check:'bkAddonCheckClay',  input:'bkAddonClay' },
     hl:    { card:'bkAddonCardHL',    check:'bkAddonCheckHL',    input:'bkAddonHeadlight' },
   };
@@ -2709,11 +2667,9 @@ function openBooking(service) {
   document.getElementById('bkOverlay').classList.add('open');
   setCarCount(1); // reset to 1 car each time modal opens
   // Reset add-on cards
-  ['bkAddonCardPet','bkAddonCardStain','bkAddonCardTrim','bkAddonCardClay','bkAddonCardHL'].forEach(id => document.getElementById(id).classList.remove('selected'));
-  ['bkAddonCheckPet','bkAddonCheckStain','bkAddonCheckTrim','bkAddonCheckClay','bkAddonCheckHL'].forEach(id => document.getElementById(id).textContent = '+ Add');
+  ['bkAddonCardPet','bkAddonCardClay','bkAddonCardHL'].forEach(id => document.getElementById(id).classList.remove('selected'));
+  ['bkAddonCheckPet','bkAddonCheckClay','bkAddonCheckHL'].forEach(id => document.getElementById(id).textContent = '+ Add');
   document.getElementById('bkAddonPetHair').value = '0';
-  document.getElementById('bkAddonStain').value = '0';
-  document.getElementById('bkAddonTrim').value = '0';
   document.getElementById('bkAddonClay').value = '0';
   document.getElementById('bkAddonHeadlight').value = '0';
   document.getElementById('bkEstimate').style.display = 'none';
@@ -2762,13 +2718,11 @@ async function submitBooking() {
   const notes    = document.getElementById('bkNotes').value.trim();
   const service  = document.getElementById('bkService') ? document.getElementById('bkService').value : '';
   const addonPet   = document.getElementById('bkAddonPetHair').value === '1';
-  const addonStain = document.getElementById('bkAddonStain').value === '1';
-  const addonTrim  = document.getElementById('bkAddonTrim').value === '1';
   const addonClay  = document.getElementById('bkAddonClay').value === '1';
   const addonHL    = document.getElementById('bkAddonHeadlight').value === '1';
   const hlCount    = document.getElementById('bkHLCount').value;
   const hlLabel    = addonHL ? (hlCount === 'single' ? 'Headlight Restoration — Single (+$60)' : 'Headlight Restoration — Both (+$100)') : '';
-  const addons     = [addonPet && 'Pet Hair Removal (+$30)', addonStain && 'Stain Removal (+$30)', addonTrim && 'Trim Restoration (+$25)', addonClay && 'Clay Bar Treatment (+$35)', hlLabel].filter(Boolean).join(', ') || 'None';
+  const addons     = [addonPet && 'Pet Hair Removal (+$30)', addonClay && 'Clay Bar Treatment (+$35)', hlLabel].filter(Boolean).join(', ') || 'None';
   const make2    = bkCarCount === 2 ? document.getElementById('bkMake2').value.trim() : '';
   const model2   = bkCarCount === 2 ? document.getElementById('bkModel2').value.trim() : '';
   const vtype2   = bkCarCount === 2 ? document.getElementById('bkVehicleType2').value : '';
@@ -2797,8 +2751,6 @@ async function submitBooking() {
   if (emailPrices && vtype && emailPrices[vtype]) {
     estimateTotal = emailPrices[vtype];
     if (addonPet)                  estimateTotal += 30;
-    if (addonStain)                estimateTotal += 30;
-    if (addonTrim)                 estimateTotal += 25;
     if (addonClay)                 estimateTotal += 35;
     if (addonHL) estimateTotal += (document.getElementById('bkHLCount').value === 'single') ? 60 : 100;
   }
@@ -3150,7 +3102,7 @@ const PRICING_DEFAULTS = {
   ext_sedan:80,ext_truck:90,ext_suv:100,
   int_sedan:140,int_truck:160,int_suv:180,
   full_sedan:185,full_truck:225,full_suv:250,
-  hl_both:100,hl_single:60,pet:30,stain:30,trim:25,clay:35
+  hl_both:100,hl_single:60,pet:30,clay:35
 };
 function renderAdminPricing() {
   bkDb.ref('admin/pricing').once('value', snap => {
@@ -3421,8 +3373,6 @@ function handleAdminTrigger() {
           <div class="admin-price-cell"><label>HL Both</label><input type="number" class="admin-price-input" id="ap-hl_both"></div>
           <div class="admin-price-cell"><label>HL Single</label><input type="number" class="admin-price-input" id="ap-hl_single"></div>
           <div class="admin-price-cell"><label>Pet Hair</label><input type="number" class="admin-price-input" id="ap-pet"></div>
-          <div class="admin-price-cell"><label>Stain</label><input type="number" class="admin-price-input" id="ap-stain"></div>
-          <div class="admin-price-cell"><label>Trim</label><input type="number" class="admin-price-input" id="ap-trim"></div>
           <div class="admin-price-cell"><label>Clay Bar</label><input type="number" class="admin-price-input" id="ap-clay"></div>
         </div>
         <button class="admin-btn-save" onclick="adminSavePricing()">Save Pricing</button>
