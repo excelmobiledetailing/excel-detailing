@@ -1205,7 +1205,7 @@
 <!-- PROMO BANNER -->
 <div id="scroll-progress"></div>
 <div class="promo-banner" id="promo">
-  <p><strong>NEW CUSTOMER SPECIAL</strong> — Get <strong>$10 OFF</strong> your first detail &nbsp;·&nbsp; Mention code <span class="promo-code">EXCEL10</span> when booking</p>
+  <p id="promoBannerText"><strong>NEW CUSTOMER SPECIAL</strong> — Get <strong>$<span id="promoAmt">10</span> OFF</strong> your first detail &nbsp;·&nbsp; Mention code <span class="promo-code" id="promoCode">EXCEL10</span> when booking</p>
   <button class="promo-dismiss" onclick="document.getElementById('promo').style.display='none'" aria-label="Dismiss">✕</button>
 </div>
 
@@ -1224,7 +1224,7 @@
     <li><a href="#faq">FAQ</a></li>
   </ul>
   <div class="nav-right">
-    <a href="tel:+18476501734" class="nav-phone">(847) 650-1734</a>
+    <a href="tel:+18476501734" class="nav-phone" id="navPhone">(847) 650-1734</a>
     <a href="#" class="nav-cta" onclick="event.preventDefault(); openBooking('Book a Service')">Book Now</a>
     <button class="nav-burger" id="navBurger" aria-label="Menu" onclick="toggleMobileMenu()">
       <span></span><span></span><span></span>
@@ -1284,7 +1284,7 @@
 <div class="stats-bar">
   <div class="stat-item fade-up"><div class="stat-num">100%</div><div class="stat-label">Mobile Service</div></div>
   <div class="stat-item fade-up"><div class="stat-num">3</div><div class="stat-label">Packages Available</div></div>
-  <div class="stat-item fade-up"><div class="stat-num">$80</div><div class="stat-label">Starting Price</div></div>
+  <div class="stat-item fade-up"><div class="stat-num" id="stat-starting-price">$80</div><div class="stat-label">Starting Price</div></div>
   <div class="stat-item fade-up"><div class="stat-num">5★</div><div class="stat-label">Customer Rated</div></div>
 </div>
 
@@ -1387,9 +1387,9 @@
       <div class="card-name">Exterior Detail</div>
       <div class="card-desc">A thorough outside clean leaving your paint gleaming and protected.</div>
       <div class="price-row">
-        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>80</div></div>
-        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup>90</div></div>
-        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup>100</div></div>
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="ext-sedan">80</span></div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="ext-truck">90</span></div></div>
+        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup><span data-price="ext-suv">100</span></div></div>
       </div>
       <ul class="features-list">
         <li>Pre-wash treatment</li>
@@ -1404,9 +1404,9 @@
       <div class="card-name">Interior Detail</div>
       <div class="card-desc">Steam cleaned & deep cleaned from floor to ceiling — every surface, every crevice.</div>
       <div class="price-row">
-        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>140</div></div>
-        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup>160</div></div>
-        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup>180</div></div>
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="int-sedan">140</span></div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="int-truck">160</span></div></div>
+        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup><span data-price="int-suv">180</span></div></div>
       </div>
       <ul class="features-list">
         <li>Deep vacuum — seats, floors, trunk & crevices</li>
@@ -1424,9 +1424,9 @@
       <div class="card-name">Full Detail</div>
       <div class="card-desc">The complete transformation — everything inside and out, looking brand new.</div>
       <div class="price-row">
-        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup>185</div></div>
-        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup>225</div></div>
-        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup>250</div></div>
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="full-sedan">185</span></div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="full-truck">225</span></div></div>
+        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup><span data-price="full-suv">250</span></div></div>
       </div>
       <ul class="features-list">
         <li>Everything in Exterior Detail</li>
@@ -1450,9 +1450,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td>Coupe / Sedan</td><td><span class="compare-price">$80</span></td><td><span class="compare-price">$140</span></td><td><span class="compare-price">$185</span></td></tr>
-        <tr><td>Truck / Full-Size SUV</td><td><span class="compare-price">$90</span></td><td><span class="compare-price">$160</span></td><td><span class="compare-price">$225</span></td></tr>
-        <tr><td>3-Row SUV</td><td><span class="compare-price">$100</span></td><td><span class="compare-price">$180</span></td><td><span class="compare-price">$250</span></td></tr>
+        <tr><td>Coupe / Sedan</td><td><span class="compare-price">$<span data-price="ext-sedan">80</span></span></td><td><span class="compare-price">$<span data-price="int-sedan">140</span></span></td><td><span class="compare-price">$<span data-price="full-sedan">185</span></span></td></tr>
+        <tr><td>Truck / Full-Size SUV</td><td><span class="compare-price">$<span data-price="ext-truck">90</span></span></td><td><span class="compare-price">$<span data-price="int-truck">160</span></span></td><td><span class="compare-price">$<span data-price="full-truck">225</span></span></td></tr>
+        <tr><td>3-Row SUV</td><td><span class="compare-price">$<span data-price="ext-suv">100</span></span></td><td><span class="compare-price">$<span data-price="int-suv">180</span></span></td><td><span class="compare-price">$<span data-price="full-suv">250</span></span></td></tr>
         <tr><td>Pre-wash & Hand Wash</td><td><span class="check">✔</span></td><td><span class="cross">—</span></td><td><span class="check">✔</span></td></tr>
         <tr><td>Wax Protectant</td><td><span class="check">✔</span></td><td><span class="cross">—</span></td><td><span class="check">✔</span></td></tr>
         <tr><td>Tires & Rims</td><td><span class="check">✔</span></td><td><span class="cross">—</span></td><td><span class="check">✔</span></td></tr>
@@ -1510,31 +1510,31 @@
     <div class="addon-card">
       <div class="addon-label">Visibility Upgrade</div>
       <div class="addon-name">Headlight Restoration</div>
-      <div class="addon-price-row"><span>Both headlights</span><strong>$100</strong></div>
-      <div class="addon-price-row"><span>Single headlight</span><strong>$60</strong></div>
+      <div class="addon-price-row"><span>Both headlights</span><strong>$<span data-price="hl-both">100</span></strong></div>
+      <div class="addon-price-row"><span>Single headlight</span><strong>$<span data-price="hl-single">60</span></strong></div>
     </div>
     <div class="addon-card">
       <div class="addon-label">Interior Add-On</div>
       <div class="addon-name">Pet Hair Removal</div>
-      <div class="addon-price-row"><span>Add to any service</span><strong>+$30</strong></div>
+      <div class="addon-price-row"><span>Add to any service</span><strong>+$<span data-price="pet">30</span></strong></div>
       <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Stubborn pet hair embedded in seats and carpet — fully removed using professional brushes and a multi-pass vacuum process.</div>
     </div>
     <div class="addon-card">
       <div class="addon-label">Interior Add-On</div>
       <div class="addon-name">Stain Removal</div>
-      <div class="addon-price-row"><span>Add to any service</span><strong>+$30</strong></div>
+      <div class="addon-price-row"><span>Add to any service</span><strong>+$<span data-price="stain">30</span></strong></div>
       <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Targeted treatment for stains on carpet and seats. Steam-assisted extraction for deep-set spots.</div>
     </div>
     <div class="addon-card">
       <div class="addon-label">Exterior Add-On</div>
       <div class="addon-name">Trim Restoration</div>
-      <div class="addon-price-row"><span>Add to any service</span><strong>+$25</strong></div>
+      <div class="addon-price-row"><span>Add to any service</span><strong>+$<span data-price="trim">25</span></strong></div>
       <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Faded black plastic trim restored to a deep, dark finish — makes the whole car look newer.</div>
     </div>
     <div class="addon-card">
       <div class="addon-label">Exterior Add-On</div>
       <div class="addon-name">Clay Bar Treatment</div>
-      <div class="addon-price-row"><span>Add to any service</span><strong>+$35</strong></div>
+      <div class="addon-price-row"><span>Add to any service</span><strong>+$<span data-price="clay">35</span></strong></div>
       <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Removes bonded contaminants like tar, rail dust, and industrial fallout. Paint feels smooth as glass after.</div>
     </div>
     <div class="addon-card" style="grid-column: 1 / -1;">
@@ -2382,6 +2382,8 @@ const bkDb = firebase.database();
 
 // Live bookings cache — updated in real time from Firebase
 let bookedSlots = {};
+let blockedDates = {};
+let firebaseSlotOverrides = {};
 bkDb.ref('bookings').on('value', (snapshot) => {
   bookedSlots = snapshot.val() || {};
   // If booking modal is open, re-render so everyone sees latest availability
@@ -2423,7 +2425,8 @@ const PRE_BOOKED = {
 };
 function getSlotsForDate(dateStr, twoCarMode = false) {
   let slots;
-  if (SLOTS_OVERRIDE[dateStr]) { slots = SLOTS_OVERRIDE[dateStr]; }
+  if (firebaseSlotOverrides[dateStr] !== undefined) { slots = firebaseSlotOverrides[dateStr]; }
+  else if (SLOTS_OVERRIDE[dateStr]) { slots = SLOTS_OVERRIDE[dateStr]; }
   else {
     const day = new Date(dateStr + 'T12:00:00').getDay(); // 0=Sun,6=Sat
     if (day === 6) slots = SLOTS_SATURDAY;
@@ -2452,7 +2455,10 @@ function bookSlot(dateStr, key) {
     }
   }
 }
-function slotsAvail(dateStr) { return getSlotsForDate(dateStr).filter(s => !isSlotTaken(dateStr, s.key)).length; }
+function slotsAvail(dateStr) {
+  if (blockedDates[dateStr]) return 0;
+  return getSlotsForDate(dateStr).filter(s => !isSlotTaken(dateStr, s.key)).length;
+}
 
 // ── Calendar state ──
 let bkViewDate = new Date();
@@ -2891,9 +2897,75 @@ function closeMobileMenu() {
   document.getElementById('navBurger').classList.remove('open');
 }
 
+// ── Admin Firebase listeners ──
+bkDb.ref('admin/blocked_dates').on('value', snap => {
+  blockedDates = snap.val() || {};
+  renderCalendar();
+  if (bkSelectedDate) showTimeSlots(bkSelectedDate);
+  if (adminAuthed && adminActiveTab === 'availability') renderAdminAvailability();
+});
+bkDb.ref('admin/slot_overrides').on('value', snap => {
+  const raw = snap.val() || {};
+  firebaseSlotOverrides = {};
+  for (const [date, slotsJson] of Object.entries(raw)) {
+    try { firebaseSlotOverrides[date] = JSON.parse(slotsJson); } catch(e) {}
+  }
+  renderCalendar();
+  if (bkSelectedDate) showTimeSlots(bkSelectedDate);
+  if (adminAuthed && adminActiveTab === 'availability') renderAdminAvailability();
+});
+bkDb.ref('admin/pricing').on('value', snap => {
+  const p = snap.val(); if (p) applyPricingToDOM(p);
+  if (adminAuthed && adminActiveTab === 'pricing') renderAdminPricing();
+});
+bkDb.ref('admin/promo').on('value', snap => {
+  const p = snap.val(); if (p) applyPromoToDOM(p);
+  if (adminAuthed && adminActiveTab === 'promo') renderAdminPromo();
+});
+bkDb.ref('admin/business').on('value', snap => {
+  const b = snap.val(); if (b) applyBusinessToDOM(b);
+  if (adminAuthed && adminActiveTab === 'business') renderAdminBusiness();
+});
+bkDb.ref('bookings').on('value', () => {
+  if (adminAuthed && adminActiveTab === 'bookings') renderAdminBookings();
+});
+
+function applyPricingToDOM(p) {
+  const map = {
+    'ext-sedan':p.ext_sedan,'ext-truck':p.ext_truck,'ext-suv':p.ext_suv,
+    'int-sedan':p.int_sedan,'int-truck':p.int_truck,'int-suv':p.int_suv,
+    'full-sedan':p.full_sedan,'full-truck':p.full_truck,'full-suv':p.full_suv,
+    'hl-both':p.hl_both,'hl-single':p.hl_single,'pet':p.pet,'stain':p.stain,'trim':p.trim,'clay':p.clay
+  };
+  for (const [k,v] of Object.entries(map)) {
+    if (v == null) continue;
+    document.querySelectorAll(`[data-price="${k}"]`).forEach(el => el.textContent = v);
+  }
+  const stat = document.getElementById('stat-starting-price');
+  if (stat && p.ext_sedan != null) stat.textContent = '$' + p.ext_sedan;
+  BK_PRICES['Exterior Detail'] = {'Coupe / Sedan':p.ext_sedan??80,'Truck / Full-Size SUV':p.ext_truck??90,'3-Row SUV':p.ext_suv??100};
+  BK_PRICES['Interior Detail'] = {'Coupe / Sedan':p.int_sedan??140,'Truck / Full-Size SUV':p.int_truck??160,'3-Row SUV':p.int_suv??180};
+  BK_PRICES['Full Detail']     = {'Coupe / Sedan':p.full_sedan??185,'Truck / Full-Size SUV':p.full_truck??225,'3-Row SUV':p.full_suv??250};
+}
+function applyPromoToDOM(p) {
+  const banner = document.getElementById('promo');
+  if (!banner) return;
+  if (p.active === false) { banner.style.display = 'none'; return; }
+  banner.style.display = '';
+  if (p.code) document.getElementById('promoCode').textContent = p.code;
+  if (p.amt)  document.getElementById('promoAmt').textContent  = p.amt;
+}
+function applyBusinessToDOM(b) {
+  if (b.phone) {
+    const el = document.getElementById('navPhone');
+    if (el) { el.textContent = b.phone; el.href = 'tel:+1' + b.phone.replace(/\D/g,''); }
+  }
+}
+
 // ── Admin panel ──
 const ADMIN_PASS = 'D28@jh7929';
 let adminAuthed = false;
+let adminActiveTab = 'bookings';
 
 function openAdmin() {
   document.getElementById('adminOverlay').classList.add('open');
@@ -2907,42 +2979,158 @@ function closeAdmin() {
   adminAuthed = false;
 }
 function adminLogin() {
-  const val = document.getElementById('adminPassInput').value;
-  if (val === ADMIN_PASS) {
+  if (document.getElementById('adminPassInput').value === ADMIN_PASS) {
     adminAuthed = true;
     document.getElementById('adminLogin').style.display = 'none';
     document.getElementById('adminDashboard').style.display = 'block';
-    renderAdminSlots();
+    adminShowTab('bookings');
   } else {
     document.getElementById('adminPassError').style.display = 'block';
   }
 }
-function releaseSlot(key) {
-  bkDb.ref(`bookings/${key}`).set(null).then(() => renderAdminSlots());
+function adminShowTab(tab) {
+  adminActiveTab = tab;
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.admin-tab-panel').forEach(p => p.style.display = p.id === 'adminTab-' + tab ? 'block' : 'none');
+  if (tab === 'bookings')     renderAdminBookings();
+  if (tab === 'availability') renderAdminAvailability();
+  if (tab === 'promo')        renderAdminPromo();
+  if (tab === 'pricing')      renderAdminPricing();
+  if (tab === 'business')     renderAdminBusiness();
 }
-function renderAdminSlots() {
-  const list = document.getElementById('adminSlotList');
-  const keys = Object.keys(bookedSlots).filter(k => bookedSlots[k]);
-  if (keys.length === 0) {
-    list.innerHTML = '<p style="color:#aaa;text-align:center;margin:1.5rem 0;">No active bookings.</p>';
-    return;
-  }
-  list.innerHTML = keys.sort().map(k => {
-    const [date, hour] = k.split('_');
-    const d = new Date(date + 'T12:00:00');
-    const dayStr = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-    const h = parseInt(hour);
-    const timeStr = h === 0 ? '12:00 AM' : h < 12 ? `${h}:00 AM` : h === 12 ? '12:00 PM' : `${h-12}:00 PM`;
-    return `<div class="admin-slot-row">
-      <span class="admin-slot-info">${dayStr} — ${timeStr}</span>
-      <button class="admin-release-btn" onclick="releaseSlot('${k}')">Release</button>
-    </div>`;
-  }).join('');
+
+function fmtSlotKey(k) {
+  const [date, hour] = k.split('_');
+  const d = new Date(date + 'T12:00:00');
+  const dayStr = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  const h = parseInt(hour);
+  const timeStr = h < 12 ? `${h}:00 AM` : h === 12 ? '12:00 PM' : `${h-12}:00 PM`;
+  return `${dayStr} — ${timeStr}`;
 }
-// Re-render admin dashboard live when Firebase updates
-bkDb.ref('bookings').on('value', () => {
-  if (adminAuthed) renderAdminSlots();
-});
+
+// Bookings tab
+function renderAdminBookings() {
+  const list = document.getElementById('adminBookingList');
+  const keys = Object.keys(bookedSlots).filter(k => bookedSlots[k]).sort();
+  list.innerHTML = keys.length === 0
+    ? '<p class="admin-empty">No active bookings or blocks.</p>'
+    : keys.map(k => {
+        const isBlock = bookedSlots[k] === 'blocked';
+        return `<div class="admin-row">
+          <div><div class="admin-row-label">${fmtSlotKey(k)}</div>
+          <div class="admin-row-sub">${isBlock ? 'Owner block' : 'Customer booking'}</div></div>
+          <button class="admin-btn-red" onclick="adminReleaseSlot('${k}')">Release</button>
+        </div>`;
+      }).join('');
+}
+function adminReleaseSlot(key) {
+  if (!confirm('Release this slot and make it available again?')) return;
+  bkDb.ref(`bookings/${key}`).set(null);
+}
+function adminBlockSlot() {
+  const date = document.getElementById('adminBlockDate').value;
+  const key  = document.getElementById('adminBlockTime').value;
+  if (!date || !key) { alert('Pick a date and time.'); return; }
+  bkDb.ref(`bookings/${date}_${key}`).set('blocked').then(() => {
+    document.getElementById('adminBlockDate').value = '';
+    renderAdminBookings();
+  });
+}
+
+// Availability tab
+function renderAdminAvailability() {
+  const bdList = document.getElementById('adminBlockedDaysList');
+  const bd = Object.keys(blockedDates).filter(d => blockedDates[d]).sort();
+  bdList.innerHTML = bd.length === 0
+    ? '<p class="admin-empty">No days fully blocked.</p>'
+    : bd.map(d => {
+        const lbl = new Date(d + 'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+        return `<div class="admin-row"><span class="admin-row-label">${lbl}</span><button class="admin-btn-red" onclick="adminUnblockDay('${d}')">Unblock</button></div>`;
+      }).join('');
+  const soList = document.getElementById('adminSlotOverrideList');
+  const soKeys = Object.keys(firebaseSlotOverrides).sort();
+  soList.innerHTML = soKeys.length === 0
+    ? '<p class="admin-empty">No custom slot overrides.</p>'
+    : soKeys.map(d => {
+        const lbl = new Date(d + 'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+        const s = firebaseSlotOverrides[d];
+        const slotLbls = s.length === 0 ? 'All slots closed' : s.map(x => x.label).join(', ');
+        return `<div class="admin-row"><div><div class="admin-row-label">${lbl}</div><div class="admin-row-sub">${slotLbls}</div></div><button class="admin-btn-red" onclick="adminRemoveSlotOverride('${d}')">Remove</button></div>`;
+      }).join('');
+}
+function adminBlockDay() {
+  const d = document.getElementById('adminBlockDayInput').value;
+  if (!d) { alert('Pick a date.'); return; }
+  bkDb.ref(`admin/blocked_dates/${d}`).set(true).then(() => { document.getElementById('adminBlockDayInput').value = ''; });
+}
+function adminUnblockDay(d) { bkDb.ref(`admin/blocked_dates/${d}`).set(null); }
+function adminSaveSlotOverride() {
+  const d = document.getElementById('adminOverrideDate').value;
+  if (!d) { alert('Pick a date.'); return; }
+  const slots = Array.from(document.querySelectorAll('.admin-slot-check:checked')).map(c => ({key:c.value, label:c.dataset.label}));
+  bkDb.ref(`admin/slot_overrides/${d}`).set(JSON.stringify(slots)).then(() => {
+    document.getElementById('adminOverrideDate').value = '';
+    document.querySelectorAll('.admin-slot-check').forEach(c => c.checked = false);
+    showAdminToast('Slots saved!');
+  });
+}
+function adminRemoveSlotOverride(d) { bkDb.ref(`admin/slot_overrides/${d}`).set(null); }
+
+// Promo tab
+function renderAdminPromo() {
+  bkDb.ref('admin/promo').once('value', snap => {
+    const p = snap.val() || {active:true, code:'EXCEL10', amt:'10'};
+    document.getElementById('adminPromoActive').checked = p.active !== false;
+    document.getElementById('adminPromoCode').value = p.code || 'EXCEL10';
+    document.getElementById('adminPromoAmt').value  = p.amt  || '10';
+  });
+}
+function adminSavePromo() {
+  const active = document.getElementById('adminPromoActive').checked;
+  const code   = document.getElementById('adminPromoCode').value.trim();
+  const amt    = document.getElementById('adminPromoAmt').value.trim();
+  bkDb.ref('admin/promo').set({active,code,amt}).then(() => showAdminToast('Promo saved!'));
+}
+
+// Pricing tab
+const PRICING_DEFAULTS = {
+  ext_sedan:80,ext_truck:90,ext_suv:100,
+  int_sedan:140,int_truck:160,int_suv:180,
+  full_sedan:185,full_truck:225,full_suv:250,
+  hl_both:100,hl_single:60,pet:30,stain:30,trim:25,clay:35
+};
+function renderAdminPricing() {
+  bkDb.ref('admin/pricing').once('value', snap => {
+    const p = Object.assign({}, PRICING_DEFAULTS, snap.val() || {});
+    for (const [k,v] of Object.entries(p)) { const el = document.getElementById('ap-'+k); if (el) el.value = v; }
+  });
+}
+function adminSavePricing() {
+  const p = {};
+  for (const k of Object.keys(PRICING_DEFAULTS)) { const el = document.getElementById('ap-'+k); if (el) p[k] = parseInt(el.value)||PRICING_DEFAULTS[k]; }
+  bkDb.ref('admin/pricing').set(p).then(() => { applyPricingToDOM(p); showAdminToast('Pricing saved!'); });
+}
+
+// Business tab
+function renderAdminBusiness() {
+  bkDb.ref('admin/business').once('value', snap => {
+    const b = snap.val() || {};
+    document.getElementById('adminBizPhone').value = b.phone || '(847) 650-1734';
+    document.getElementById('adminBizEmail').value = b.email || 'excelmobiledetailing11@gmail.com';
+  });
+}
+function adminSaveBusiness() {
+  const phone = document.getElementById('adminBizPhone').value.trim();
+  const email = document.getElementById('adminBizEmail').value.trim();
+  bkDb.ref('admin/business').set({phone,email}).then(() => { applyBusinessToDOM({phone,email}); showAdminToast('Info saved!'); });
+}
+
+function showAdminToast(msg) {
+  const t = document.getElementById('adminToast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
 // Hidden admin trigger — triple-click the © in the footer
 let adminTriggerCount = 0, adminTriggerTimer = null;
 function handleAdminTrigger() {
@@ -2956,60 +3144,235 @@ function handleAdminTrigger() {
 <!-- ADMIN PANEL -->
 <style>
   .admin-overlay {
-    display: none; position: fixed; inset: 0; z-index: 9999;
-    background: rgba(0,0,0,.75); backdrop-filter: blur(4px);
-    align-items: center; justify-content: center;
+    display:none; position:fixed; inset:0; z-index:9999;
+    background:rgba(0,0,0,.8); backdrop-filter:blur(5px);
+    align-items:center; justify-content:center;
   }
-  .admin-overlay.open { display: flex; }
+  .admin-overlay.open { display:flex; }
   .admin-modal {
-    background: #1a1a1a; border: 1px solid #333; border-radius: 14px;
-    padding: 2rem; width: 90%; max-width: 480px; position: relative;
-    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    background:#141414; border:1px solid #2a2a2a; border-radius:16px;
+    width:92%; max-width:560px; max-height:88vh; display:flex; flex-direction:column;
+    position:relative; box-shadow:0 24px 80px rgba(0,0,0,.7); overflow:hidden;
   }
-  .admin-modal h2 { color: #fff; margin: 0 0 1.4rem; font-size: 1.2rem; letter-spacing:.03em; }
-  .admin-modal-close {
-    position: absolute; top: 1rem; right: 1rem;
-    background: none; border: none; color: #aaa; font-size: 1.2rem; cursor: pointer;
+  .admin-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.2rem 1.5rem; border-bottom:1px solid #222; flex-shrink:0;
   }
+  .admin-header h2 { color:#fff; margin:0; font-size:1.1rem; letter-spacing:.04em; }
+  .admin-modal-close { background:none; border:none; color:#666; font-size:1.2rem; cursor:pointer; padding:.2rem .4rem; }
+  .admin-modal-close:hover { color:#fff; }
+  /* Login */
+  #adminLogin { padding:1.5rem; }
   .admin-pass-input {
-    width: 100%; padding: .75rem 1rem; border-radius: 8px;
-    border: 1px solid #444; background: #111; color: #fff;
-    font-size: 1rem; margin-bottom: .75rem; box-sizing: border-box;
+    width:100%; padding:.8rem 1rem; border-radius:8px; border:1px solid #333;
+    background:#0d0d0d; color:#fff; font-size:1rem; margin-bottom:.75rem; box-sizing:border-box;
   }
   .admin-login-btn {
-    width: 100%; padding: .75rem; border-radius: 8px;
-    background: var(--red); border: none; color: #fff;
-    font-size: 1rem; font-weight: 600; cursor: pointer;
+    width:100%; padding:.8rem; border-radius:8px; background:var(--red);
+    border:none; color:#fff; font-size:1rem; font-weight:700; cursor:pointer;
   }
-  .admin-login-btn:hover { background: var(--red-light); }
-  .admin-pass-error { color: #ff6b6b; font-size: .85rem; margin-bottom: .5rem; display: none; }
-  .admin-slot-row {
-    display: flex; align-items: center; justify-content: space-between;
-    background: #111; border: 1px solid #333; border-radius: 8px;
-    padding: .75rem 1rem; margin-bottom: .6rem;
+  .admin-login-btn:hover { background:var(--red-light); }
+  .admin-pass-error { color:#ff6b6b; font-size:.82rem; margin-bottom:.5rem; display:none; }
+  /* Tabs */
+  .admin-tabs {
+    display:flex; gap:0; border-bottom:1px solid #222; flex-shrink:0; overflow-x:auto;
   }
-  .admin-slot-info { color: #ddd; font-size: .95rem; }
-  .admin-release-btn {
-    background: none; border: 1px solid #e63946; color: #e63946;
-    border-radius: 6px; padding: .35rem .85rem; font-size: .85rem;
-    cursor: pointer; transition: all .2s;
+  .admin-tab {
+    flex:1; padding:.65rem .4rem; background:none; border:none; color:#666;
+    font-size:.78rem; font-weight:600; cursor:pointer; letter-spacing:.04em;
+    border-bottom:2px solid transparent; white-space:nowrap; transition:all .2s;
   }
-  .admin-release-btn:hover { background: #e63946; color: #fff; }
+  .admin-tab.active { color:#fff; border-bottom-color:var(--red); }
+  .admin-tab:hover:not(.active) { color:#aaa; }
+  /* Dashboard body */
+  #adminDashboard { display:flex; flex-direction:column; flex:1; overflow:hidden; }
+  .admin-tab-panel { padding:1.25rem 1.5rem; overflow-y:auto; flex:1; }
+  /* Rows */
+  .admin-row {
+    display:flex; align-items:center; justify-content:space-between;
+    background:#1a1a1a; border:1px solid #272727; border-radius:8px;
+    padding:.7rem 1rem; margin-bottom:.5rem; gap:.5rem;
+  }
+  .admin-row-label { color:#ddd; font-size:.9rem; }
+  .admin-row-sub { color:#666; font-size:.75rem; margin-top:.15rem; }
+  .admin-empty { color:#555; text-align:center; padding:1rem 0; font-size:.88rem; }
+  /* Buttons */
+  .admin-btn-red {
+    background:none; border:1px solid #e63946; color:#e63946;
+    border-radius:6px; padding:.32rem .8rem; font-size:.82rem; cursor:pointer; transition:all .2s; white-space:nowrap;
+  }
+  .admin-btn-red:hover { background:#e63946; color:#fff; }
+  .admin-btn-save {
+    padding:.65rem 1.4rem; border-radius:8px; background:var(--red);
+    border:none; color:#fff; font-size:.9rem; font-weight:700; cursor:pointer; transition:all .2s;
+  }
+  .admin-btn-save:hover { background:var(--red-light); }
+  /* Form elements */
+  .admin-label { color:#aaa; font-size:.78rem; font-weight:600; letter-spacing:.05em; margin-bottom:.35rem; display:block; }
+  .admin-input {
+    width:100%; padding:.65rem .9rem; border-radius:7px; border:1px solid #333;
+    background:#0d0d0d; color:#fff; font-size:.9rem; box-sizing:border-box; margin-bottom:.85rem;
+  }
+  .admin-input:focus { outline:none; border-color:var(--red); }
+  .admin-section-title {
+    color:#fff; font-size:.82rem; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; margin:1rem 0 .6rem; padding-bottom:.4rem; border-bottom:1px solid #222;
+  }
+  .admin-section-title:first-child { margin-top:0; }
+  .admin-price-grid {
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:.5rem; margin-bottom:.85rem;
+  }
+  .admin-price-cell label { color:#666; font-size:.72rem; display:block; margin-bottom:.2rem; }
+  .admin-price-input {
+    width:100%; padding:.5rem .6rem; border-radius:6px; border:1px solid #333;
+    background:#0d0d0d; color:#fff; font-size:.88rem; box-sizing:border-box;
+  }
+  .admin-toggle-row { display:flex; align-items:center; gap:.75rem; margin-bottom:.85rem; }
+  .admin-toggle-row label { color:#ccc; font-size:.9rem; }
+  .admin-slot-checks { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:.85rem; }
+  .admin-slot-check-label {
+    display:flex; align-items:center; gap:.4rem; background:#1a1a1a;
+    border:1px solid #333; border-radius:6px; padding:.4rem .75rem;
+    color:#ccc; font-size:.85rem; cursor:pointer;
+  }
+  .admin-slot-check-label input { accent-color:var(--red); }
+  /* Toast */
+  .admin-toast {
+    position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(2rem);
+    background:#222; color:#fff; padding:.6rem 1.4rem; border-radius:20px;
+    font-size:.88rem; opacity:0; transition:all .3s; z-index:10001; pointer-events:none;
+  }
+  .admin-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 </style>
+
 <div class="admin-overlay" id="adminOverlay">
   <div class="admin-modal">
-    <button class="admin-modal-close" onclick="closeAdmin()">✕</button>
-    <h2>Owner Admin</h2>
+    <div class="admin-header">
+      <h2>OWNER ADMIN</h2>
+      <button class="admin-modal-close" onclick="closeAdmin()">✕</button>
+    </div>
+
+    <!-- Login -->
     <div id="adminLogin">
       <input class="admin-pass-input" type="password" id="adminPassInput" placeholder="Password"
         onkeydown="if(event.key==='Enter') adminLogin()">
       <p class="admin-pass-error" id="adminPassError">Incorrect password.</p>
       <button class="admin-login-btn" onclick="adminLogin()">Sign In</button>
     </div>
+
+    <!-- Dashboard -->
     <div id="adminDashboard" style="display:none;">
-      <div id="adminSlotList"></div>
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="bookings"     onclick="adminShowTab('bookings')">Bookings</button>
+        <button class="admin-tab"        data-tab="availability" onclick="adminShowTab('availability')">Availability</button>
+        <button class="admin-tab"        data-tab="promo"        onclick="adminShowTab('promo')">Promo</button>
+        <button class="admin-tab"        data-tab="pricing"      onclick="adminShowTab('pricing')">Pricing</button>
+        <button class="admin-tab"        data-tab="business"     onclick="adminShowTab('business')">Info</button>
+      </div>
+
+      <!-- BOOKINGS TAB -->
+      <div class="admin-tab-panel" id="adminTab-bookings">
+        <div class="admin-section-title">Block a Slot</div>
+        <label class="admin-label">Date</label>
+        <input type="date" class="admin-input" id="adminBlockDate">
+        <label class="admin-label">Time</label>
+        <select class="admin-input" id="adminBlockTime">
+          <option value="">— select —</option>
+          <option value="8">8:00 AM</option>
+          <option value="9">9:00 AM</option>
+          <option value="10">10:00 AM</option>
+          <option value="13">1:00 PM</option>
+          <option value="15">3:00 PM</option>
+          <option value="17">5:00 PM</option>
+        </select>
+        <button class="admin-btn-save" onclick="adminBlockSlot()">Mark as Taken</button>
+        <div class="admin-section-title" style="margin-top:1.25rem;">Active Bookings &amp; Blocks</div>
+        <div id="adminBookingList"></div>
+      </div>
+
+      <!-- AVAILABILITY TAB -->
+      <div class="admin-tab-panel" id="adminTab-availability" style="display:none;">
+        <div class="admin-section-title">Block a Full Day</div>
+        <label class="admin-label">Date</label>
+        <input type="date" class="admin-input" id="adminBlockDayInput">
+        <button class="admin-btn-save" onclick="adminBlockDay()">Block Day</button>
+        <div class="admin-section-title" style="margin-top:1.25rem;">Currently Blocked Days</div>
+        <div id="adminBlockedDaysList"></div>
+        <div class="admin-section-title" style="margin-top:1.25rem;">Custom Slots for a Date</div>
+        <label class="admin-label">Date</label>
+        <input type="date" class="admin-input" id="adminOverrideDate">
+        <label class="admin-label">Available Times (check all that apply)</label>
+        <div class="admin-slot-checks">
+          <label class="admin-slot-check-label"><input type="checkbox" class="admin-slot-check" value="8"  data-label="8:00 AM"> 8:00 AM</label>
+          <label class="admin-slot-check-label"><input type="checkbox" class="admin-slot-check" value="9"  data-label="9:00 AM"> 9:00 AM</label>
+          <label class="admin-slot-check-label"><input type="checkbox" class="admin-slot-check" value="10" data-label="10:00 AM"> 10:00 AM</label>
+          <label class="admin-slot-check-label"><input type="checkbox" class="admin-slot-check" value="13" data-label="1:00 PM"> 1:00 PM</label>
+          <label class="admin-slot-check-label"><input type="checkbox" class="admin-slot-check" value="15" data-label="3:00 PM"> 3:00 PM</label>
+          <label class="admin-slot-check-label"><input type="checkbox" class="admin-slot-check" value="17" data-label="5:00 PM"> 5:00 PM</label>
+        </div>
+        <button class="admin-btn-save" onclick="adminSaveSlotOverride()">Save Custom Slots</button>
+        <div class="admin-section-title" style="margin-top:1.25rem;">Current Overrides</div>
+        <div id="adminSlotOverrideList"></div>
+      </div>
+
+      <!-- PROMO TAB -->
+      <div class="admin-tab-panel" id="adminTab-promo" style="display:none;">
+        <div class="admin-section-title">Promo Banner</div>
+        <div class="admin-toggle-row">
+          <input type="checkbox" id="adminPromoActive" checked>
+          <label for="adminPromoActive">Banner visible on site</label>
+        </div>
+        <label class="admin-label">Promo Code</label>
+        <input type="text" class="admin-input" id="adminPromoCode" placeholder="EXCEL10">
+        <label class="admin-label">Discount Amount (number only)</label>
+        <input type="text" class="admin-input" id="adminPromoAmt" placeholder="10">
+        <button class="admin-btn-save" onclick="adminSavePromo()">Save Promo</button>
+      </div>
+
+      <!-- PRICING TAB -->
+      <div class="admin-tab-panel" id="adminTab-pricing" style="display:none;">
+        <div class="admin-section-title">Exterior Detail</div>
+        <div class="admin-price-grid">
+          <div class="admin-price-cell"><label>Coupe/Sedan</label><input type="number" class="admin-price-input" id="ap-ext_sedan"></div>
+          <div class="admin-price-cell"><label>Truck/SUV</label><input type="number" class="admin-price-input" id="ap-ext_truck"></div>
+          <div class="admin-price-cell"><label>3-Row SUV</label><input type="number" class="admin-price-input" id="ap-ext_suv"></div>
+        </div>
+        <div class="admin-section-title">Interior Detail</div>
+        <div class="admin-price-grid">
+          <div class="admin-price-cell"><label>Coupe/Sedan</label><input type="number" class="admin-price-input" id="ap-int_sedan"></div>
+          <div class="admin-price-cell"><label>Truck/SUV</label><input type="number" class="admin-price-input" id="ap-int_truck"></div>
+          <div class="admin-price-cell"><label>3-Row SUV</label><input type="number" class="admin-price-input" id="ap-int_suv"></div>
+        </div>
+        <div class="admin-section-title">Full Detail</div>
+        <div class="admin-price-grid">
+          <div class="admin-price-cell"><label>Coupe/Sedan</label><input type="number" class="admin-price-input" id="ap-full_sedan"></div>
+          <div class="admin-price-cell"><label>Truck/SUV</label><input type="number" class="admin-price-input" id="ap-full_truck"></div>
+          <div class="admin-price-cell"><label>3-Row SUV</label><input type="number" class="admin-price-input" id="ap-full_suv"></div>
+        </div>
+        <div class="admin-section-title">Add-Ons</div>
+        <div class="admin-price-grid">
+          <div class="admin-price-cell"><label>HL Both</label><input type="number" class="admin-price-input" id="ap-hl_both"></div>
+          <div class="admin-price-cell"><label>HL Single</label><input type="number" class="admin-price-input" id="ap-hl_single"></div>
+          <div class="admin-price-cell"><label>Pet Hair</label><input type="number" class="admin-price-input" id="ap-pet"></div>
+          <div class="admin-price-cell"><label>Stain</label><input type="number" class="admin-price-input" id="ap-stain"></div>
+          <div class="admin-price-cell"><label>Trim</label><input type="number" class="admin-price-input" id="ap-trim"></div>
+          <div class="admin-price-cell"><label>Clay Bar</label><input type="number" class="admin-price-input" id="ap-clay"></div>
+        </div>
+        <button class="admin-btn-save" onclick="adminSavePricing()">Save Pricing</button>
+      </div>
+
+      <!-- BUSINESS INFO TAB -->
+      <div class="admin-tab-panel" id="adminTab-business" style="display:none;">
+        <div class="admin-section-title">Contact Info</div>
+        <label class="admin-label">Phone Number</label>
+        <input type="text" class="admin-input" id="adminBizPhone" placeholder="(847) 650-1734">
+        <label class="admin-label">Email Address</label>
+        <input type="text" class="admin-input" id="adminBizEmail" placeholder="excelmobiledetailing11@gmail.com">
+        <button class="admin-btn-save" onclick="adminSaveBusiness()">Save Info</button>
+      </div>
     </div>
   </div>
 </div>
+<div class="admin-toast" id="adminToast"></div>
 </body>
 </html>
