@@ -2890,6 +2890,120 @@ function closeMobileMenu() {
   document.getElementById('mobileMenu').classList.remove('open');
   document.getElementById('navBurger').classList.remove('open');
 }
+
+// ── Admin panel ──
+const ADMIN_PASS = 'D28@jh7929';
+let adminAuthed = false;
+
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  document.getElementById('adminPassInput').value = '';
+  document.getElementById('adminPassError').style.display = 'none';
+  document.getElementById('adminLogin').style.display = 'block';
+  document.getElementById('adminDashboard').style.display = 'none';
+}
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  adminAuthed = false;
+}
+function adminLogin() {
+  const val = document.getElementById('adminPassInput').value;
+  if (val === ADMIN_PASS) {
+    adminAuthed = true;
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminDashboard').style.display = 'block';
+    renderAdminSlots();
+  } else {
+    document.getElementById('adminPassError').style.display = 'block';
+  }
+}
+function releaseSlot(key) {
+  bkDb.ref(`bookings/${key}`).set(null).then(() => renderAdminSlots());
+}
+function renderAdminSlots() {
+  const list = document.getElementById('adminSlotList');
+  const keys = Object.keys(bookedSlots).filter(k => bookedSlots[k]);
+  if (keys.length === 0) {
+    list.innerHTML = '<p style="color:#aaa;text-align:center;margin:1.5rem 0;">No active bookings.</p>';
+    return;
+  }
+  list.innerHTML = keys.sort().map(k => {
+    const [date, hour] = k.split('_');
+    const d = new Date(date + 'T12:00:00');
+    const dayStr = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    const h = parseInt(hour);
+    const timeStr = h === 0 ? '12:00 AM' : h < 12 ? `${h}:00 AM` : h === 12 ? '12:00 PM' : `${h-12}:00 PM`;
+    return `<div class="admin-slot-row">
+      <span class="admin-slot-info">${dayStr} — ${timeStr}</span>
+      <button class="admin-release-btn" onclick="releaseSlot('${k}')">Release</button>
+    </div>`;
+  }).join('');
+}
+// Re-render admin dashboard live when Firebase updates
+bkDb.ref('bookings').on('value', () => {
+  if (adminAuthed) renderAdminSlots();
+});
+// Open via URL hash #admin
+if (window.location.hash === '#admin') openAdmin();
 </script>
+
+<!-- ADMIN PANEL -->
+<style>
+  .admin-overlay {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,.75); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  .admin-overlay.open { display: flex; }
+  .admin-modal {
+    background: #1a1a1a; border: 1px solid #333; border-radius: 14px;
+    padding: 2rem; width: 90%; max-width: 480px; position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  }
+  .admin-modal h2 { color: #fff; margin: 0 0 1.4rem; font-size: 1.2rem; letter-spacing:.03em; }
+  .admin-modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none; color: #aaa; font-size: 1.2rem; cursor: pointer;
+  }
+  .admin-pass-input {
+    width: 100%; padding: .75rem 1rem; border-radius: 8px;
+    border: 1px solid #444; background: #111; color: #fff;
+    font-size: 1rem; margin-bottom: .75rem; box-sizing: border-box;
+  }
+  .admin-login-btn {
+    width: 100%; padding: .75rem; border-radius: 8px;
+    background: var(--red); border: none; color: #fff;
+    font-size: 1rem; font-weight: 600; cursor: pointer;
+  }
+  .admin-login-btn:hover { background: var(--red-light); }
+  .admin-pass-error { color: #ff6b6b; font-size: .85rem; margin-bottom: .5rem; display: none; }
+  .admin-slot-row {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #111; border: 1px solid #333; border-radius: 8px;
+    padding: .75rem 1rem; margin-bottom: .6rem;
+  }
+  .admin-slot-info { color: #ddd; font-size: .95rem; }
+  .admin-release-btn {
+    background: none; border: 1px solid #e63946; color: #e63946;
+    border-radius: 6px; padding: .35rem .85rem; font-size: .85rem;
+    cursor: pointer; transition: all .2s;
+  }
+  .admin-release-btn:hover { background: #e63946; color: #fff; }
+</style>
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-modal">
+    <button class="admin-modal-close" onclick="closeAdmin()">✕</button>
+    <h2>Owner Admin</h2>
+    <div id="adminLogin">
+      <input class="admin-pass-input" type="password" id="adminPassInput" placeholder="Password"
+        onkeydown="if(event.key==='Enter') adminLogin()">
+      <p class="admin-pass-error" id="adminPassError">Incorrect password.</p>
+      <button class="admin-login-btn" onclick="adminLogin()">Sign In</button>
+    </div>
+    <div id="adminDashboard" style="display:none;">
+      <div id="adminSlotList"></div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
