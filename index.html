@@ -2944,7 +2944,9 @@ bkDb.ref('bookings').on('value', () => {
   if (adminAuthed) renderAdminSlots();
 });
 // Open via URL hash #admin
-if (window.location.hash === '#admin') openAdmin();
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.location.hash === '#admin') openAdmin();
+});
 </script>
 
 <!-- ADMIN PANEL -->
