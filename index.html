@@ -1222,16 +1222,33 @@
 
     /* ── Back to Top ── */
     .back-top {
-      position: fixed; bottom: 2rem; left: 2rem; z-index: 400;
-      width: 44px; height: 44px; background: var(--red);
-      border: none; cursor: pointer; display: flex; align-items: center;
-      justify-content: center; opacity: 0; pointer-events: none;
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 400;
+      width: 52px; height: 52px; background: var(--red);
+      border: none; border-radius: 50%; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 1px;
+      opacity: 0; pointer-events: none;
       transform: translateY(12px);
       transition: opacity .3s, transform .3s, background .2s;
-      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
     }
     .back-top.show { opacity: 1; pointer-events: all; transform: translateY(0); }
-    .back-top:hover { background: var(--red-light); transform: translateY(-3px) !important; }
+    .back-top:hover { background: var(--red-light); transform: translateY(-4px) !important; box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
+    .back-top::before {
+      content: '';
+      display: block;
+      width: 10px; height: 10px;
+      border-top: 2.5px solid #fff;
+      border-right: 2.5px solid #fff;
+      transform: rotate(-45deg) translateY(2px);
+    }
+    .back-top::after {
+      content: 'TOP';
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px; font-weight: 700; letter-spacing: .1em;
+      color: #fff; line-height: 1;
+    }
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
