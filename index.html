@@ -693,10 +693,16 @@
     .bk-vehicle-card.selected { border-color:var(--red);background:var(--navy3); }
     .bk-vehicle-svg { width:100%;padding:.4rem 0 .5rem;display:flex;align-items:center;justify-content:center; }
     .bk-vehicle-svg svg { width:100%;max-width:160px;height:auto; }
-    .bk-vehicle-card.selected .bk-vehicle-svg path,
-    .bk-vehicle-card.selected .bk-vehicle-svg circle { stroke:var(--red-light); }
-    .bk-second-car-step { overflow:hidden;max-height:0;opacity:0;transition:max-height .4s cubic-bezier(.22,.68,0,1.05),opacity .35s; }
-    .bk-second-car-step.open { max-height:300px;opacity:1; }
+    .bk-car-outline {
+      width:100%;max-width:160px;height:auto;display:block;margin:0 auto;
+      filter:invert(1) contrast(1.2);
+      mix-blend-mode:screen;
+    }
+    .bk-vehicle-card.selected .bk-car-outline {
+      filter:invert(1) contrast(1.2) sepia(1) saturate(10) hue-rotate(335deg) brightness(0.72);
+    }
+    .bk-second-car-step { overflow:hidden;max-height:0;opacity:0;transition:max-height .6s cubic-bezier(.22,.68,0,1.05),opacity .4s; }
+    .bk-second-car-step.open { max-height:1200px;opacity:1; }
     .bk-vehicle-name { font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.05em;color:var(--silver-lt);margin-bottom:.22rem; }
     .bk-vehicle-eg { font-size:.67rem;color:var(--gray);line-height:1.4; }
     .bk-service-slide { max-height:0;overflow:hidden;opacity:0;transition:max-height .5s cubic-bezier(.22,.68,0,1.05),opacity .4s; }
@@ -830,38 +836,7 @@
     }
     .ba-photo-note strong { color: var(--silver); }
 
-    /* ══ ADD-ONS ══ */
-    #addons { background: var(--navy2); }
-    .addons-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1.5px; max-width: 680px; margin-top: 3rem;
-      background: rgba(184,194,204,0.08);
-      border: 1px solid rgba(184,194,204,0.08);
-    }
-    .addon-card { background: var(--navy); padding: 2rem 2.2rem; transition: background .2s; }
-    .addon-card:hover { background: var(--navy2); }
-    .addon-label { font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--red); margin-bottom: .35rem; }
-    .addon-name {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem;
-      font-weight: 700; letter-spacing: .06em; color: var(--silver-lt); margin-bottom: 1rem;
-    }
-    .addon-price-row {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: .85rem; padding: .3rem 0;
-      border-bottom: 1px solid rgba(184,194,204,0.07);
-    }
-    .addon-price-row:last-child { border-bottom: none; }
-    .addon-price-row span { color: var(--gray); }
-    .addon-price-row strong {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem;
-      font-weight: 700; color: var(--silver-lt); letter-spacing: .04em;
-    }
-    .notice-bar {
-      background: var(--navy); border-left: 3px solid var(--red);
-      padding: 1.2rem 1.8rem; margin-top: 3.5rem; max-width: 680px;
-    }
-    .notice-bar p { font-size: .83rem; color: rgba(240,243,247,0.5); line-height: 1.65; }
-    .notice-bar strong { color: var(--silver-lt); font-weight: 600; }
+    /* ══ TESTIMONIALS ══ */
 
     /* ══ TESTIMONIALS ══ */
     #testimonials { background: var(--dark); }
@@ -1215,8 +1190,7 @@
       .nav-cta { display: none; }
       .nav-burger { display: flex; }
       .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
-      .addons-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
+.form-row { grid-template-columns: 1fr; }
       .trust-sep { display: none; }
       .steps-row::before { display: none; }
       .footer-main { grid-template-columns: 1fr; gap: 2rem; }
@@ -1294,7 +1268,7 @@
       <img src="./logo.png" alt="Excel Mobile Detailing"
            onerror="this.parentElement.innerHTML='<div class=\'hero-logo-fallback\'><span class=\'ex\'>EX</span>CEL<br><span style=\'font-size:.45em;color:var(--silver);letter-spacing:.18em\'>MOBILE DETAILING</span></div>';">
     </div>
-    <div class="hero-badge" id="heroBadge">Professional · Mobile · We Come to You</div>
+    <div class="hero-badge" id="heroBadge">Professional · Mobile · At Your Driveway</div>
     <div class="hero-tagline" id="heroTagline">Spotless Car. Your Driveway.</div>
     <p class="hero-sub" id="heroSub">We bring everything to your driveway — no drop-offs, no waiting around. Just show us the car and we'll handle the rest.</p>
     <div class="hero-actions">
@@ -1312,7 +1286,7 @@
 <div class="trust-bar">
   <div class="trust-item">Satisfaction Guaranteed</div>
   <div class="trust-sep"></div>
-  <div class="trust-item">We Come to You</div>
+  <div class="trust-item">No Drop-Off Needed</div>
   <div class="trust-sep"></div>
   <div class="trust-item">Eco-Friendly Products</div>
   <div class="trust-sep"></div>
@@ -1402,7 +1376,7 @@
     </div>
     <div class="step fade-up">
       <div class="step-num">2</div>
-      <div class="step-title">We Come to You</div>
+      <div class="step-title">We Pull Up, You Relax</div>
       <div class="step-desc">We pull up with everything we need — equipment, supplies, all of it. You don't have to do a thing.</div>
     </div>
     <div class="step fade-up">
@@ -1419,7 +1393,7 @@
     <div class="section-eyebrow">What We Offer</div>
     <h2 class="section-title">Service Packages</h2>
     <div class="section-divider"></div>
-    <p class="section-desc">We come to you — pick what your car needs.</p>
+    <p class="section-desc">Pick what your car needs and we'll handle the rest.</p>
   </div>
 
   <div class="pricing-grid">
@@ -1540,42 +1514,6 @@
 </section>
 
 <!-- ADD-ONS -->
-<section id="addons">
-  <div class="fade-up">
-    <div class="section-eyebrow">Enhance Your Service</div>
-    <h2 class="section-title">Add-Ons</h2>
-    <div class="section-divider"></div>
-    <p class="section-desc">Throw these on top of any service.</p>
-  </div>
-  <div class="addons-grid fade-up">
-    <div class="addon-card">
-      <div class="addon-label">Visibility Upgrade</div>
-      <div class="addon-name">Headlight Restoration</div>
-      <div class="addon-price-row"><span>Both headlights</span><strong>$<span data-price="hl-both">100</span></strong></div>
-      <div class="addon-price-row"><span>Single headlight</span><strong>$<span data-price="hl-single">60</span></strong></div>
-    </div>
-    <div class="addon-card">
-      <div class="addon-label">Interior Add-On</div>
-      <div class="addon-name">Pet Hair Removal</div>
-      <div class="addon-price-row"><span>Add to any service</span><strong>+$<span data-price="pet">30</span></strong></div>
-      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Stubborn pet hair embedded in seats and carpet — fully removed using professional brushes and a multi-pass vacuum process.</div>
-    </div>
-    <div class="addon-card">
-      <div class="addon-label">Exterior Add-On</div>
-      <div class="addon-name">Clay Bar Treatment</div>
-      <div class="addon-price-row"><span>Add to any service</span><strong>+$<span data-price="clay">35</span></strong></div>
-      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.6rem;">Removes bonded contaminants like tar, rail dust, and industrial fallout. Paint feels smooth as glass after.</div>
-    </div>
-    <div class="addon-card" style="grid-column: 1 / -1;">
-      <div class="addon-label">Why Restore?</div>
-      <div class="addon-name">Clear = Safer Driving</div>
-      <div style="font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.4rem;">Foggy headlights reduce visibility by up to 80%. Restoration makes your car look newer and keeps you safer on the road.</div>
-    </div>
-  </div>
-  <div class="notice-bar fade-up">
-    <p><strong>Pricing Notice:</strong> Prices may vary based on vehicle condition and size. Heavily soiled vehicles may incur additional charges. <strong>A quote is always provided before any extra charges — no surprises.</strong></p>
-  </div>
-
   <!-- Gift a Detail -->
   <div class="gift-callout fade-up">
     
@@ -1673,7 +1611,7 @@
   <div class="why-grid">
     <div class="why-card fade-up">
       
-      <div class="why-title">We Come to You</div>
+      <div class="why-title">Your Driveway Is Our Shop</div>
       <div class="why-text">Skip the drive. We bring everything to your driveway, office, or apartment parking lot.</div>
     </div>
     <div class="why-card fade-up">
@@ -1751,7 +1689,7 @@
         <span class="faq-question-text">Do I need to bring my car anywhere?</span>
         <span class="faq-icon">+</span>
       </button>
-      <div class="faq-answer">Not at all — that's the whole point. We come to you. All we need is access to your vehicle and a little room to work. We bring all our own equipment and supplies.</div>
+      <div class="faq-answer">Not at all. We pull up to wherever your car is parked — driveway, apartment lot, wherever. All we need is access to the vehicle and a little room to work. Everything else we bring ourselves.</div>
     </div>
     <div class="faq-item">
       <button class="faq-question" onclick="toggleFaq(this)">
@@ -1815,7 +1753,7 @@
   <div class="footer-main">
     <div class="footer-brand">
       <div class="footer-logo"><span>E</span>XCEL MOBILE DETAILING</div>
-      <div class="footer-tagline">Two guys who take car cleaning seriously. We come to you — wherever you are in the area.</div>
+      <div class="footer-tagline">Two guys who take car cleaning seriously. Your driveway is our shop.</div>
       <div class="footer-social-icons">
         <a href="https://www.instagram.com/excelmobile_detailing" target="_blank" title="Instagram">IG</a>
         <a href="#" title="Facebook">f</a>
@@ -1828,8 +1766,8 @@
         <li><a href="#services">Exterior Detail</a></li>
         <li><a href="#services">Interior Detail</a></li>
         <li><a href="#services">Full Detail</a></li>
-        <li><a href="#addons">Headlight Restoration</a></li>
-        <li><a href="#addons">Gift a Detail</a></li>
+        <li><a href="#pricing">Headlight Restoration</a></li>
+        <li><a href="#pricing">Gift a Detail</a></li>
       </ul>
     </div>
     <div>
@@ -2119,80 +2057,68 @@ function addMessage(text, type) {
         <button type="button" class="bk-cars-btn active" id="bkCarsBtn1" onclick="setCarCount(1)">1 Car</button>
         <button type="button" class="bk-cars-btn" id="bkCarsBtn2" onclick="setCarCount(2)">2 Cars</button>
       </div>
-      <!-- Second car dropdowns — shown when 2 cars selected -->
+      <!-- Second car full picker — shown when 2 cars selected -->
       <div class="bk-second-car-step" id="bkSecondCarStep">
-        <div style="display:flex;align-items:center;gap:.8rem;margin:.2rem 0 1rem;">
+        <input type="hidden" id="bkVehicleType2" value="">
+        <input type="hidden" id="bkService2" value="">
+        <div style="display:flex;align-items:center;gap:.8rem;margin:.2rem 0 .9rem;">
           <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
           <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);">Second Vehicle</span>
           <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
         </div>
-        <div class="bk-row">
-          <div class="bk-field">
-            <label>Vehicle Type</label>
-            <select id="bkVehicleType2">
-              <option value="">Select type</option>
-              <option value="Coupe / Sedan">Coupe / Sedan</option>
-              <option value="Truck / Full-Size SUV">Truck / Full-Size SUV</option>
-              <option value="3-Row SUV">3-Row SUV</option>
-            </select>
+        <div class="bk-pick-label" style="margin-bottom:.6rem;">What type of vehicle?</div>
+        <div class="bk-vehicle-grid">
+          <div class="bk-vehicle-card" onclick="selectVehicle2('Coupe / Sedan')" id="bkVCard2_0">
+            <div class="bk-vehicle-svg">
+              <img src="outline-drawing-coupe-sport-car-260nw-2247750477.webp" alt="Coupe / Sedan" class="bk-car-outline">
+            </div>
+            <div class="bk-vehicle-name">Coupe / Sedan</div>
+            <div class="bk-vehicle-eg">Civic, Camry, Accord…</div>
           </div>
-          <div class="bk-field">
-            <label>Service</label>
-            <select id="bkService2">
-              <option value="">Select service</option>
-              <option value="Exterior Detail">Exterior Detail</option>
-              <option value="Interior Detail">Interior Detail</option>
-              <option value="Full Detail">Full Detail</option>
-            </select>
+          <div class="bk-vehicle-card" onclick="selectVehicle2('Truck / Full-Size SUV')" id="bkVCard2_1">
+            <div class="bk-vehicle-svg">
+              <img src="premium-suv-car-simple-car-outline-illustration-vector.jpg" alt="Truck / SUV" class="bk-car-outline">
+            </div>
+            <div class="bk-vehicle-name">Truck / SUV</div>
+            <div class="bk-vehicle-eg">F-150, Tahoe, Silverado…</div>
           </div>
+          <div class="bk-vehicle-card" onclick="selectVehicle2('3-Row SUV')" id="bkVCard2_2">
+            <div class="bk-vehicle-svg">
+              <img src="download.jpg" alt="3-Row SUV" class="bk-car-outline">
+            </div>
+            <div class="bk-vehicle-name">3-Row SUV</div>
+            <div class="bk-vehicle-eg">Traverse, Pilot, Atlas…</div>
+          </div>
+        </div>
+        <div class="bk-service-slide" id="bkServiceSlide2">
+          <div class="bk-pick-label" style="margin-top:1.3rem;">Which service for car 2?</div>
+          <div class="bk-svc-grid" id="bkServiceCards2"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.8rem;margin:1.2rem 0 .5rem;">
+          <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);">First Vehicle</span>
+          <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
         </div>
       </div>
       <div class="bk-pick-label">What type of vehicle?</div>
       <div class="bk-vehicle-grid">
         <div class="bk-vehicle-card" onclick="selectVehicle('Coupe / Sedan')" id="bkVCard0">
           <div class="bk-vehicle-svg">
-            <svg viewBox="0 0 240 95" fill="none" stroke="rgba(240,243,247,0.75)" stroke-linecap="round" stroke-linejoin="round">
-              <!-- sedan: low sloping roofline -->
-              <path d="M18 72 L13 66 L13 58 L24 56 L40 56 L62 36 L84 26 L112 22 L152 21 L176 25 L194 40 L204 56 L222 58 L228 65 L222 72" stroke-width="2.8"/>
-              <!-- windshield detail -->
-              <path d="M62 56 L76 38 L88 28 L152 22 L172 27 L188 42 L192 56" stroke-width="1.2" stroke-opacity="0.45"/>
-              <circle cx="62" cy="76" r="16" stroke-width="2.8"/>
-              <circle cx="62" cy="76" r="7" stroke-width="1.5"/>
-              <circle cx="178" cy="76" r="16" stroke-width="2.8"/>
-              <circle cx="178" cy="76" r="7" stroke-width="1.5"/>
-            </svg>
+            <img src="outline-drawing-coupe-sport-car-260nw-2247750477.webp" alt="Coupe / Sedan" class="bk-car-outline">
           </div>
           <div class="bk-vehicle-name">Coupe / Sedan</div>
           <div class="bk-vehicle-eg">Civic, Camry, Accord…</div>
         </div>
         <div class="bk-vehicle-card" onclick="selectVehicle('Truck / Full-Size SUV')" id="bkVCard1">
           <div class="bk-vehicle-svg">
-            <svg viewBox="0 0 240 95" fill="none" stroke="rgba(240,243,247,0.75)" stroke-linecap="round" stroke-linejoin="round">
-              <!-- suv: tall upright body -->
-              <path d="M18 74 L12 68 L12 58 L22 56 L28 56 L28 32 L42 24 L70 20 L174 20 L194 24 L210 38 L218 56 L226 58 L230 65 L224 74" stroke-width="2.8"/>
-              <!-- window line -->
-              <path d="M30 56 L30 32 L43 25 L174 21 L192 26 L208 40 L216 56" stroke-width="1.2" stroke-opacity="0.45"/>
-              <circle cx="62" cy="78" r="16" stroke-width="2.8"/>
-              <circle cx="62" cy="78" r="7" stroke-width="1.5"/>
-              <circle cx="184" cy="78" r="16" stroke-width="2.8"/>
-              <circle cx="184" cy="78" r="7" stroke-width="1.5"/>
-            </svg>
+            <img src="premium-suv-car-simple-car-outline-illustration-vector.jpg" alt="Truck / SUV" class="bk-car-outline">
           </div>
           <div class="bk-vehicle-name">Truck / SUV</div>
           <div class="bk-vehicle-eg">F-150, Tahoe, Silverado…</div>
         </div>
         <div class="bk-vehicle-card" onclick="selectVehicle('3-Row SUV')" id="bkVCard2">
           <div class="bk-vehicle-svg">
-            <svg viewBox="0 0 270 95" fill="none" stroke="rgba(240,243,247,0.75)" stroke-linecap="round" stroke-linejoin="round">
-              <!-- 3-row: long boxy body, taller -->
-              <path d="M16 74 L10 68 L10 56 L18 54 L22 54 L22 28 L36 20 L66 16 L210 16 L228 20 L242 34 L248 54 L258 56 L262 64 L256 74" stroke-width="2.8"/>
-              <!-- window line -->
-              <path d="M24 54 L24 28 L37 21 L210 17 L226 21 L240 36 L246 54" stroke-width="1.2" stroke-opacity="0.45"/>
-              <circle cx="58" cy="78" r="16" stroke-width="2.8"/>
-              <circle cx="58" cy="78" r="7" stroke-width="1.5"/>
-              <circle cx="206" cy="78" r="16" stroke-width="2.8"/>
-              <circle cx="206" cy="78" r="7" stroke-width="1.5"/>
-            </svg>
+            <img src="download.jpg" alt="3-Row SUV" class="bk-car-outline">
           </div>
           <div class="bk-vehicle-name">3-Row SUV</div>
           <div class="bk-vehicle-eg">Traverse, Pilot, Atlas…</div>
@@ -2207,6 +2133,7 @@ function addMessage(text, type) {
 
     <!-- STEP 2: Calendar -->
     <div class="bk-step active" id="bkStepCal">
+      <button class="bk-back" onclick="bkGoStep(1)">&#8592; Change Vehicle / Service</button>
       <div class="bk-cal-nav">
         <button class="bk-cal-arrow" id="bkPrevMo">&#8249;</button>
         <span class="bk-cal-month-label" id="bkMonthLabel"></span>
@@ -2742,8 +2669,16 @@ function setCarCount(n) {
   bkCarCount = n;
   document.getElementById('bkCarsBtn1').classList.toggle('active', n === 1);
   document.getElementById('bkCarsBtn2').classList.toggle('active', n === 2);
-  // Show/hide second car dropdowns in step 1
   document.getElementById('bkSecondCarStep').classList.toggle('open', n === 2);
+  // If switching back to 1 car, reset car 2 state
+  if (n === 1) {
+    bkSelectedVehicle2 = null;
+    ['bkVCard2_0','bkVCard2_1','bkVCard2_2'].forEach(id => document.getElementById(id).classList.remove('selected'));
+    document.getElementById('bkServiceSlide2').classList.remove('open');
+    document.getElementById('bkServiceCards2').innerHTML = '';
+    document.getElementById('bkVehicleType2').value = '';
+    document.getElementById('bkService2').value = '';
+  }
   // Show/hide second car make/model in form step
   const sec = document.getElementById('bkSecondCar');
   if (n === 2) {
@@ -2777,37 +2712,25 @@ function goToAddress() {
 }
 
 // ── Vehicle & Service selection ──
-let bkSelectedVehicle = null;
+let bkSelectedVehicle  = null;
+let bkSelectedVehicle2 = null;
 
-function selectVehicle(vtype) {
-  bkSelectedVehicle = vtype;
-  document.querySelectorAll('.bk-vehicle-card').forEach(c => c.classList.remove('selected'));
-  const idx = ['Coupe / Sedan','Truck / Full-Size SUV','3-Row SUV'].indexOf(vtype);
-  if (idx >= 0) document.getElementById('bkVCard' + idx).classList.add('selected');
-  // Auto-fill vehicle type in the form step
-  document.getElementById('bkVehicleType').value = vtype;
-  // Render service cards priced for this vehicle
-  const preSelected = document.getElementById('bkService').value;
-  renderServiceCards(vtype, preSelected !== 'Book a Service' ? preSelected : null);
-  // Slide service cards in
-  document.getElementById('bkServiceSlide').classList.add('open');
-}
+const BK_SVC_PRICES = {
+  'Coupe / Sedan':        {ext:80,  int:140, full:185},
+  'Truck / Full-Size SUV':{ext:90,  int:160, full:225},
+  '3-Row SUV':            {ext:100, int:180, full:250},
+};
+const BK_SVCS = (p, onSelect) => [
+  {name:'Exterior Detail', price:p.ext,  feats:['Hand wash & wax','Tires & rims','Wax protectant'],   onSelect},
+  {name:'Interior Detail', price:p.int,  feats:['Deep vacuum','Steam cleaned seats','Dashboard & vents'], onSelect},
+  {name:'Full Detail',     price:p.full, feats:['Inside & out','Best value','Most popular'], badge:'Best Value', featured:true, onSelect},
+];
 
-function renderServiceCards(vtype, preSelected) {
-  const prices = {
-    'Coupe / Sedan':        {ext:80,  int:140, full:185},
-    'Truck / Full-Size SUV':{ext:90,  int:160, full:225},
-    '3-Row SUV':            {ext:100, int:180, full:250},
-  };
-  const p = prices[vtype] || prices['Coupe / Sedan'];
-  const svcs = [
-    {name:'Exterior Detail', price:p.ext,  feats:['Hand wash & wax','Tires & rims','Wax protectant']},
-    {name:'Interior Detail', price:p.int,  feats:['Deep vacuum','Steam cleaned seats','Dashboard & vents']},
-    {name:'Full Detail',     price:p.full, feats:['Inside & out','Best value','Most popular'], badge:'Best Value', featured:true},
-  ];
-  document.getElementById('bkServiceCards').innerHTML = svcs.map(s => `
+function buildServiceCardsHTML(vtype, preSelected, onSelectFn) {
+  const p = BK_SVC_PRICES[vtype] || BK_SVC_PRICES['Coupe / Sedan'];
+  return BK_SVCS(p, onSelectFn).map(s => `
     <div class="bk-svc-card${s.featured?' featured':''}${s.name===preSelected?' pre-sel':''}"
-         onclick="selectService('${s.name}')">
+         onclick="${onSelectFn}('${s.name}')">
       ${s.badge ? `<div class="bk-svc-badge">${s.badge}</div>` : ''}
       <div class="bk-svc-name">${s.name}</div>
       <div class="bk-svc-price">$${s.price}</div>
@@ -2816,10 +2739,56 @@ function renderServiceCards(vtype, preSelected) {
   `).join('');
 }
 
+function selectVehicle(vtype) {
+  bkSelectedVehicle = vtype;
+  ['bkVCard0','bkVCard1','bkVCard2'].forEach(id => document.getElementById(id).classList.remove('selected'));
+  const idx = ['Coupe / Sedan','Truck / Full-Size SUV','3-Row SUV'].indexOf(vtype);
+  if (idx >= 0) document.getElementById('bkVCard' + idx).classList.add('selected');
+  document.getElementById('bkVehicleType').value = vtype;
+  const preSelected = document.getElementById('bkService').value;
+  const hasService = preSelected && preSelected !== 'Book a Service';
+  document.getElementById('bkServiceCards').innerHTML = buildServiceCardsHTML(vtype, hasService ? preSelected : null, 'selectService');
+  document.getElementById('bkServiceSlide').classList.add('open');
+  // If a service was already chosen (e.g. came from "Book This Service"), go straight to calendar
+  if (hasService && bkCarCount === 1) {
+    selectService(preSelected);
+  }
+}
+
 function selectService(service) {
   document.getElementById('bkService').value = service;
   document.getElementById('bkServiceTag').textContent = service;
+  if (bkCarCount === 2) {
+    const v2 = document.getElementById('bkVehicleType2').value;
+    const s2 = document.getElementById('bkService2').value;
+    if (!v2 || !s2) {
+      alert('Please pick a vehicle type and service for your second car first.');
+      return;
+    }
+  }
   bkGoStep(2);
+}
+
+function selectVehicle2(vtype) {
+  bkSelectedVehicle2 = vtype;
+  ['bkVCard2_0','bkVCard2_1','bkVCard2_2'].forEach(id => document.getElementById(id).classList.remove('selected'));
+  const idx = ['Coupe / Sedan','Truck / Full-Size SUV','3-Row SUV'].indexOf(vtype);
+  if (idx >= 0) document.getElementById('bkVCard2_' + idx).classList.add('selected');
+  document.getElementById('bkVehicleType2').value = vtype;
+  document.getElementById('bkService2').value = '';
+  document.getElementById('bkServiceCards2').innerHTML = buildServiceCardsHTML(vtype, null, 'selectService2');
+  document.getElementById('bkServiceSlide2').classList.add('open');
+}
+
+function selectService2(service) {
+  document.getElementById('bkService2').value = service;
+  document.querySelectorAll('#bkServiceCards2 .bk-svc-card').forEach(c => c.classList.remove('pre-sel'));
+  const cards = document.querySelectorAll('#bkServiceCards2 .bk-svc-card');
+  cards.forEach(c => { if (c.querySelector('.bk-svc-name')?.textContent === service) c.classList.add('pre-sel'); });
+}
+
+function renderServiceCards(vtype, preSelected) {
+  document.getElementById('bkServiceCards').innerHTML = buildServiceCardsHTML(vtype, preSelected, 'selectService');
 }
 
 // ── Open / Close ──
@@ -2828,10 +2797,13 @@ function openBooking(service) {
   document.getElementById('bkService').value = service;
   document.querySelectorAll('.bk-step').forEach(s => s.classList.remove('active'));
   // Reset vehicle step
-  bkSelectedVehicle = null;
-  document.querySelectorAll('.bk-vehicle-card').forEach(c => c.classList.remove('selected'));
+  bkSelectedVehicle  = null;
+  bkSelectedVehicle2 = null;
+  ['bkVCard0','bkVCard1','bkVCard2','bkVCard2_0','bkVCard2_1','bkVCard2_2'].forEach(id => document.getElementById(id).classList.remove('selected'));
   document.getElementById('bkServiceSlide').classList.remove('open');
+  document.getElementById('bkServiceSlide2').classList.remove('open');
   document.getElementById('bkServiceCards').innerHTML = '';
+  document.getElementById('bkServiceCards2').innerHTML = '';
   document.getElementById('bkSecondCarStep').classList.remove('open');
   document.getElementById('bkVehicleType2').value = '';
   document.getElementById('bkService2').value = '';
@@ -3089,7 +3061,7 @@ bkDb.ref('clients').on('value', snap => {
 });
 
 const DEFAULT_FAQS = [
-  {q:'Do I need to bring my car anywhere?', a:'Not at all — that\'s the whole point. We come to you. All we need is access to your vehicle and a little room to work. We bring all our own equipment and supplies.'},
+  {q:'Do I need to bring my car anywhere?', a:'Not at all. We pull up to wherever your car is parked — driveway, apartment lot, wherever. All we need is access to the vehicle and a little room to work. Everything else we bring ourselves.'},
   {q:'How long does a detail take?', a:'Exterior: ~1–2 hrs. Interior: ~2–3 hrs. Full Detail: ~3–5 hrs. Heavily soiled vehicles may take a bit longer — we\'ll always give you an honest estimate upfront.'},
   {q:'What if my car is really dirty or hasn\'t been cleaned in a long time?', a:'That\'s exactly what we\'re here for. If extra time or effort is needed, we\'ll quote it before we begin. No surprises — ever. Many of our best results come from heavily neglected vehicles.'},
   {q:'Do you need water or electricity at my location?', a:'A standard garden hose connection is helpful for exterior work. If you\'re in an apartment or don\'t have one handy, let us know when booking — we\'ll work something out before we arrive.'},
