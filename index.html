@@ -882,6 +882,9 @@
       transition: border-color .2s, color .2s;
     }
     .area-card:hover { border-color: rgba(200,32,42,0.35); color: var(--silver-lt); }
+    .area-card--more {
+      border-style: dashed; color: rgba(184,194,204,0.45); font-style: italic;
+    }
     .area-card--cta {
       background: transparent; border-color: var(--red); color: var(--red);
       cursor: pointer; font-weight: 700;
@@ -1439,19 +1442,17 @@
 
 <!-- ALL WE NEED -->
 <div class="needs-strip fade-up">
-  <div class="needs-label">All we need at your location</div>
+  <div class="needs-label">All we need at your spot</div>
   <div class="needs-items">
     <div class="needs-item">
-      <div class="needs-icon">⚡</div>
       <div class="needs-text">A power outlet</div>
     </div>
     <div class="needs-plus">+</div>
     <div class="needs-item">
-      <div class="needs-icon">💧</div>
       <div class="needs-text">Water access</div>
     </div>
     <div class="needs-plus">=</div>
-    <div class="needs-result">We're good to go</div>
+    <div class="needs-result">You're good</div>
   </div>
 </div>
 
@@ -1749,7 +1750,7 @@
     <div class="section-eyebrow">Where We Work</div>
     <h2 class="section-title">Service Area</h2>
     <div class="section-divider"></div>
-    <p class="section-desc" style="max-width:520px;margin:0 auto;">We cover the northern suburbs. If you're not on the list, reach out anyway — we may still be able to make it work.</p>
+    <p class="section-desc" style="max-width:520px;margin:0 auto;">We cover the north suburbs. Not on the list? Text us — chances are we can still get to you.</p>
   </div>
   <div class="area-grid fade-up">
     <div class="area-card">Evanston</div>
@@ -1763,7 +1764,9 @@
     <div class="area-card">Glencoe</div>
     <div class="area-card">Kenilworth</div>
     <div class="area-card">Lincolnwood</div>
-    <div class="area-card area-card--cta" onclick="document.getElementById('bkOverlay').classList.add('open')">Your Area? Book It →</div>
+    <div class="area-card">Morton Grove</div>
+    <div class="area-card area-card--more">& more nearby</div>
+    <div class="area-card area-card--cta" onclick="openBooking('Book a Service')">Book Now →</div>
   </div>
 </section>
 
