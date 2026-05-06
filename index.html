@@ -836,7 +836,57 @@
     }
     .ba-photo-note strong { color: var(--silver); }
 
-    /* ══ TESTIMONIALS ══ */
+    /* ══ ALL WE NEED STRIP ══ */
+    .needs-strip {
+      background: var(--dark); padding: 2.8rem 5vw;
+      display: flex; flex-direction: column; align-items: center; gap: 1.4rem;
+      border-top: 1px solid rgba(184,194,204,0.07);
+      border-bottom: 1px solid rgba(184,194,204,0.07);
+    }
+    .needs-label {
+      font-size: .68rem; font-weight: 700; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--gray);
+    }
+    .needs-items {
+      display: flex; align-items: center; gap: 1.6rem; flex-wrap: wrap; justify-content: center;
+    }
+    .needs-item {
+      display: flex; align-items: center; gap: .7rem;
+      background: var(--navy2); border: 1px solid rgba(184,194,204,0.1);
+      padding: .8rem 1.4rem; border-radius: 3px;
+    }
+    .needs-icon { font-size: 1.4rem; line-height: 1; }
+    .needs-text {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1rem;
+      font-weight: 600; letter-spacing: .05em; color: var(--silver-lt);
+    }
+    .needs-plus {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem;
+      color: var(--red); letter-spacing: .08em;
+    }
+    .needs-result {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem;
+      letter-spacing: .08em; color: var(--white);
+    }
+
+    /* ══ SERVICE AREA ══ */
+    .area-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: .8rem; max-width: 820px; margin: 0 auto;
+    }
+    .area-card {
+      background: var(--navy); border: 1px solid rgba(184,194,204,0.1);
+      padding: .9rem 1rem; text-align: center;
+      font-family: 'Barlow Condensed', sans-serif; font-size: .95rem;
+      font-weight: 600; letter-spacing: .06em; color: var(--silver);
+      transition: border-color .2s, color .2s;
+    }
+    .area-card:hover { border-color: rgba(200,32,42,0.35); color: var(--silver-lt); }
+    .area-card--cta {
+      background: transparent; border-color: var(--red); color: var(--red);
+      cursor: pointer; font-weight: 700;
+    }
+    .area-card--cta:hover { background: var(--red); color: #fff; }
 
     /* ══ TESTIMONIALS ══ */
     #testimonials { background: var(--dark); }
@@ -1297,10 +1347,10 @@
 
 <!-- STATS -->
 <div class="stats-bar">
-  <div class="stat-item fade-up"><div class="stat-num">100%</div><div class="stat-label">Mobile Service</div></div>
-  <div class="stat-item fade-up"><div class="stat-num">3</div><div class="stat-label">Packages Available</div></div>
+  <div class="stat-item fade-up"><div class="stat-num">200+</div><div class="stat-label">Cars Detailed</div></div>
+  <div class="stat-item fade-up"><div class="stat-num">5★</div><div class="stat-label">Average Rating</div></div>
   <div class="stat-item fade-up"><div class="stat-num" id="stat-starting-price">$80</div><div class="stat-label">Starting Price</div></div>
-  <div class="stat-item fade-up"><div class="stat-num">5★</div><div class="stat-label">Customer Rated</div></div>
+  <div class="stat-item fade-up"><div class="stat-num">100%</div><div class="stat-label">Satisfaction Guaranteed</div></div>
 </div>
 
 <!-- FOUNDERS / TEAM PHOTO -->
@@ -1386,6 +1436,24 @@
     </div>
   </div>
 </section>
+
+<!-- ALL WE NEED -->
+<div class="needs-strip fade-up">
+  <div class="needs-label">All we need at your location</div>
+  <div class="needs-items">
+    <div class="needs-item">
+      <div class="needs-icon">⚡</div>
+      <div class="needs-text">A power outlet</div>
+    </div>
+    <div class="needs-plus">+</div>
+    <div class="needs-item">
+      <div class="needs-icon">💧</div>
+      <div class="needs-text">Water access</div>
+    </div>
+    <div class="needs-plus">=</div>
+    <div class="needs-result">We're good to go</div>
+  </div>
+</div>
 
 <!-- SERVICES -->
 <section id="services">
@@ -1674,6 +1742,30 @@
     </a>
   </div>
 </div>
+
+<!-- SERVICE AREA -->
+<section id="area" style="background:var(--navy2);">
+  <div class="fade-up" style="text-align:center;margin-bottom:3rem;">
+    <div class="section-eyebrow">Where We Work</div>
+    <h2 class="section-title">Service Area</h2>
+    <div class="section-divider"></div>
+    <p class="section-desc" style="max-width:520px;margin:0 auto;">We cover the northern suburbs. If you're not on the list, reach out anyway — we may still be able to make it work.</p>
+  </div>
+  <div class="area-grid fade-up">
+    <div class="area-card">Evanston</div>
+    <div class="area-card">Skokie</div>
+    <div class="area-card">Wilmette</div>
+    <div class="area-card">Winnetka</div>
+    <div class="area-card">Glenview</div>
+    <div class="area-card">Northbrook</div>
+    <div class="area-card">Deerfield</div>
+    <div class="area-card">Highland Park</div>
+    <div class="area-card">Glencoe</div>
+    <div class="area-card">Kenilworth</div>
+    <div class="area-card">Lincolnwood</div>
+    <div class="area-card area-card--cta" onclick="document.getElementById('bkOverlay').classList.add('open')">Your Area? Book It →</div>
+  </div>
+</section>
 
 <!-- FAQ -->
 <section id="faq">
