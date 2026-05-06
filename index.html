@@ -691,8 +691,10 @@
     }
     .bk-vehicle-card:hover { border-color:rgba(200,32,42,0.45);background:rgba(200,32,42,0.04);transform:translateY(-2px); }
     .bk-vehicle-card.selected { border-color:var(--red);background:rgba(200,32,42,0.08); }
-    .bk-vehicle-card.selected path,.bk-vehicle-card.selected ellipse { stroke:rgba(200,32,42,0.65);fill:rgba(200,32,42,0.1); }
-    .bk-vehicle-svg { height:46px;display:flex;align-items:center;justify-content:center;margin-bottom:.55rem; }
+    .bk-vehicle-img { width:100%;height:80px;overflow:hidden;margin-bottom:.6rem;border-radius:2px; }
+    .bk-vehicle-img img { width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .35s,filter .35s;filter:grayscale(0.15); }
+    .bk-vehicle-card:hover .bk-vehicle-img img { transform:scale(1.06);filter:grayscale(0); }
+    .bk-vehicle-card.selected .bk-vehicle-img img { filter:grayscale(0); }
     .bk-vehicle-name { font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.05em;color:var(--silver-lt);margin-bottom:.22rem; }
     .bk-vehicle-eg { font-size:.67rem;color:var(--gray);line-height:1.4; }
     .bk-service-slide { max-height:0;overflow:hidden;opacity:0;transition:max-height .5s cubic-bezier(.22,.68,0,1.05),opacity .4s; }
@@ -2113,34 +2115,22 @@ function addMessage(text, type) {
       <div class="bk-pick-label">What type of vehicle?</div>
       <div class="bk-vehicle-grid">
         <div class="bk-vehicle-card" onclick="selectVehicle('Coupe / Sedan')" id="bkVCard0">
-          <div class="bk-vehicle-svg">
-            <svg width="72" height="38" viewBox="0 0 72 38" fill="none">
-              <path d="M4 28C4 28 7 19 16 16L27 12.5L39 12L51 12.5L57 16L65 21L67 28Z" fill="rgba(184,194,204,0.16)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2" stroke-linejoin="round"/>
-              <ellipse cx="18" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
-              <ellipse cx="54" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
-            </svg>
+          <div class="bk-vehicle-img">
+            <img src="./IMG_1933.png" alt="Coupe / Sedan">
           </div>
           <div class="bk-vehicle-name">Coupe / Sedan</div>
           <div class="bk-vehicle-eg">Civic, Camry, Accord…</div>
         </div>
         <div class="bk-vehicle-card" onclick="selectVehicle('Truck / Full-Size SUV')" id="bkVCard1">
-          <div class="bk-vehicle-svg">
-            <svg width="72" height="38" viewBox="0 0 72 38" fill="none">
-              <path d="M4 28L4 15L11 15L11 12L61 12L61 15L68 15L68 28Z" fill="rgba(184,194,204,0.16)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2" stroke-linejoin="round"/>
-              <ellipse cx="18" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
-              <ellipse cx="54" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
-            </svg>
+          <div class="bk-vehicle-img">
+            <img src="./IMG_1951.jpeg" alt="Truck / SUV" style="object-position:center 30%;">
           </div>
           <div class="bk-vehicle-name">Truck / SUV</div>
           <div class="bk-vehicle-eg">F-150, Tahoe, Silverado…</div>
         </div>
         <div class="bk-vehicle-card" onclick="selectVehicle('3-Row SUV')" id="bkVCard2">
-          <div class="bk-vehicle-svg">
-            <svg width="72" height="38" viewBox="0 0 72 38" fill="none">
-              <path d="M3 28L3 13L9 13L9 10L63 10L63 13L69 13L69 28Z" fill="rgba(184,194,204,0.16)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2" stroke-linejoin="round"/>
-              <ellipse cx="17" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
-              <ellipse cx="55" cy="29.5" rx="5.5" ry="5.5" fill="rgba(184,194,204,0.22)" stroke="rgba(184,194,204,0.5)" stroke-width="1.2"/>
-            </svg>
+          <div class="bk-vehicle-img">
+            <img src="./IMG_2050.jpeg" alt="3-Row SUV" style="object-position:center 40%;">
           </div>
           <div class="bk-vehicle-name">3-Row SUV</div>
           <div class="bk-vehicle-eg">Traverse, Pilot, Atlas…</div>
