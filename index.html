@@ -691,10 +691,10 @@
     }
     .bk-vehicle-card:hover { border-color:rgba(200,32,42,0.45);background:rgba(200,32,42,0.04);transform:translateY(-2px); }
     .bk-vehicle-card.selected { border-color:var(--red);background:rgba(200,32,42,0.08); }
-    .bk-vehicle-img { width:100%;height:80px;overflow:hidden;margin-bottom:.6rem;border-radius:2px; }
-    .bk-vehicle-img img { width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .35s,filter .35s;filter:grayscale(0.15); }
-    .bk-vehicle-card:hover .bk-vehicle-img img { transform:scale(1.06);filter:grayscale(0); }
-    .bk-vehicle-card.selected .bk-vehicle-img img { filter:grayscale(0); }
+    .bk-vehicle-svg { width:100%;padding:.5rem 0 .55rem;display:flex;align-items:center;justify-content:center; }
+    .bk-vehicle-svg svg { width:100%;max-width:170px;height:auto; }
+    .bk-vehicle-card.selected .bk-vehicle-svg path,
+    .bk-vehicle-card.selected .bk-vehicle-svg circle { stroke:rgba(200,32,42,0.7); }
     .bk-vehicle-name { font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.05em;color:var(--silver-lt);margin-bottom:.22rem; }
     .bk-vehicle-eg { font-size:.67rem;color:var(--gray);line-height:1.4; }
     .bk-service-slide { max-height:0;overflow:hidden;opacity:0;transition:max-height .5s cubic-bezier(.22,.68,0,1.05),opacity .4s; }
@@ -2112,25 +2112,48 @@ function addMessage(text, type) {
 
     <!-- STEP 1: Vehicle + Service picker -->
     <div class="bk-step active" id="bkStepVehicle">
+      <div class="bk-pick-label">How many cars?</div>
+      <div style="display:flex;gap:.6rem;margin-bottom:1.4rem;">
+        <button type="button" class="bk-cars-btn active" id="bkCarsBtn1" onclick="setCarCount(1)">1 Car</button>
+        <button type="button" class="bk-cars-btn" id="bkCarsBtn2" onclick="setCarCount(2)">2 Cars</button>
+      </div>
       <div class="bk-pick-label">What type of vehicle?</div>
       <div class="bk-vehicle-grid">
         <div class="bk-vehicle-card" onclick="selectVehicle('Coupe / Sedan')" id="bkVCard0">
-          <div class="bk-vehicle-img">
-            <img src="./IMG_1933.png" alt="Coupe / Sedan">
+          <div class="bk-vehicle-svg">
+            <svg viewBox="0 0 240 90" fill="none" stroke="rgba(184,194,204,0.6)" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 70 L13 65 L13 58 L22 56 L38 56 L60 38 L80 27 L110 23 L150 22 L172 26 L190 42 L200 56 L220 58 L226 64 L222 70" stroke-width="2.5"/>
+              <circle cx="60" cy="74" r="15" stroke-width="2.5"/>
+              <circle cx="60" cy="74" r="6" stroke-width="1.5"/>
+              <circle cx="180" cy="74" r="15" stroke-width="2.5"/>
+              <circle cx="180" cy="74" r="6" stroke-width="1.5"/>
+            </svg>
           </div>
           <div class="bk-vehicle-name">Coupe / Sedan</div>
           <div class="bk-vehicle-eg">Civic, Camry, Accord…</div>
         </div>
         <div class="bk-vehicle-card" onclick="selectVehicle('Truck / Full-Size SUV')" id="bkVCard1">
-          <div class="bk-vehicle-img">
-            <img src="./IMG_1951.jpeg" alt="Truck / SUV" style="object-position:center 30%;">
+          <div class="bk-vehicle-svg">
+            <svg viewBox="0 0 240 90" fill="none" stroke="rgba(184,194,204,0.6)" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 72 L13 67 L13 58 L22 56 L30 56 L30 34 L44 26 L72 22 L172 22 L192 26 L208 40 L216 56 L224 58 L228 64 L222 72" stroke-width="2.5"/>
+              <circle cx="60" cy="76" r="15" stroke-width="2.5"/>
+              <circle cx="60" cy="76" r="6" stroke-width="1.5"/>
+              <circle cx="182" cy="76" r="15" stroke-width="2.5"/>
+              <circle cx="182" cy="76" r="6" stroke-width="1.5"/>
+            </svg>
           </div>
           <div class="bk-vehicle-name">Truck / SUV</div>
           <div class="bk-vehicle-eg">F-150, Tahoe, Silverado…</div>
         </div>
         <div class="bk-vehicle-card" onclick="selectVehicle('3-Row SUV')" id="bkVCard2">
-          <div class="bk-vehicle-img">
-            <img src="./IMG_2050.jpeg" alt="3-Row SUV" style="object-position:center 40%;">
+          <div class="bk-vehicle-svg">
+            <svg viewBox="0 0 260 90" fill="none" stroke="rgba(184,194,204,0.6)" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 72 L11 67 L11 56 L18 54 L24 54 L24 30 L38 22 L68 18 L200 18 L220 22 L234 36 L240 54 L248 56 L252 63 L246 72" stroke-width="2.5"/>
+              <circle cx="58" cy="76" r="15" stroke-width="2.5"/>
+              <circle cx="58" cy="76" r="6" stroke-width="1.5"/>
+              <circle cx="202" cy="76" r="15" stroke-width="2.5"/>
+              <circle cx="202" cy="76" r="6" stroke-width="1.5"/>
+            </svg>
           </div>
           <div class="bk-vehicle-name">3-Row SUV</div>
           <div class="bk-vehicle-eg">Traverse, Pilot, Atlas…</div>
@@ -2200,23 +2223,8 @@ function addMessage(text, type) {
           <input type="text" id="bkModel" placeholder="e.g. Camry" required>
         </div>
       </div>
-      <div class="bk-field">
-        <label>Vehicle Type</label>
-        <select id="bkVehicleType" onchange="updateEstimate()">
-          <option value="">Select type</option>
-          <option value="Coupe / Sedan">Coupe / Sedan</option>
-          <option value="Truck / Full-Size SUV">Truck / Full-Size SUV</option>
-          <option value="3-Row SUV">3-Row SUV (Suburban, Tahoe, Traverse, etc.)</option>
-        </select>
-      </div>
-      <!-- Number of cars -->
-      <div class="bk-field">
-        <label>Number of Cars</label>
-        <div style="display:flex;gap:.6rem;margin-top:.4rem;">
-          <button type="button" class="bk-cars-btn active" id="bkCarsBtn1" onclick="setCarCount(1)">1 Car</button>
-          <button type="button" class="bk-cars-btn" id="bkCarsBtn2" onclick="setCarCount(2)">2 Cars</button>
-        </div>
-      </div>
+      <!-- Vehicle type hidden — set from step 1 -->
+      <select id="bkVehicleType" onchange="updateEstimate()" style="display:none"></select>
 
       <!-- Second car (hidden until 2 cars selected) -->
       <div id="bkSecondCar" style="max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.22,.68,0,1.1),opacity .35s ease;opacity:0;">
