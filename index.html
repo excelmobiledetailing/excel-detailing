@@ -682,19 +682,21 @@
       font-size:.7rem;font-weight:700;letter-spacing:.22em;
       text-transform:uppercase;color:var(--gray);margin-bottom:.85rem;
     }
-    .bk-vehicle-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem; }
+    .bk-vehicle-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem; }
     .bk-vehicle-card {
-      border:1px solid rgba(184,194,204,0.14);
-      background:rgba(255,255,255,0.02);
-      padding:1rem .6rem .85rem;cursor:pointer;text-align:center;
+      border:1px solid rgba(184,194,204,0.12);
+      background:var(--navy2);
+      padding:.9rem .5rem .85rem;cursor:pointer;text-align:center;
       transition:border-color .2s,background .2s,transform .15s;
     }
-    .bk-vehicle-card:hover { border-color:rgba(200,32,42,0.45);background:rgba(200,32,42,0.04);transform:translateY(-2px); }
-    .bk-vehicle-card.selected { border-color:var(--red);background:rgba(200,32,42,0.08); }
-    .bk-vehicle-svg { width:100%;padding:.5rem 0 .55rem;display:flex;align-items:center;justify-content:center; }
-    .bk-vehicle-svg svg { width:100%;max-width:170px;height:auto; }
+    .bk-vehicle-card:hover { border-color:rgba(200,32,42,0.5);background:var(--navy3);transform:translateY(-2px); }
+    .bk-vehicle-card.selected { border-color:var(--red);background:var(--navy3); }
+    .bk-vehicle-svg { width:100%;padding:.4rem 0 .5rem;display:flex;align-items:center;justify-content:center; }
+    .bk-vehicle-svg svg { width:100%;max-width:160px;height:auto; }
     .bk-vehicle-card.selected .bk-vehicle-svg path,
-    .bk-vehicle-card.selected .bk-vehicle-svg circle { stroke:rgba(200,32,42,0.7); }
+    .bk-vehicle-card.selected .bk-vehicle-svg circle { stroke:var(--red-light); }
+    .bk-second-car-step { overflow:hidden;max-height:0;opacity:0;transition:max-height .4s cubic-bezier(.22,.68,0,1.05),opacity .35s; }
+    .bk-second-car-step.open { max-height:300px;opacity:1; }
     .bk-vehicle-name { font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.05em;color:var(--silver-lt);margin-bottom:.22rem; }
     .bk-vehicle-eg { font-size:.67rem;color:var(--gray);line-height:1.4; }
     .bk-service-slide { max-height:0;overflow:hidden;opacity:0;transition:max-height .5s cubic-bezier(.22,.68,0,1.05),opacity .4s; }
@@ -2117,16 +2119,47 @@ function addMessage(text, type) {
         <button type="button" class="bk-cars-btn active" id="bkCarsBtn1" onclick="setCarCount(1)">1 Car</button>
         <button type="button" class="bk-cars-btn" id="bkCarsBtn2" onclick="setCarCount(2)">2 Cars</button>
       </div>
+      <!-- Second car dropdowns — shown when 2 cars selected -->
+      <div class="bk-second-car-step" id="bkSecondCarStep">
+        <div style="display:flex;align-items:center;gap:.8rem;margin:.2rem 0 1rem;">
+          <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);">Second Vehicle</span>
+          <div style="flex:1;height:1px;background:rgba(200,32,42,0.3);"></div>
+        </div>
+        <div class="bk-row">
+          <div class="bk-field">
+            <label>Vehicle Type</label>
+            <select id="bkVehicleType2">
+              <option value="">Select type</option>
+              <option value="Coupe / Sedan">Coupe / Sedan</option>
+              <option value="Truck / Full-Size SUV">Truck / Full-Size SUV</option>
+              <option value="3-Row SUV">3-Row SUV</option>
+            </select>
+          </div>
+          <div class="bk-field">
+            <label>Service</label>
+            <select id="bkService2">
+              <option value="">Select service</option>
+              <option value="Exterior Detail">Exterior Detail</option>
+              <option value="Interior Detail">Interior Detail</option>
+              <option value="Full Detail">Full Detail</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <div class="bk-pick-label">What type of vehicle?</div>
       <div class="bk-vehicle-grid">
         <div class="bk-vehicle-card" onclick="selectVehicle('Coupe / Sedan')" id="bkVCard0">
           <div class="bk-vehicle-svg">
-            <svg viewBox="0 0 240 90" fill="none" stroke="rgba(184,194,204,0.6)" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 70 L13 65 L13 58 L22 56 L38 56 L60 38 L80 27 L110 23 L150 22 L172 26 L190 42 L200 56 L220 58 L226 64 L222 70" stroke-width="2.5"/>
-              <circle cx="60" cy="74" r="15" stroke-width="2.5"/>
-              <circle cx="60" cy="74" r="6" stroke-width="1.5"/>
-              <circle cx="180" cy="74" r="15" stroke-width="2.5"/>
-              <circle cx="180" cy="74" r="6" stroke-width="1.5"/>
+            <svg viewBox="0 0 240 95" fill="none" stroke="rgba(240,243,247,0.75)" stroke-linecap="round" stroke-linejoin="round">
+              <!-- sedan: low sloping roofline -->
+              <path d="M18 72 L13 66 L13 58 L24 56 L40 56 L62 36 L84 26 L112 22 L152 21 L176 25 L194 40 L204 56 L222 58 L228 65 L222 72" stroke-width="2.8"/>
+              <!-- windshield detail -->
+              <path d="M62 56 L76 38 L88 28 L152 22 L172 27 L188 42 L192 56" stroke-width="1.2" stroke-opacity="0.45"/>
+              <circle cx="62" cy="76" r="16" stroke-width="2.8"/>
+              <circle cx="62" cy="76" r="7" stroke-width="1.5"/>
+              <circle cx="178" cy="76" r="16" stroke-width="2.8"/>
+              <circle cx="178" cy="76" r="7" stroke-width="1.5"/>
             </svg>
           </div>
           <div class="bk-vehicle-name">Coupe / Sedan</div>
@@ -2134,12 +2167,15 @@ function addMessage(text, type) {
         </div>
         <div class="bk-vehicle-card" onclick="selectVehicle('Truck / Full-Size SUV')" id="bkVCard1">
           <div class="bk-vehicle-svg">
-            <svg viewBox="0 0 240 90" fill="none" stroke="rgba(184,194,204,0.6)" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 72 L13 67 L13 58 L22 56 L30 56 L30 34 L44 26 L72 22 L172 22 L192 26 L208 40 L216 56 L224 58 L228 64 L222 72" stroke-width="2.5"/>
-              <circle cx="60" cy="76" r="15" stroke-width="2.5"/>
-              <circle cx="60" cy="76" r="6" stroke-width="1.5"/>
-              <circle cx="182" cy="76" r="15" stroke-width="2.5"/>
-              <circle cx="182" cy="76" r="6" stroke-width="1.5"/>
+            <svg viewBox="0 0 240 95" fill="none" stroke="rgba(240,243,247,0.75)" stroke-linecap="round" stroke-linejoin="round">
+              <!-- suv: tall upright body -->
+              <path d="M18 74 L12 68 L12 58 L22 56 L28 56 L28 32 L42 24 L70 20 L174 20 L194 24 L210 38 L218 56 L226 58 L230 65 L224 74" stroke-width="2.8"/>
+              <!-- window line -->
+              <path d="M30 56 L30 32 L43 25 L174 21 L192 26 L208 40 L216 56" stroke-width="1.2" stroke-opacity="0.45"/>
+              <circle cx="62" cy="78" r="16" stroke-width="2.8"/>
+              <circle cx="62" cy="78" r="7" stroke-width="1.5"/>
+              <circle cx="184" cy="78" r="16" stroke-width="2.8"/>
+              <circle cx="184" cy="78" r="7" stroke-width="1.5"/>
             </svg>
           </div>
           <div class="bk-vehicle-name">Truck / SUV</div>
@@ -2147,12 +2183,15 @@ function addMessage(text, type) {
         </div>
         <div class="bk-vehicle-card" onclick="selectVehicle('3-Row SUV')" id="bkVCard2">
           <div class="bk-vehicle-svg">
-            <svg viewBox="0 0 260 90" fill="none" stroke="rgba(184,194,204,0.6)" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 72 L11 67 L11 56 L18 54 L24 54 L24 30 L38 22 L68 18 L200 18 L220 22 L234 36 L240 54 L248 56 L252 63 L246 72" stroke-width="2.5"/>
-              <circle cx="58" cy="76" r="15" stroke-width="2.5"/>
-              <circle cx="58" cy="76" r="6" stroke-width="1.5"/>
-              <circle cx="202" cy="76" r="15" stroke-width="2.5"/>
-              <circle cx="202" cy="76" r="6" stroke-width="1.5"/>
+            <svg viewBox="0 0 270 95" fill="none" stroke="rgba(240,243,247,0.75)" stroke-linecap="round" stroke-linejoin="round">
+              <!-- 3-row: long boxy body, taller -->
+              <path d="M16 74 L10 68 L10 56 L18 54 L22 54 L22 28 L36 20 L66 16 L210 16 L228 20 L242 34 L248 54 L258 56 L262 64 L256 74" stroke-width="2.8"/>
+              <!-- window line -->
+              <path d="M24 54 L24 28 L37 21 L210 17 L226 21 L240 36 L246 54" stroke-width="1.2" stroke-opacity="0.45"/>
+              <circle cx="58" cy="78" r="16" stroke-width="2.8"/>
+              <circle cx="58" cy="78" r="7" stroke-width="1.5"/>
+              <circle cx="206" cy="78" r="16" stroke-width="2.8"/>
+              <circle cx="206" cy="78" r="7" stroke-width="1.5"/>
             </svg>
           </div>
           <div class="bk-vehicle-name">3-Row SUV</div>
@@ -2243,15 +2282,7 @@ function addMessage(text, type) {
             <input type="text" id="bkModel2" placeholder="e.g. X5">
           </div>
         </div>
-        <div class="bk-field">
-          <label>Car 2 Vehicle Type</label>
-          <select id="bkVehicleType2">
-            <option value="">Select type</option>
-            <option value="Coupe / Sedan">Coupe / Sedan</option>
-            <option value="Truck / Full-Size SUV">Truck / Full-Size SUV</option>
-            <option value="3-Row SUV">3-Row SUV (Suburban, Tahoe, Traverse, etc.)</option>
-          </select>
-        </div>
+        <!-- Vehicle type & service for car 2 set in step 1 -->
       </div>
 
       <!-- Add-Ons -->
@@ -2711,6 +2742,9 @@ function setCarCount(n) {
   bkCarCount = n;
   document.getElementById('bkCarsBtn1').classList.toggle('active', n === 1);
   document.getElementById('bkCarsBtn2').classList.toggle('active', n === 2);
+  // Show/hide second car dropdowns in step 1
+  document.getElementById('bkSecondCarStep').classList.toggle('open', n === 2);
+  // Show/hide second car make/model in form step
   const sec = document.getElementById('bkSecondCar');
   if (n === 2) {
     sec.style.maxHeight = '400px';
@@ -2719,7 +2753,6 @@ function setCarCount(n) {
     sec.style.maxHeight = '0';
     sec.style.opacity   = '0';
   }
-  // Re-render time slots if a date is already selected so availability updates instantly
   if (bkSelectedDate) showTimeSlots(bkSelectedDate);
 }
 
@@ -2799,6 +2832,9 @@ function openBooking(service) {
   document.querySelectorAll('.bk-vehicle-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('bkServiceSlide').classList.remove('open');
   document.getElementById('bkServiceCards').innerHTML = '';
+  document.getElementById('bkSecondCarStep').classList.remove('open');
+  document.getElementById('bkVehicleType2').value = '';
+  document.getElementById('bkService2').value = '';
   // Start at vehicle step
   bkCurrentStep = 1;
   document.getElementById('bkStepVehicle').classList.add('active');
