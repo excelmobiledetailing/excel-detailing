@@ -1221,34 +1221,6 @@
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
     /* ── Back to Top ── */
-    .back-top {
-      position: fixed; bottom: 6rem; right: 2rem; z-index: 400;
-      width: 52px; height: 52px; background: var(--red);
-      border: none; border-radius: 50%; cursor: pointer;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 1px;
-      opacity: 0; pointer-events: none;
-      transform: translateY(12px);
-      transition: opacity .3s, transform .3s, background .2s;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-    }
-    .back-top.show { opacity: 1; pointer-events: all; transform: translateY(0); }
-    .back-top:hover { background: var(--red-light); transform: translateY(-4px) !important; box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
-    .back-top::before {
-      content: '';
-      display: block;
-      width: 10px; height: 10px;
-      border-top: 2.5px solid #fff;
-      border-right: 2.5px solid #fff;
-      transform: rotate(-45deg) translateY(2px);
-    }
-    .back-top::after {
-      content: 'TOP';
-      display: block;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 9px; font-weight: 700; letter-spacing: .1em;
-      color: #fff; line-height: 1;
-    }
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
@@ -1858,7 +1830,6 @@
 <!-- CONTACT -->
 
 <!-- BACK TO TOP -->
-<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"></button>
 
 <!-- FOOTER -->
 <footer>
@@ -1974,7 +1945,6 @@ const countObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.stat-num').forEach(el => countObserver.observe(el));
 
 /* ── Scroll: progress bar + parallax + back-to-top ── */
-const backTop    = document.getElementById('backTop');
 const progressEl = document.getElementById('scroll-progress');
 const heroBgEl   = document.querySelector('.hero-bg');
 
@@ -1983,8 +1953,6 @@ window.addEventListener('scroll', () => {
   const total = document.documentElement.scrollHeight - window.innerHeight;
   // progress bar
   progressEl.style.width = (total > 0 ? (sy / total) * 100 : 0) + '%';
-  // back-to-top
-  backTop.classList.toggle('show', sy > 400);
   // hero parallax
   if (heroBgEl) heroBgEl.style.transform = `translateY(${sy * 0.32}px)`;
 }, { passive: true });
