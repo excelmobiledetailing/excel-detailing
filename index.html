@@ -722,6 +722,7 @@
     .bk-svc-feats { list-style:none;padding:0; }
     .bk-svc-feats li { font-size:.68rem;color:var(--gray);padding:.14rem 0 .14rem .85rem;position:relative;line-height:1.35; }
     .bk-svc-feats li::before { content:'✓';position:absolute;left:0;color:var(--red);font-size:.65rem; }
+    .bk-svc-duration { font-size:.65rem;color:rgba(184,194,204,0.5);margin-bottom:.45rem;letter-spacing:.02em; }
 
     /* ── Success ── */
     .bk-success {
@@ -2801,9 +2802,9 @@ const BK_SVC_PRICES = {
   '3-Row SUV':            {ext:100, int:180, full:250},
 };
 const BK_SVCS = (p, onSelect) => [
-  {name:'Exterior Detail', price:p.ext,  feats:['Hand wash & wax','Tires & rims','Wax protectant'],   onSelect},
-  {name:'Interior Detail', price:p.int,  feats:['Deep vacuum','Steam cleaned seats','Dashboard & vents'], onSelect},
-  {name:'Full Detail',     price:p.full, feats:['Inside & out','Best value','Most popular'], badge:'Best Value', featured:true, onSelect},
+  {name:'Exterior Detail', duration:'~1–2 hrs', price:p.ext,  feats:['Hand wash & wax','Tires & rims','Wax protectant'],   onSelect},
+  {name:'Interior Detail', duration:'~2–3 hrs', price:p.int,  feats:['Deep vacuum','Steam cleaned seats','Dashboard & vents'], onSelect},
+  {name:'Full Detail',     duration:'~3–5 hrs', price:p.full, feats:['Inside & out','Best value','Most popular'], badge:'Best Value', featured:true, onSelect},
 ];
 
 function buildServiceCardsHTML(vtype, preSelected, onSelectFn) {
@@ -2813,6 +2814,7 @@ function buildServiceCardsHTML(vtype, preSelected, onSelectFn) {
          onclick="${onSelectFn}('${s.name}')">
       ${s.badge ? `<div class="bk-svc-badge">${s.badge}</div>` : ''}
       <div class="bk-svc-name">${s.name}</div>
+      <div class="bk-svc-duration">⏱ ${s.duration}</div>
       <div class="bk-svc-price">$${s.price}</div>
       <ul class="bk-svc-feats">${s.feats.map(f=>`<li>${f}</li>`).join('')}</ul>
     </div>
