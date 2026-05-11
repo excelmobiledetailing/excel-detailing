@@ -1218,14 +1218,33 @@
     .chat-send:hover { background: var(--red-light); }
 
     /* ══ ANIMATIONS ══ */
-    .fade-up { opacity: 0; transform: translateY(52px); transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
-    .fade-left  { opacity: 0; transform: translateX(-52px); transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
-    .fade-left.visible  { opacity: 1; transform: translateX(0); }
-    .fade-right { opacity: 0; transform: translateX(52px); transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
-    .fade-right.visible { opacity: 1; transform: translateX(0); }
-    .fade-scale { opacity: 0; transform: scale(0.88); transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
-    .fade-scale.visible { opacity: 1; transform: scale(1); }
+    .fade-up {
+      opacity: 0; transform: translateY(90px);
+      filter: blur(6px);
+      transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1), filter 1s cubic-bezier(.16,1,.3,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+    .fade-left {
+      opacity: 0; transform: translateX(-90px);
+      filter: blur(6px);
+      transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1), filter 1s cubic-bezier(.16,1,.3,1);
+    }
+    .fade-left.visible { opacity: 1; transform: translateX(0); filter: blur(0); }
+
+    .fade-right {
+      opacity: 0; transform: translateX(90px);
+      filter: blur(6px);
+      transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1), filter 1s cubic-bezier(.16,1,.3,1);
+    }
+    .fade-right.visible { opacity: 1; transform: translateX(0); filter: blur(0); }
+
+    .fade-scale {
+      opacity: 0; transform: scale(0.8) translateY(40px);
+      filter: blur(8px);
+      transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1), filter 1s cubic-bezier(.16,1,.3,1);
+    }
+    .fade-scale.visible { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
 
     /* ── Back to Top ── */
 
@@ -1944,49 +1963,49 @@
   document.querySelectorAll('.section-eyebrow, .section-title, .section-divider, .section-desc').forEach(el => {
     if (!el.classList.contains('fade-up')) el.classList.add('fade-up');
   });
-  // Pricing cards — staggered scale-up
+  // Pricing cards — big staggered scale-up
   document.querySelectorAll('.pricing-card').forEach((el, i) => {
     el.classList.add('fade-scale');
-    el.style.transitionDelay = (i * 0.12) + 's';
+    el.style.transitionDelay = (i * 0.22) + 's';
   });
-  // Why cards — alternating left/right
+  // Why cards — alternating left/right with big gaps
   document.querySelectorAll('.why-card').forEach((el, i) => {
     el.classList.add(i % 2 === 0 ? 'fade-left' : 'fade-right');
-    el.style.transitionDelay = (i * 0.08) + 's';
+    el.style.transitionDelay = (i * 0.15) + 's';
   });
-  // Steps — staggered up
+  // Steps — staggered up with big gaps
   document.querySelectorAll('.step').forEach((el, i) => {
     if (!el.classList.contains('fade-up')) el.classList.add('fade-up');
-    el.style.transitionDelay = (i * 0.13) + 's';
+    el.style.transitionDelay = (i * 0.22) + 's';
   });
   // Serviced cards — staggered scale
   document.querySelectorAll('.serviced-card').forEach((el, i) => {
     el.classList.add('fade-scale');
-    el.style.transitionDelay = (i * 0.09) + 's';
+    el.style.transitionDelay = (i * 0.15) + 's';
   });
   // FAQ items — slide up one by one
   document.querySelectorAll('.faq-item').forEach((el, i) => {
     el.classList.add('fade-up');
-    el.style.transitionDelay = (i * 0.06) + 's';
+    el.style.transitionDelay = (i * 0.1) + 's';
   });
-  // Area pills — staggered scale
+  // Area pills — staggered scale wave
   document.querySelectorAll('.area-pill').forEach((el, i) => {
     el.classList.add('fade-scale');
-    el.style.transitionDelay = (i * 0.05) + 's';
+    el.style.transitionDelay = (i * 0.08) + 's';
   });
-  // Stat items — already fade-up, add delays
+  // Stat items
   document.querySelectorAll('.stat-item').forEach((el, i) => {
-    el.style.transitionDelay = (i * 0.1) + 's';
+    el.style.transitionDelay = (i * 0.18) + 's';
   });
   // Needs strip items
   document.querySelectorAll('.needs-item').forEach((el, i) => {
     el.classList.add('fade-up');
-    el.style.transitionDelay = (i * 0.07) + 's';
+    el.style.transitionDelay = (i * 0.12) + 's';
   });
   // Features list items inside pricing cards
   document.querySelectorAll('.features-list li').forEach((el, i) => {
     el.classList.add('fade-left');
-    el.style.transitionDelay = (i * 0.06) + 's';
+    el.style.transitionDelay = (i * 0.1) + 's';
   });
   // Contact section children
   document.querySelectorAll('.contact-inner > *').forEach((el, i) => {
@@ -2005,7 +2024,7 @@ const observer = new IntersectionObserver((entries) => {
       observer.unobserve(entry.target);
     }
   });
-}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+}, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
 document.querySelectorAll('.fade-up, .fade-left, .fade-right, .fade-scale').forEach(el => observer.observe(el));
 
 /* ── Number counter ── */
