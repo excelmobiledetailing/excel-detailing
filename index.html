@@ -3931,46 +3931,6 @@ function handleAdminTrigger() {
 <div class="admin-toast" id="adminToast"></div>
 
 <script>
-/* ── SMOOTH LERP SCROLL ── */
-(function() {
-  const ease = 0.08;
-  let current = 0, target = 0, rafId;
-  const wrapper = document.body;
-
-  // Only on desktop — mobile native scroll feels better
-  if (window.innerWidth < 768 || window.matchMedia('(hover: none)').matches) return;
-
-  document.documentElement.style.overflow = 'hidden';
-  document.documentElement.style.height = '100%';
-  wrapper.style.position = 'fixed';
-  wrapper.style.top = '0';
-  wrapper.style.left = '0';
-  wrapper.style.width = '100%';
-  wrapper.style.willChange = 'transform';
-
-  function setHeight() {
-    document.documentElement.style.height = wrapper.scrollHeight + 'px';
-  }
-  setHeight();
-  new ResizeObserver(setHeight).observe(wrapper);
-
-  window.addEventListener('scroll', () => { target = window.scrollY; }, { passive: true });
-
-  function loop() {
-    current += (target - current) * ease;
-    if (Math.abs(target - current) < 0.1) current = target;
-    wrapper.style.transform = `translateY(${-current}px)`;
-    // sync scroll progress bar
-    const prog = document.getElementById('scroll-progress');
-    if (prog) {
-      const max = wrapper.scrollHeight - window.innerHeight;
-      prog.style.width = (max > 0 ? (current / max) * 100 : 0) + '%';
-    }
-    rafId = requestAnimationFrame(loop);
-  }
-  loop();
-})();
-
 /* ── CUSTOM CURSOR ── */
 const curDot = document.getElementById('curDot');
 const curRing = document.getElementById('curRing');
