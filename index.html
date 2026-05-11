@@ -1256,9 +1256,34 @@
       .bk-cal-dow span { font-size: .55rem; padding: .2rem 0; }
       .bk-modal-title { font-size: 1.3rem; }
     }
+
+  /* ══ CUSTOM CURSOR ══ */
+  body { cursor: none; }
+  .cur-dot {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--red); border-radius: 50%;
+    pointer-events: none; z-index: 99999;
+    transform: translate(-50%, -50%);
+  }
+  .cur-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid rgba(200,32,42,0.55);
+    border-radius: 50%;
+    pointer-events: none; z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition: width 0.35s cubic-bezier(0.16,1,0.3,1), height 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.2s;
+  }
+  body:has(a:hover) .cur-ring,
+  body:has(button:hover) .cur-ring { width: 54px; height: 54px; border-color: var(--red); }
+  @media (hover: none) { .cur-dot, .cur-ring { display: none; } body { cursor: auto; } }
+
+  /* ══ 3D TILT PREP ══ */
+  .pricing-card, .why-card, .step, .serviced-card { will-change: transform; }
   </style>
 </head>
 <body>
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
 
 <!-- PROMO BANNER -->
 <div id="scroll-progress"></div>
@@ -3862,5 +3887,42 @@ function handleAdminTrigger() {
   </div>
 </div>
 <div class="admin-toast" id="adminToast"></div>
+
+<script>
+/* ── CUSTOM CURSOR ── */
+const curDot = document.getElementById('curDot');
+const curRing = document.getElementById('curRing');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animCursor() {
+  curDot.style.left = mx + 'px'; curDot.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  curRing.style.left = rx + 'px'; curRing.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+})();
+
+/* ── HERO SCROLL PARALLAX ── */
+const heroBg = document.querySelector('.hero-bg');
+if (heroBg) {
+  window.addEventListener('scroll', () => {
+    heroBg.style.transform = `translateY(${window.scrollY * 0.38}px)`;
+  }, { passive: true });
+}
+
+/* ── 3D CARD TILT ── */
+document.querySelectorAll('.pricing-card, .why-card, .step, .serviced-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transition = 'transform 0.08s ease';
+    card.style.transform = `perspective(800px) rotateY(${x * 9}deg) rotateX(${-y * 9}deg) scale3d(1.025,1.025,1.025)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transition = 'transform 0.7s cubic-bezier(0.16,1,0.3,1)';
+    card.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) scale3d(1,1,1)';
+  });
+});
+</script>
 </body>
 </html>
