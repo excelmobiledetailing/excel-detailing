@@ -3355,7 +3355,7 @@ function renderAdminFAQList() {
 function adminDeleteFAQ(i) {
   if (!confirm('Delete this FAQ?')) return;
   const faqs = (liveFAQs || DEFAULT_FAQS).filter((_, idx) => idx !== i);
-  bkDb.ref('content/faqs').set(faqs).then(() => showAdminToast('FAQ deleted!'));
+  bkDb.ref('content/faqs').set(faqs).then(() => { showAdminToast('FAQ deleted!'); renderAdminFAQList(); });
 }
 function adminAddFAQ() {
   const q = document.getElementById('adminFAQQ').value.trim();
@@ -3366,6 +3366,7 @@ function adminAddFAQ() {
     document.getElementById('adminFAQQ').value = '';
     document.getElementById('adminFAQA').value = '';
     showAdminToast('FAQ added!');
+    renderAdminFAQList();
   });
 }
 
