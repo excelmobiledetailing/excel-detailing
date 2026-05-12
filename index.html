@@ -3254,6 +3254,9 @@ function applyPricingToDOM(p) {
   BK_PRICES['Exterior Detail'] = {'Coupe / Sedan':p.ext_sedan??80,'Truck / Full-Size SUV':p.ext_truck??90,'3-Row SUV':p.ext_suv??100};
   BK_PRICES['Interior Detail'] = {'Coupe / Sedan':p.int_sedan??140,'Truck / Full-Size SUV':p.int_truck??160,'3-Row SUV':p.int_suv??180};
   BK_PRICES['Full Detail']     = {'Coupe / Sedan':p.full_sedan??185,'Truck / Full-Size SUV':p.full_truck??225,'3-Row SUV':p.full_suv??250};
+  BK_SVC_PRICES['Coupe / Sedan']         = {ext:p.ext_sedan??80,  int:p.int_sedan??140, full:p.full_sedan??185};
+  BK_SVC_PRICES['Truck / Full-Size SUV'] = {ext:p.ext_truck??90,  int:p.int_truck??160, full:p.full_truck??225};
+  BK_SVC_PRICES['3-Row SUV']             = {ext:p.ext_suv??100,   int:p.int_suv??180,   full:p.full_suv??250};
 }
 function applyPromoToDOM(p) {
   const banner = document.getElementById('promo');
