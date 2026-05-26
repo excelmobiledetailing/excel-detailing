@@ -1739,9 +1739,9 @@
       <div class="card-name">Exterior Detail</div>
       <div class="card-desc" id="desc-ext">Full hand wash, wax, tires, and rims — paint looks good and stays protected.</div>
       <div class="price-row">
-        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="ext-sedan">80</span></div></div>
-        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="ext-truck">90</span></div></div>
-        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup><span data-price="ext-suv">100</span></div></div>
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="ext-sedan">85</span></div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="ext-truck">100</span></div></div>
+        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup><span data-price="ext-suv">120</span></div></div>
       </div>
       <ul class="features-list">
         <li>Pre-wash treatment</li>
@@ -1756,9 +1756,9 @@
       <div class="card-name">Interior Detail</div>
       <div class="card-desc" id="desc-int">Steam cleaned & deep cleaned from floor to ceiling — every surface, every crevice.</div>
       <div class="price-row">
-        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="int-sedan">140</span></div></div>
-        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="int-truck">160</span></div></div>
-        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup><span data-price="int-suv">180</span></div></div>
+        <div class="price-item"><div class="price-vehicle">Coupe / Sedan</div><div class="price-amount"><sup>$</sup><span data-price="int-sedan">145</span></div></div>
+        <div class="price-item"><div class="price-vehicle">Truck / Full-Size SUV</div><div class="price-amount"><sup>$</sup><span data-price="int-truck">170</span></div></div>
+        <div class="price-item"><div class="price-vehicle">3-Row SUV</div><div class="price-amount"><sup>$</sup><span data-price="int-suv">200</span></div></div>
       </div>
       <ul class="features-list">
         <li>Deep vacuum — seats, floors, trunk & crevices</li>
@@ -1838,9 +1838,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td>Coupe / Sedan</td><td><span class="compare-price">$<span data-price="ext-sedan">80</span></span></td><td><span class="compare-price">$<span data-price="int-sedan">140</span></span></td><td><span class="compare-price">$<span data-price="full-sedan">200</span></span></td></tr>
-        <tr><td>Truck / Full-Size SUV</td><td><span class="compare-price">$<span data-price="ext-truck">90</span></span></td><td><span class="compare-price">$<span data-price="int-truck">160</span></span></td><td><span class="compare-price">$<span data-price="full-truck">250</span></span></td></tr>
-        <tr><td>3-Row SUV</td><td><span class="compare-price">$<span data-price="ext-suv">100</span></span></td><td><span class="compare-price">$<span data-price="int-suv">180</span></span></td><td><span class="compare-price">$<span data-price="full-suv">300</span></span></td></tr>
+        <tr><td>Coupe / Sedan</td><td><span class="compare-price">$<span data-price="ext-sedan">85</span></span></td><td><span class="compare-price">$<span data-price="int-sedan">145</span></span></td><td><span class="compare-price">$<span data-price="full-sedan">200</span></span></td></tr>
+        <tr><td>Truck / Full-Size SUV</td><td><span class="compare-price">$<span data-price="ext-truck">100</span></span></td><td><span class="compare-price">$<span data-price="int-truck">170</span></span></td><td><span class="compare-price">$<span data-price="full-truck">250</span></span></td></tr>
+        <tr><td>3-Row SUV</td><td><span class="compare-price">$<span data-price="ext-suv">120</span></span></td><td><span class="compare-price">$<span data-price="int-suv">200</span></span></td><td><span class="compare-price">$<span data-price="full-suv">300</span></span></td></tr>
         <tr><td>Pre-wash & Hand Wash</td><td><span class="check">✔</span></td><td><span class="cross">—</span></td><td><span class="check">✔</span></td></tr>
         <tr><td>Wax Protectant</td><td><span class="check">✔</span></td><td><span class="cross">—</span></td><td><span class="check">✔</span></td></tr>
         <tr><td>Tires & Rims</td><td><span class="check">✔</span></td><td><span class="cross">—</span></td><td><span class="check">✔</span></td></tr>
@@ -3337,9 +3337,9 @@ let bkSelectedVehicle  = null;
 let bkSelectedVehicle2 = null;
 
 const BK_SVC_PRICES = {
-  'Coupe / Sedan':        {ext:80,  int:140, full:200, ceramic:999},
-  'Truck / Full-Size SUV':{ext:90,  int:160, full:250, ceramic:1199},
-  '3-Row SUV':            {ext:100, int:180, full:300, ceramic:1399},
+  'Coupe / Sedan':        {ext:85,  int:145, full:200, ceramic:999},
+  'Truck / Full-Size SUV':{ext:100, int:170, full:250, ceramic:1199},
+  '3-Row SUV':            {ext:120, int:200, full:300, ceramic:1399},
 };
 const BK_SVCS = (p, onSelect) => [
   {name:'Exterior Detail',  duration:'~1–2 hrs', price:p.ext,     feats:['Hand wash & wax','Tires & rims','Wax protectant'],      onSelect},
@@ -3759,12 +3759,12 @@ function applyPricingToDOM(p) {
   }
   const stat = document.getElementById('stat-starting-price');
   if (stat && p.ext_sedan != null) stat.textContent = '$' + p.ext_sedan;
-  BK_PRICES['Exterior Detail'] = {'Coupe / Sedan':p.ext_sedan??80,'Truck / Full-Size SUV':p.ext_truck??90,'3-Row SUV':p.ext_suv??100};
-  BK_PRICES['Interior Detail'] = {'Coupe / Sedan':p.int_sedan??140,'Truck / Full-Size SUV':p.int_truck??160,'3-Row SUV':p.int_suv??180};
+  BK_PRICES['Exterior Detail'] = {'Coupe / Sedan':p.ext_sedan??85,'Truck / Full-Size SUV':p.ext_truck??100,'3-Row SUV':p.ext_suv??120};
+  BK_PRICES['Interior Detail'] = {'Coupe / Sedan':p.int_sedan??145,'Truck / Full-Size SUV':p.int_truck??170,'3-Row SUV':p.int_suv??200};
   BK_PRICES['Full Detail']     = {'Coupe / Sedan':p.full_sedan??200,'Truck / Full-Size SUV':p.full_truck??250,'3-Row SUV':p.full_suv??300};
-  BK_SVC_PRICES['Coupe / Sedan']         = {ext:p.ext_sedan??80,  int:p.int_sedan??140, full:p.full_sedan??200, ceramic:p.ceramic_sedan??999};
-  BK_SVC_PRICES['Truck / Full-Size SUV'] = {ext:p.ext_truck??90,  int:p.int_truck??160, full:p.full_truck??250, ceramic:p.ceramic_truck??1199};
-  BK_SVC_PRICES['3-Row SUV']             = {ext:p.ext_suv??100,   int:p.int_suv??180,   full:p.full_suv??300,   ceramic:p.ceramic_suv??1399};
+  BK_SVC_PRICES['Coupe / Sedan']         = {ext:p.ext_sedan??85,  int:p.int_sedan??145, full:p.full_sedan??200, ceramic:p.ceramic_sedan??999};
+  BK_SVC_PRICES['Truck / Full-Size SUV'] = {ext:p.ext_truck??100, int:p.int_truck??170, full:p.full_truck??250, ceramic:p.ceramic_truck??1199};
+  BK_SVC_PRICES['3-Row SUV']             = {ext:p.ext_suv??120,   int:p.int_suv??200,   full:p.full_suv??300,   ceramic:p.ceramic_suv??1399};
 }
 function applyPromoToDOM(p) {
   const banner = document.getElementById('promo');
@@ -4052,8 +4052,8 @@ function adminSavePromo() {
 
 // Pricing tab
 const PRICING_DEFAULTS = {
-  ext_sedan:80,ext_truck:90,ext_suv:100,
-  int_sedan:140,int_truck:160,int_suv:180,
+  ext_sedan:85,ext_truck:100,ext_suv:120,
+  int_sedan:145,int_truck:170,int_suv:200,
   full_sedan:200,full_truck:250,full_suv:300,
   ceramic_sedan:999,ceramic_truck:1199,ceramic_suv:1399,
   hl_both:100,hl_single:60,pet:30,clay:35
