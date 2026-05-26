@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Excel Mobile Detailing – Price List</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+
+body { background:#222; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:40px; }
+
+.card {
+  width: 1080px;
+  height: 1080px;
+  background: #080c10;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* ── Corner accent lines ── */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(200,32,42,0.18);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Red diagonal slash background ── */
+.slash {
+  position: absolute;
+  top: -10%; right: -5%;
+  width: 42%; height: 130%;
+  background: linear-gradient(180deg, #c8202a 0%, #9a1520 100%);
+  clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%);
+  opacity: 0.08;
+}
+
+/* ── Subtle grid ── */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(184,194,204,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,194,204,0.03) 1px, transparent 1px);
+  background-size: 54px 54px;
+}
+
+/* ── Red glow bottom left ── */
+.glow {
+  position: absolute;
+  bottom: -120px; left: -80px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(200,32,42,0.12) 0%, transparent 70%);
+}
+
+.inner {
+  position: relative;
+  z-index: 2;
+  padding: 62px 72px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 44px;
+}
+.logo-wrap img {
+  height: 64px;
+  filter: brightness(2.0) contrast(1.1) saturate(1.1);
+}
+.header-right {
+  text-align: right;
+}
+.header-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: #c8202a;
+  margin-bottom: 4px;
+}
+.header-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 46px;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  line-height: 1;
+}
+
+/* ── Red divider ── */
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, #c8202a, rgba(200,32,42,0.15));
+  margin-bottom: 40px;
+}
+
+/* ── Vehicle type label ── */
+.vehicle-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0;
+  margin-bottom: 12px;
+  padding: 0 0 0 210px;
+}
+.vehicle-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(184,194,204,0.4);
+  text-align: center;
+}
+
+/* ── Service row ── */
+.service-row {
+  display: grid;
+  grid-template-columns: 210px 1fr 1fr 1fr;
+  align-items: center;
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(184,194,204,0.07);
+  gap: 0;
+}
+.service-row:last-child { border-bottom: none; }
+.service-row.featured { background: rgba(200,32,42,0.05); margin: 0 -20px; padding: 22px 20px; border-radius: 4px; border-bottom: none; }
+
+.service-info {}
+.service-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: #dde4ec;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  line-height: 1;
+}
+.service-desc {
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  color: rgba(184,194,204,0.38);
+  margin-top: 4px;
+  letter-spacing: .02em;
+}
+.service-badge {
+  display: inline-block;
+  background: #c8202a;
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  margin-bottom: 5px;
+}
+
+.price-cell {
+  text-align: center;
+}
+.price-amount {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 38px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: .02em;
+  line-height: 1;
+}
+.price-amount sup {
+  font-size: 18px;
+  font-weight: 700;
+  vertical-align: super;
+  color: #c8202a;
+}
+.price-cell.featured-price .price-amount { color: #c8202a; }
+
+/* ── Services strip ── */
+.services-strip {
+  margin-top: auto;
+  padding-top: 32px;
+  border-top: 1px solid rgba(184,194,204,0.07);
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.strip-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(184,194,204,0.3);
+  margin-right: 24px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.strip-items {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.strip-item {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(184,194,204,0.55);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.strip-item::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: #c8202a;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Footer ── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 22px;
+}
+.footer-contact {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: rgba(184,194,204,0.4);
+  letter-spacing: .08em;
+}
+.footer-contact span { color: #c8202a; margin-right: 4px; }
+.footer-ig {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: rgba(184,194,204,0.4);
+  letter-spacing: .06em;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="slash"></div>
+  <div class="grid-bg"></div>
+  <div class="glow"></div>
+
+  <div class="inner">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-wrap">
+        <img src="logo.png" alt="Excel Mobile Detailing">
+      </div>
+      <div class="header-right">
+        <div class="header-eyebrow">Official Pricing</div>
+        <div class="header-title">Our Services</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Vehicle column headers -->
+    <div class="vehicle-header">
+      <div class="vehicle-label">Sedan / Coupe</div>
+      <div class="vehicle-label">Truck / SUV</div>
+      <div class="vehicle-label">3-Row SUV</div>
+    </div>
+
+    <!-- Exterior -->
+    <div class="service-row">
+      <div class="service-info">
+        <div class="service-name">Exterior</div>
+        <div class="service-desc">Hand wash · Wax · Tires & rims</div>
+      </div>
+      <div class="price-cell"><div class="price-amount"><sup>$</sup>80</div></div>
+      <div class="price-cell"><div class="price-amount"><sup>$</sup>90</div></div>
+      <div class="price-cell"><div class="price-amount"><sup>$</sup>100</div></div>
+    </div>
+
+    <!-- Interior -->
+    <div class="service-row">
+      <div class="service-info">
+        <div class="service-name">Interior</div>
+        <div class="service-desc">Deep vacuum · Steam clean · Dashboard</div>
+      </div>
+      <div class="price-cell"><div class="price-amount"><sup>$</sup>140</div></div>
+      <div class="price-cell"><div class="price-amount"><sup>$</sup>160</div></div>
+      <div class="price-cell"><div class="price-amount"><sup>$</sup>180</div></div>
+    </div>
+
+    <!-- Full Detail -->
+    <div class="service-row featured">
+      <div class="service-info">
+        <div class="service-badge">Best Value</div>
+        <div class="service-name">Full Detail</div>
+        <div class="service-desc">Complete inside & out transformation</div>
+      </div>
+      <div class="price-cell featured-price"><div class="price-amount"><sup>$</sup>200</div></div>
+      <div class="price-cell featured-price"><div class="price-amount"><sup>$</sup>250</div></div>
+      <div class="price-cell featured-price"><div class="price-amount"><sup>$</sup>300</div></div>
+    </div>
+
+    <!-- Services strip -->
+    <div class="services-strip">
+      <div class="strip-label">Also Available</div>
+      <div class="strip-items">
+        <div class="strip-item">Ceramic Coating</div>
+        <div class="strip-item">Stain Removal</div>
+        <div class="strip-item">Pet Hair Removal</div>
+        <div class="strip-item">Clay Bar Treatment</div>
+        <div class="strip-item">Headlight Restore</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-contact"><span>📞</span>(847) 650-1734 · exceldetailing.it.com</div>
+      <div class="footer-ig">@excelmobile_detailing</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
