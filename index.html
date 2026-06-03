@@ -1798,15 +1798,15 @@
         <div class="ceramic-prices">
           <div class="price-item">
             <div class="price-vehicle">Coupe / Sedan</div>
-            <div class="price-amount"><sup>$</sup><span data-price="ceramic-sedan">399</span></div>
+            <div class="price-amount"><sup>$</sup><span data-price="ceramic-sedan">599</span></div>
           </div>
           <div class="price-item">
             <div class="price-vehicle">Truck / Full-Size SUV</div>
-            <div class="price-amount"><sup>$</sup><span data-price="ceramic-truck">499</span></div>
+            <div class="price-amount"><sup>$</sup><span data-price="ceramic-truck">699</span></div>
           </div>
           <div class="price-item">
             <div class="price-vehicle">3-Row SUV</div>
-            <div class="price-amount"><sup>$</sup><span data-price="ceramic-suv">599</span></div>
+            <div class="price-amount"><sup>$</sup><span data-price="ceramic-suv">799</span></div>
           </div>
         </div>
         <div class="ceramic-card-btns">
@@ -2026,15 +2026,15 @@
       <div class="cp-price-row">
         <div class="cp-price-item">
           <div class="cp-price-vehicle">Coupe / Sedan</div>
-          <div class="cp-price-amt"><sup>$</sup><span data-price="ceramic-sedan">399</span></div>
+          <div class="cp-price-amt"><sup>$</sup><span data-price="ceramic-sedan">599</span></div>
         </div>
         <div class="cp-price-item">
           <div class="cp-price-vehicle">Truck / Full-Size SUV</div>
-          <div class="cp-price-amt"><sup>$</sup><span data-price="ceramic-truck">499</span></div>
+          <div class="cp-price-amt"><sup>$</sup><span data-price="ceramic-truck">699</span></div>
         </div>
         <div class="cp-price-item">
           <div class="cp-price-vehicle">3-Row SUV</div>
-          <div class="cp-price-amt"><sup>$</sup><span data-price="ceramic-suv">599</span></div>
+          <div class="cp-price-amt"><sup>$</sup><span data-price="ceramic-suv">799</span></div>
         </div>
       </div>
       <div class="cp-price-note">Includes the full 5-step prep process — wash, iron decontamination, clay bar, IPA wipe-down, and full coating application. Mobile service, no shop drop-off. We come to your driveway.</div>
@@ -3330,9 +3330,9 @@ let bkSelectedVehicle  = null;
 let bkSelectedVehicle2 = null;
 
 const BK_SVC_PRICES = {
-  'Coupe / Sedan':        {ext:60,  int:130, full:170, ceramic:399},
-  'Truck / Full-Size SUV':{ext:70,  int:150, full:200, ceramic:499},
-  '3-Row SUV':            {ext:85,  int:185, full:250, ceramic:599},
+  'Coupe / Sedan':        {ext:60,  int:130, full:170, ceramic:599},
+  'Truck / Full-Size SUV':{ext:70,  int:150, full:200, ceramic:699},
+  '3-Row SUV':            {ext:85,  int:185, full:250, ceramic:799},
 };
 const BK_SVCS = (p, onSelect) => [
   {name:'Exterior Detail',  duration:'~1–2 hrs', price:p.ext,     feats:['Hand wash & wax','Tires & rims','Wax protectant'],      onSelect},
@@ -3755,9 +3755,9 @@ function applyPricingToDOM(p) {
   BK_PRICES['Exterior Detail'] = {'Coupe / Sedan':p.ext_sedan??60,'Truck / Full-Size SUV':p.ext_truck??70,'3-Row SUV':p.ext_suv??85};
   BK_PRICES['Interior Detail'] = {'Coupe / Sedan':p.int_sedan??130,'Truck / Full-Size SUV':p.int_truck??150,'3-Row SUV':p.int_suv??185};
   BK_PRICES['Full Detail']     = {'Coupe / Sedan':p.full_sedan??170,'Truck / Full-Size SUV':p.full_truck??200,'3-Row SUV':p.full_suv??250};
-  BK_SVC_PRICES['Coupe / Sedan']         = {ext:p.ext_sedan??60,  int:p.int_sedan??130, full:p.full_sedan??170, ceramic:p.ceramic_sedan??399};
-  BK_SVC_PRICES['Truck / Full-Size SUV'] = {ext:p.ext_truck??70,  int:p.int_truck??150, full:p.full_truck??200, ceramic:p.ceramic_truck??499};
-  BK_SVC_PRICES['3-Row SUV']             = {ext:p.ext_suv??85,    int:p.int_suv??185,   full:p.full_suv??250,   ceramic:p.ceramic_suv??599};
+  BK_SVC_PRICES['Coupe / Sedan']         = {ext:p.ext_sedan??60,  int:p.int_sedan??130, full:p.full_sedan??170, ceramic:p.ceramic_sedan??599};
+  BK_SVC_PRICES['Truck / Full-Size SUV'] = {ext:p.ext_truck??70,  int:p.int_truck??150, full:p.full_truck??200, ceramic:p.ceramic_truck??699};
+  BK_SVC_PRICES['3-Row SUV']             = {ext:p.ext_suv??85,    int:p.int_suv??185,   full:p.full_suv??250,   ceramic:p.ceramic_suv??799};
 }
 function applyPromoToDOM(p) {
   const banner = document.getElementById('promo');
@@ -4048,7 +4048,7 @@ const PRICING_DEFAULTS = {
   ext_sedan:60,ext_truck:70,ext_suv:85,
   int_sedan:130,int_truck:150,int_suv:185,
   full_sedan:170,full_truck:200,full_suv:250,
-  ceramic_sedan:399,ceramic_truck:499,ceramic_suv:599,
+  ceramic_sedan:599,ceramic_truck:699,ceramic_suv:799,
   hl_both:100,hl_single:60,pet:30,clay:35
 };
 function renderAdminPricing() {
